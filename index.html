@@ -130,6 +130,28 @@ details.tip[open] summary~*{animation:up .3s both}
 .fx{position:fixed;inset:0;pointer-events:none;z-index:20;overflow:hidden}
 .fx i{position:absolute;width:9px;height:14px;border-radius:2px}
 @keyframes up{from{opacity:0;transform:translateY(16px)}}
+.list>.heist{column-span:all;break-inside:avoid;margin:10px 0 12px;padding:0;border:0}
+.heist details{border-radius:18px;overflow:hidden;background:linear-gradient(120deg,#1f0d42,#4a1760 55%,#8a2363);color:#fbeefa;box-shadow:0 14px 30px -18px #4a1760}
+.heist.hdone details{background:linear-gradient(120deg,#0d3a3f,#13605f)}
+.hs{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:16px;align-items:center;padding:16px 18px;cursor:pointer;list-style:none;min-height:84px}
+.hs::-webkit-details-marker{display:none}
+.hs .nm b{display:block;font-family:Anton,Impact,sans-serif;font-weight:400;font-size:clamp(26px,3.2vw,34px);line-height:1.05;letter-spacing:.01em}
+.hs .nm small{display:block;color:#d2c2ea;font-size:13.5px;margin-top:2px}
+.hbar{display:block;height:6px;border-radius:9px;background:#ffffff22;margin-top:10px;overflow:hidden}.hbar i{display:block;height:100%;background:var(--grad);border-radius:9px;transition:width .5s}
+.hdone .hbar i{background:#39d6cf}
+.hring{width:58px;height:58px;border-radius:50%;display:grid;place-content:center;background:radial-gradient(closest-side,#1c0f36 76%,transparent 78% 100%),conic-gradient(#ffc94a var(--p),#ffffff26 0)}
+.hring b{font-family:Anton,Impact,sans-serif;font-weight:400;font-size:17px;color:#fff}
+.hdone .hring{background:radial-gradient(closest-side,#0d3a3f 76%,transparent 78% 100%),conic-gradient(#39d6cf var(--p),#ffffff26 0)}
+.chev{width:14px;height:14px;border-right:3px solid #fff;border-bottom:3px solid #fff;transform:rotate(45deg);transition:transform .25s;margin:0 6px 6px 0}
+details[open] .chev{transform:rotate(-135deg);margin:6px 6px 0 0}
+.heist ul{list-style:none;margin:0;padding:4px 18px 8px;background:var(--card);color:var(--ink);columns:2 300px;column-gap:36px;counter-reset:p}
+details[open] .heist ul,.heist details[open]>ul{animation:up .35s both}
+.hs.sp .nm b,.hs.sp .nm small{filter:blur(7px)}
+.obheist{grid-column:1/-1;border-radius:18px;background:linear-gradient(120deg,#ffffff10,#ff3f7f22);border:1.5px solid #ff8a3d66;padding:14px}
+.obhh{display:flex;gap:14px;align-items:center;margin-bottom:12px}
+.obhh b{display:block;font-family:Anton,Impact,sans-serif;font-weight:400;font-size:28px;color:#fff;line-height:1.05}
+.obhh small{color:#d2c2ea;font-size:13.5px}
+.obhl{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:8px}
 .ob{position:fixed;inset:0;z-index:15;display:grid;place-items:start center;padding:calc(20px + env(safe-area-inset-top)) 18px calc(20px + env(safe-area-inset-bottom));overflow-y:auto;color:var(--nightink);
  background:radial-gradient(90% 45% at 50% 100%,#ff3f7f66,transparent 70%),linear-gradient(180deg,#170b33,#2a0e4c 60%,#4d1860);animation:fade .4s both}
 .ob[hidden]{display:none}
@@ -387,15 +409,20 @@ function vChecklist(){let h=head('Checklist 100%','Los 35 requisitos de <b>A Lon
 
 function curChapter(){for(let c=0;c<ST.length;c++)if(ALL.some(e=>e.c===c&&e.t!=='o'&&!S.done[e.k]))return c;return 9}
 const WHO={J:'Jason',L:'Lucia',JL:'Jason y Lucia'};
-function stTags(e){const hd=e.h?ALL.filter(x=>x.h===e.h):[];const pos=e.h?hd.indexOf(e)+1:0;
- return `<span class="tag">${e.c+1}.${e.i+1}</span>${e.who?`<span class="tag">${WHO[e.who]}</span>`:''}${e.t==='t'?'<span class="tag">Tarea</span>':''}${e.t==='o'?'<span class="tag">Opcional</span>':''}${e.h?`<span class="tag ${e.h==='c'?'p':'pl'}">${HEISTS[e.h][0]} · ${pos===hd.length?'golpe final':'paso '+pos+'/'+(hd.length-1)}</span>`:''}`}
+function stTags(e,inH){const hd=e.h?ALL.filter(x=>x.h===e.h):[];const pos=e.h?hd.indexOf(e)+1:0;
+ const ht=e.h?(pos===hd.length?'Golpe final':'Paso '+pos+' de '+(hd.length-1)):'';
+ return `${inH?`<span class="tag ${pos===hd.length?'p':''}">${ht}</span>`:`<span class="tag">${e.c+1}.${e.i+1}</span>`}${e.who?`<span class="tag">${WHO[e.who]}</span>`:''}${e.t==='t'?'<span class="tag">Tarea</span>':''}${e.t==='o'?'<span class="tag">Opcional</span>':''}${e.h&&!inH?`<span class="tag ${e.h==='c'?'p':'pl'}">${HEISTS[e.h][0]} · ${ht.toLowerCase()}</span>`:''}`}
+const openH=new Set();
+function heistBlock(hk,hide){const l=ALL.filter(e=>e.h===hk),d=l.filter(e=>S.done[e.k]).length,rows=l.map(e=>ckRow(e.k,e.es,e.en,stTags(e,true),hide?' sp':'')).join('');if(!rows)return '';
+ const open=openH.has(hk)||(!openH.has('x'+hk)&&d>0&&d<l.length)||!!q;
+ return `<li class="heist${d>=l.length?' hdone':''}"><details data-h="${hk}" ${open?'open':''}><summary class="hs${hide?' sp':''}"><span class="hring" style="--p:${d/l.length*100}%"><b>${d}/${l.length}</b></span><span class="nm"><b>${HEISTS[hk][0]}</b><small>${HEISTS[hk][1]} · ${l.length-1} preparativos y el golpe final</small><span class="hbar"><i style="width:${d/l.length*100}%"></i></span></span><span class="chev" aria-hidden="true"></span></summary><ul>${rows}</ul></details></li>`}
 function vHistoria(){const cc=curChapter(),tt=ALL.filter(e=>e.t==='t'),td=tt.filter(e=>S.done[e.k]).length;
  let h=head('Historia',`${misTot} misiones principales y ${tt.length} tareas de historia (pagos, llamadas, preparativos de los golpes) en 5 capítulos. Nombres traducidos por mí; debajo, el nombre original en inglés.`)
  +`<div class="tools" style="position:static;padding:0"><button class="chip hot" id="where">Actualizar por dónde voy</button></div>`
  +`<div class="mini"><div class="${misDone()>=misTot?'ok':''}"><b>${misDone()}/${misTot}</b><small>misiones principales</small></div><div class="${td>=tt.length?'ok':''}"><b>${td}/${tt.length}</b><small>tareas de historia</small></div>${Object.keys(HEISTS).filter(k=>!(S.spoil&&k==='v'&&cc<3)).map(k=>{const l=ALL.filter(e=>e.h===k),d=l.filter(e=>S.done[e.k]).length;return `<div class="${d>=l.length?'ok':''}"><b>${d}/${l.length}</b><small>${HEISTS[k][0]}</small></div>`}).join('')}</div>`
  +tools('Buscar misión…',`<button class="chip" id="spoil" aria-pressed="${S.spoil}">Sin spoilers</button>`);
  ST.forEach((l,c)=>{const es=ALL.filter(e=>e.c===c),main=es.filter(e=>e.t==='m'),d=main.filter(e=>S.done[e.k]).length,hide=S.spoil&&c>cc;
-  const rows=es.map(e=>ckRow(e.k,e.es,e.en,stTags(e),hide?' sp':'')).join('');
+  const seen=new Set();const rows=es.map(e=>{if(e.h){if(seen.has(e.h))return '';seen.add(e.h);return heistBlock(e.h,hide)}return ckRow(e.k,e.es,e.en,stTags(e),hide?' sp':'')}).join('');
   if(rows)h+=grp(hide?'Capítulo '+(c+1):`Capítulo ${c+1} · ${CHT[c][0]}`,d+'/'+main.length,['var(--sea)','var(--pink)','var(--sun)','var(--gold)','var(--pink)'][c])+`<ul class="list">${rows}</ul>`});
  return h}
 
@@ -462,14 +489,15 @@ function applyPoint(ch,sel){const before=new Set(Object.keys(S.done).filter(k=>S
  for(const e of ALL)if(e.c===ch&&e.t==='o'){if(sel.has(e.k))S.done[e.k]=true;else delete S.done[e.k]}
  syncTro();for(const k of Object.keys(S.done))if(!before.has(k)){if(k[0]==='q')m++;else if(k[0]==='t')t++}
  S.setup=1;save();return{m,t,ch}}
-function obRow(e){const on=ob.sel.has(e.k);return `<button data-ok="${e.k}" class="${on?'on':''}" aria-pressed="${on}"><i class="obck"></i><span class="obtx"><b>${esc(e.es)}</b><small>${esc(e.en)}</small><span>${stTags(e)}</span></span></button>`}
+function obRow(e,inH){const on=ob.sel.has(e.k);return `<button data-ok="${e.k}" class="${on?'on':''}" aria-pressed="${on}"><i class="obck"></i><span class="obtx"><b>${esc(e.es)}</b><small>${esc(e.en)}</small><span>${stTags(e,inH)}</span></span></button>`}
 function obRender(){const o=$('#ob');let h='';
  if(ob.step==='ch'){h=`<h2 id="obt">¿Por dónde vas?</h2><p class="sub">Dime el capítulo y marca lo que ya has hecho. Así la app sabe tu punto exacto y te esconde lo que viene después.</p>
   <div class="obgrid"><button data-oc="-1" style="--i:0"><b>Empezando</b><small>Aún no he jugado ninguna misión</small></button>${ST.map((l,i)=>`<button data-oc="${i}" style="--i:${i+1}"><b>Capítulo ${i+1}</b><small>${l.length} misiones y tareas</small></button>`).join('')}<button data-oc="5" style="--i:6"><b>Terminada</b><small>Ya vi los créditos</small></button></div>
   <div class="obbar"><button class="chip" data-ob="skip">Ahora no</button></div>`}
  else if(ob.step==='mis'){const es=ALL.filter(e=>e.c===ob.ch),n=es.filter(e=>ob.sel.has(e.k)).length;
   h=`<h2 id="obt">Capítulo ${ob.ch+1}</h2><p class="sub">Toca la <b>última</b> que hayas completado: se marcan también las anteriores. Luego toca las que quieras corregir una a una (por ejemplo, preparatorias de un golpe que hiciste en otro orden). Las opcionales no se marcan solas.</p>
-  <div class="oblist">${es.map(obRow).join('')}</div>
+  <div class="oblist">${(()=>{const seen=new Set();return es.map(e=>{if(!e.h)return obRow(e);if(seen.has(e.h))return '';seen.add(e.h);const l=es.filter(x=>x.h===e.h),d=l.filter(x=>ob.sel.has(x.k)).length;
+   return `<div class="obheist"><div class="obhh"><span class="hring" style="--p:${d/l.length*100}%"><b>${d}/${l.length}</b></span><span><b>${HEISTS[e.h][0]}</b><small>${HEISTS[e.h][1]} · toca el último paso que hayas hecho</small></span></div><div class="obhl">${l.map(x=>obRow(x,true)).join('')}</div></div>`}).join('')})()}</div>
   <div class="obbar obsticky"><button class="chip" data-ob="back">Volver</button><span class="obn">${n} de ${es.length} hechas</span><button class="chip hot" data-ob="ok">Guardar mi punto</button></div>`}
  else{const r=ob.res,fin=r.ch>=5,start=r.ch<0;
   h=`<h2 id="obt">${fin?'Historia completada':start?'Que empiece el viaje':'Listo'}</h2>
@@ -511,6 +539,7 @@ V2.addEventListener('click',e=>{const b=e.target.closest('button,.sp');if(!b)ret
  else if(b.id==='dl'){try{const u=URL.createObjectURL(new Blob([JSON.stringify(S,null,1)],{type:'application/json'})),a=document.createElement('a');a.href=u;a.download='gta6-progreso-'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),2000)}catch(e){flash('Aquí no se puede descargar: usa Copiar código')}}
  else if(b.id==='imp'){$('#impmsg').textContent=load($('#code').value)?'Progreso importado':'Ese código no es válido'}});
 V2.addEventListener('change',async e=>{if(e.target.id==='file'&&e.target.files[0]){const ok=load(await e.target.files[0].text());flash(ok?'Progreso importado':'Archivo no válido')}});
+V2.addEventListener('toggle',e=>{const d=e.target;if(!d.dataset||!d.dataset.h)return;const k=d.dataset.h;if(d.open){openH.add(k);openH.delete('x'+k)}else{openH.delete(k);openH.add('x'+k)}},true);
 V2.addEventListener('input',e=>{const t=e.target;if(t.id==='q'){q=t.value.trim().toLowerCase();render(true)}else if(t.id==='notes'){S.notes=t.value;save()}});
 
 route();

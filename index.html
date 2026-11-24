@@ -286,6 +286,39 @@ details.mw ol{margin:6px 0 4px;padding-left:22px;line-height:1.5}details.mw li{m
 .gtab{position:relative;height:max(460px,calc(100vh - 250px));border-radius:22px;overflow:hidden;box-shadow:var(--sh);background:var(--card)}
 .gtab iframe{width:100%;height:100%;border:0;display:block}
 .gtabx{padding:28px;display:grid;gap:14px;place-content:center;text-align:center;height:100%}
+.srh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.imap{position:relative;display:grid;grid-template-columns:1fr;height:max(520px,calc(100dvh - 120px));border-radius:22px;overflow:hidden;box-shadow:var(--sh);background:#1fa9c9}
+.imap.fs{position:fixed;inset:0;height:auto;border-radius:0;z-index:80}
+.imap .mapbox{height:100%;border-radius:0;box-shadow:none}
+.mpanel{display:none;background:var(--card);color:var(--ink);overflow:auto;padding:16px 14px 18px;border-right:1px solid var(--line);overscroll-behavior:contain}
+.imap.po .mpanel{display:block}
+@media(min-width:900px){.imap.po{grid-template-columns:330px 1fr}}
+@media(max-width:899px){.imap.po .mpanel{position:absolute;left:0;top:0;bottom:0;width:min(340px,88%);z-index:7;box-shadow:12px 0 40px -10px #0008;animation:mslide .25s ease}}
+@keyframes mslide{from{transform:translateX(-100%)}to{transform:none}}
+.mph{display:flex;align-items:center;justify-content:space-between;gap:8px}.mph b{font:800 24px Anton,Archivo,sans-serif;letter-spacing:.02em;display:block}.mph span{font-size:13.5px;color:var(--mut);font-weight:600}
+.mpx{width:40px;height:40px;border:0;border-radius:12px;background:color-mix(in srgb,var(--ink) 8%,transparent);color:var(--ink);font-size:22px;cursor:pointer}
+.mpbar{height:8px;border-radius:99px;background:color-mix(in srgb,var(--ink) 10%,transparent);margin:10px 0 12px;overflow:hidden}.mpbar i{display:block;height:100%;background:linear-gradient(90deg,var(--pink),var(--gold));border-radius:inherit;transition:width .4s}
+.msearch{position:relative}.msearch input{width:100%;font:inherit;font-size:15px;padding:11px 14px;border-radius:14px;border:2px solid var(--line);background:var(--bg);color:var(--ink);min-height:46px}
+.mres{display:grid;gap:4px;margin-top:6px}.mres:empty{display:none}.mres p{margin:4px 2px;color:var(--mut);font-size:14px}
+.mres button{display:flex;align-items:center;gap:10px;text-align:left;font:inherit;border:0;background:color-mix(in srgb,var(--ink) 5%,transparent);color:var(--ink);border-radius:12px;padding:8px 10px;cursor:pointer;min-height:48px}
+.mres button span{flex:1;font-weight:700;font-size:14.5px}.mres small{display:block;font-weight:500;color:var(--mut);font-size:12.5px}.mres i{color:#2fa34a;font-style:normal;font-weight:900}
+.mres b,.mcat b{width:28px;height:28px;flex:none;border-radius:50%;display:grid;place-content:center;color:#1a0b2e;font-size:13px;border:2px solid #fff;box-shadow:0 2px 6px -2px #0006}
+.mpact{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0 4px}.mpact button{font:inherit;font-size:13px;font-weight:700;border:2px solid var(--line);background:transparent;color:var(--ink);border-radius:99px;padding:7px 12px;cursor:pointer;min-height:38px}
+.mpact button[aria-pressed=true]{background:var(--ink);color:var(--card);border-color:var(--ink)}
+.mcats h4{margin:14px 2px 6px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut)}
+.mcat{display:grid;grid-template-columns:auto 1fr auto;grid-template-rows:auto auto;column-gap:10px;row-gap:5px;align-items:center;width:100%;text-align:left;font:inherit;border:0;background:transparent;color:var(--ink);border-radius:12px;padding:8px 8px;cursor:pointer;min-height:52px}
+.mcat:hover{background:color-mix(in srgb,var(--ink) 5%,transparent)}
+.mcat b{grid-row:1/3}.mcat span{font-weight:700;font-size:14.5px}.mcat small{font-weight:700;color:var(--mut);font-size:13px}
+.mcat em{grid-column:2/4;height:4px;border-radius:9px;background:color-mix(in srgb,var(--ink) 9%,transparent);overflow:hidden}.mcat em i{display:block;height:100%}
+.mcat[aria-pressed=false]{opacity:.4}.mcat[aria-pressed=false] b{filter:grayscale(1)}
+.mpo{position:absolute;left:12px;top:12px;z-index:5;border:0;border-radius:14px;background:#170b33e6;color:#fff;font:inherit;font-weight:800;font-size:15px;padding:0 16px;height:46px;cursor:pointer;box-shadow:0 6px 18px -6px #0008}
+.imap.po .mpo{display:none}
+@media(max-width:899px){.imap.po .mpo{display:block}}
+.mk button.cl{width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:50%;background:conic-gradient(var(--c1) 0 50%,var(--c2) 50% 100%);color:#fff;font-size:15px;font-weight:900;text-shadow:0 1px 3px #000c;border:3px solid #fff}
+.mk button.cl i{position:absolute;right:-6px;top:-6px;width:18px;height:18px;border-radius:50%;background:#2fa34a;font-size:11px;font-style:normal;display:grid;place-content:center;border:2px solid #fff}
+.imap .minfo{z-index:8;left:0;top:0;right:auto;bottom:auto;width:min(340px,calc(100% - 16px));max-width:none}
+.imap .minfo::after{content:none}
+.mdone{display:flex;align-items:center;gap:8px;cursor:pointer}.mdone.on{background:color-mix(in srgb,#2fa34a 22%,var(--card));border-color:#2fa34a}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -561,7 +594,7 @@ const ARM=[
 // Cada elemento: [nombre, zona, dónde (con mis palabras), nota, fecha en que se añadió]
 // La fecha sirve para la etiqueta «Nuevo» y el aviso de «Nuevo descubrimiento».
 const NEWS=[
- {d:'2026-11-24c',go:'inicio',h:'Novedades en la app',t:'Nombres oficiales, guías paso a paso y mapa oficial',l:['Las misiones usan ya los nombres del juego en castellano (según 3DJuegos, Vandal y Eurogamer)','Guía paso a paso en 45 misiones de los capítulos 1 y 3, también en tu siguiente paso de Inicio','Mapa oficial de Leonida y pestaña con el mapa interactivo de GTABase','Menú arriba y pantalla de Inicio con tu siguiente paso, avisos y progreso','Consejos en las 119 misiones y tareas, más una guía por capítulo','Mapa de Leonida con iconos por categoría, zoom y marcado desde la ficha','Sección Perdibles: 22 cosas que se pierden si avanzas la historia']},
+ {d:'2026-11-24d',go:'mapa',h:'Novedades en la app',t:'Mapa interactivo, nombres oficiales y guías paso a paso',l:['Mapa interactivo sobre el mapa oficial: panel de capas con progreso, buscador, iconos agrupados y pantalla completa','Las misiones usan ya los nombres del juego en castellano (según 3DJuegos, Vandal y Eurogamer)','Guía paso a paso en 45 misiones de los capítulos 1 y 3, también en tu siguiente paso de Inicio','Menú arriba y pantalla de Inicio con tu siguiente paso, avisos y progreso','Consejos en las 119 misiones y tareas, más una guía por capítulo','Mapa de Leonida con iconos por categoría, zoom y marcado desde la ficha','Sección Perdibles: 22 cosas que se pierden si avanzas la historia']},
  {d:'2026-11-24',t:'Primeras guías detalladas',l:['Robos: las 39 operaciones de bandas, los 22 bancos y las 7 tiendas de préstamos','Coleccionables: 10 zonas de meditación, 18 lotes de cartas, 26 revistas, 16 puntos WAiNK y 8 flamencos','Actividades: 40 carreras por sede, 13 desafíos de carreras y 7 rivales de billar','Historia: guía con decisiones, desbloqueos y avisos en muchas misiones']}
 ];
 const BASE='2026-11-24';
@@ -1134,55 +1167,93 @@ function vPerdibles(){const cc=curChapter();let h=head('Perdibles','Casi nada im
  return h}
 
 /* ---------- MAPA ---------- */
-let MV={k:1,tx:0,ty:0,init:false},mapOff=new Set(),mapHide=false,mapSel=-1,MP=[];
-let mapView='app';const GTAB='https://www.gtabase.com/gta-6/map/';const CAN_FRAME=/github\.io$|localhost|^$/.test(location.hostname);
-function vMapa(){MP=mapPoints();const cats=Object.keys(MAPCAT);
- const tabs=`<div class="mtabs"><button class="chip${mapView==='app'?' hot':''}" data-mv="app">Mapa de la app</button><button class="chip${mapView==='gb'?' hot':''}" data-mv="gb">Mapa interactivo de GTABase</button></div>`;
- if(mapView==='gb')return head('Mapa','Mapa interactivo de GTABase, con la ubicación exacta de cada cosa. Lo que marques ahí no se guarda en esta app.')+tabs
-  +(CAN_FRAME?`<p class="mnote" style="margin:0 0 10px">¿Se queda en blanco o con un icono de error? Entonces GTABase no deja mostrarlo dentro de otras webs: <a href="${GTAB}" target="_blank" rel="noopener">ábrelo a pantalla completa</a>.</p><div class="gtab"><iframe src="${GTAB}" title="Mapa interactivo de GTABase" loading="lazy" referrerpolicy="no-referrer" allow="fullscreen"></iframe></div>`
-  :`<div class="gtab"><div class="gtabx"><p>Esta copia de la app no puede mostrar webs externas dentro. En la app instalada en la tablet (GitHub Pages) sí se intenta cargar aquí.</p><a class="chip hot" href="${GTAB}" target="_blank" rel="noopener" style="text-decoration:none;justify-self:center;display:inline-flex;align-items:center">Abrir el mapa de GTABase</a></div></div>`);
- return head('Mapa','Mapa oficial de Leonida con lo que ya está localizado en las guías. Arrastra para moverte, pellizca o usa + y − para el zoom, y toca un icono para ver la ficha y marcarlo.')+tabs
- +`<div class="mlegend">${cats.map(c=>{const n=MP.filter(p=>p.cat===c).length;if(!n)return '';return `<button data-mc="${c}" aria-pressed="${!mapOff.has(c)}"><b style="background:${MAPCAT[c][1]}">${MAPCAT[c][2]}</b>${MAPCAT[c][0]} <small>${n}</small></button>`}).join('')}<button id="mhide" aria-pressed="${mapHide}" style="padding-left:12px">Ocultar hechos</button></div>
- <div class="mapwrap"><div class="mapbox" id="mapbox"><svg aria-label="Mapa oficial de Leonida"><g id="mapg"><image href="leonida.webp" x="0" y="0" width="1754" height="2449"/></g></svg><div class="mk" id="mk"></div><div class="mzoom"><button data-z="1.5" aria-label="Acercar">+</button><button data-z="0.67" aria-label="Alejar">−</button><button data-z="0" aria-label="Encuadrar">⤢</button></div><div class="minfo" id="minfo" hidden></div></div></div>
- <p class="mnote">Mapa © Rockstar Games (descarga gratuita oficial). Los iconos van en la zona o pueblo que indican las guías, no en el punto exacto; los que solo tienen condado van sobre su nombre. Para el punto exacto usa el <a href="https://www.gtabase.com/gta-6/map/" target="_blank" rel="noopener">mapa interactivo de GTABase</a>. ${MP.length} puntos situados; los demás elementos de las guías aún no tienen zona conocida.</p>`}
-function mapApply(){const g=document.getElementById('mapg');if(!g)return;const bx=document.getElementById('mapbox');if(bx){const W=bx.clientWidth,H=bx.clientHeight,iw=1754*MV.k,ih=2449*MV.k,m=40;MV.tx=iw+2*m<=W?(W-iw)/2:Math.min(m,Math.max(W-iw-m,MV.tx));MV.ty=ih+2*m<=H?(H-ih)/2:Math.min(m,Math.max(H-ih-m,MV.ty))}g.setAttribute('transform',`translate(${MV.tx} ${MV.ty}) scale(${MV.k})`);g.style.setProperty('--ik',Math.max(.9,Math.min(2.2,1/MV.k)));
- const mk=document.getElementById('mk');if(mk)mk.style.setProperty('--ms',MV.k<.3?.7:MV.k<.55?.85:1);for(const b of document.querySelectorAll('#mk button')){const p=MP[+b.dataset.i];b.style.transform=`translate(${p.x*MV.k+MV.tx}px,${p.y*MV.k+MV.ty}px)`}}
-function mapFit(){const bx=document.getElementById('mapbox');if(!bx)return;const W=bx.clientWidth,H=bx.clientHeight;MV.k=Math.min(W/1754,H/2449)*1.02;MV.tx=(W-1754*MV.k)/2;MV.ty=(H-2449*MV.k)/2;MV.init=true;mapApply()}
-function mapZoom(f,cx,cy){const bx=document.getElementById('mapbox');const W=bx.clientWidth,H=bx.clientHeight;if(cx==null){cx=W/2;cy=H/2}const kmin=Math.min(W/1754,H/2449)*.7,k2=Math.max(kmin,Math.min(MV.k*f,3));MV.tx=cx-(cx-MV.tx)*(k2/MV.k);MV.ty=cy-(cy-MV.ty)*(k2/MV.k);MV.k=k2;mapApply()}
-function mapInfo(){const el=document.getElementById('minfo');if(!el)return;if(mapSel<0){el.hidden=true;return}const p=MP[mapSel],d=p.k&&S.done[p.k];
- el.innerHTML=`<button class="x" aria-label="Cerrar">×</button><span class="tag" style="background:${MAPCAT[p.cat][1]};color:#1a0b2e">${MAPCAT[p.cat][0]}</span><h4>${esc(p.n)}</h4><p><b>${esc(p.z||p.pl)}</b>${p.w?' · '+esc(p.w):''}</p>${p.note?`<p>${esc(p.note)}</p>`:''}<div class="acts">${p.k?`<label class="chip" style="display:flex;align-items:center;gap:8px"><input type="checkbox" class="ck" id="mck" ${d?'checked':''}> Hecho</label>`:''}<a class="chip" href="https://www.gtabase.com/gta-6/map/" target="_blank" rel="noopener" style="text-decoration:none;display:flex;align-items:center">Mapa interactivo</a></div>`;el.hidden=false}
-function mapAfter(){const bx=document.getElementById('mapbox');if(!bx)return;const mk=document.getElementById('mk');
- mk.innerHTML=MP.map((p,i)=>mapOff.has(p.cat)||(mapHide&&p.k&&S.done[p.k])?'':`<button data-i="${i}" class="${p.k&&S.done[p.k]?'done':''}${i===mapSel?' sel':''}" style="background:${MAPCAT[p.cat][1]}" aria-label="${esc(p.n)}">${MAPCAT[p.cat][2]}</button>`).join('');
- if(!MV.init)mapFit();else mapApply();mapInfo();
+let MV={k:1,tx:0,ty:0,init:false},mapOff=new Set(),mapHide=false,mapSel=-1,MP=[],MCL=[],mapPanel=innerWidth>=900,mapFs=false,mapQ='',clT=0;
+const MGROUPS=[['Coleccionables',['medit','mags','waink','flam']],['Robos',['gang','bank','payday']],['Actividades',['races','rchal','pool']],['Historia',['base']]];
+const MW_=1754,MH_=2449,norm=t=>String(t).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+const pDone=p=>!!(p.k&&S.done[p.k]);
+const pVis=p=>!mapOff.has(p.cat)&&!(mapHide&&pDone(p));
+function mapCats(){return MGROUPS.map(([g,cs])=>{const rows=cs.filter(c=>MP.some(p=>p.cat===c)).map(c=>{const ps=MP.filter(p=>p.cat===c),tot=ps.filter(p=>p.k).length,d=ps.filter(pDone).length,pc=tot?Math.round(d/tot*100):0;
+  return `<button class="mcat" data-mc="${c}" aria-pressed="${!mapOff.has(c)}"><b style="background:${MAPCAT[c][1]}">${MAPCAT[c][2]}</b><span>${MAPCAT[c][0]}</span><small>${tot?d+'/'+tot:ps.length}</small><em><i style="width:${pc}%;background:${MAPCAT[c][1]}"></i></em></button>`}).join('');
+  return rows?`<h4>${g}</h4>${rows}`:''}).join('')}
+function vMapa(){MP=mapPoints();const tot=MP.filter(p=>p.k).length,d=MP.filter(pDone).length;
+ return `<h2 class="srh">Mapa</h2><div class="imap${mapPanel?' po':''}${mapFs?' fs':''}" id="imap">
+ <aside class="mpanel" aria-label="Capas del mapa">
+  <div class="mph"><div><b>Leonida</b><span id="mtot">${d}/${tot} encontrados</span></div><button class="mpx" data-mp="0" aria-label="Cerrar panel">×</button></div>
+  <div class="mpbar"><i style="width:${tot?Math.round(d/tot*100):0}%"></i></div>
+  <div class="msearch"><input id="mq" type="search" placeholder="Buscar en el mapa…" value="${esc(mapQ)}" autocomplete="off"><div id="mres" class="mres"></div></div>
+  <div class="mpact"><button data-ma="all">Mostrar todo</button><button data-ma="none">Ocultar todo</button><button id="mhide" aria-pressed="${mapHide}">Ocultar encontrados</button></div>
+  <div class="mcats" id="mcats">${mapCats()}</div>
+  <p class="mnote">Mapa © Rockstar Games (descarga oficial gratuita). Los iconos se sitúan en el pueblo o zona que indican las guías: si hay varios en el mismo sitio, se reparten alrededor. ${MP.length} puntos.</p>
+ </aside>
+ <div class="mapbox" id="mapbox"><svg aria-label="Mapa oficial de Leonida"><g id="mapg"><image href="leonida.webp" x="0" y="0" width="${MW_}" height="${MH_}"/></g></svg><div class="mk" id="mk"></div>
+  <button class="mpo" data-mp="1" aria-label="Abrir capas">☰ Capas</button>
+  <div class="mzoom"><button data-z="1.5" aria-label="Acercar">+</button><button data-z="0.67" aria-label="Alejar">−</button><button data-z="0" aria-label="Encuadrar">⤢</button><button data-fs="1" aria-label="Pantalla completa">${mapFs?'✕':'⛶'}</button></div>
+  <div class="minfo" id="minfo" hidden></div></div></div>`}
+function mapBox(){return document.getElementById('mapbox')}
+function mapApply(){const g=document.getElementById('mapg'),bx=mapBox();if(!g||!bx)return;const W=bx.clientWidth,H=bx.clientHeight,iw=MW_*MV.k,ih=MH_*MV.k,m=40;
+ MV.tx=iw+2*m<=W?(W-iw)/2:Math.min(m,Math.max(W-iw-m,MV.tx));MV.ty=ih+2*m<=H?(H-ih)/2:Math.min(m,Math.max(H-ih-m,MV.ty));
+ g.setAttribute('transform',`translate(${MV.tx} ${MV.ty}) scale(${MV.k})`);
+ for(const b of document.querySelectorAll('#mk button'))b.style.transform=`translate(${b.dataset.x*MV.k+MV.tx}px,${b.dataset.y*MV.k+MV.ty}px)`;
+ mapPop()}
+function mapCluster(){const mk=document.getElementById('mk');if(!mk)return;const R=MV.k>=.9?0:34/MV.k;MCL=[];
+ MP.forEach((p,i)=>{if(!pVis(p))return;let c=R?MCL.find(c=>Math.hypot(c.x-p.x,c.y-p.y)<R):null;if(c){c.m.push(i);c.x=(c.x*(c.m.length-1)+p.x)/c.m.length;c.y=(c.y*(c.m.length-1)+p.y)/c.m.length}else MCL.push({x:p.x,y:p.y,m:[i]})});
+ mk.innerHTML=MCL.map((c,ci)=>{if(c.m.length===1){const i=c.m[0],p=MP[i];return `<button data-i="${i}" data-x="${p.x}" data-y="${p.y}" class="${pDone(p)?'done':''}${i===mapSel?' sel':''}" style="background:${MAPCAT[p.cat][1]}" aria-label="${esc(p.n)}">${MAPCAT[p.cat][2]}</button>`}
+  const cats=[...new Set(c.m.map(i=>MP[i].cat))];const dn=c.m.filter(i=>pDone(MP[i])).length;
+  return `<button class="cl" data-cl="${ci}" data-x="${c.x}" data-y="${c.y}" style="--c1:${MAPCAT[cats[0]][1]};--c2:${MAPCAT[cats[cats.length>1?1:0]][1]}" aria-label="${c.m.length} puntos">${c.m.length}${dn===c.m.length?'<i>✓</i>':''}</button>`}).join('');
+ mapApply()}
+function clSoon(){clearTimeout(clT);clT=setTimeout(mapCluster,120)}
+function mapFit(){const bx=mapBox();if(!bx)return;const W=bx.clientWidth,H=bx.clientHeight;MV.k=Math.min(W/MW_,H/MH_)*1.02;MV.tx=(W-MW_*MV.k)/2;MV.ty=(H-MH_*MV.k)/2;MV.init=true;mapCluster()}
+function mapZoom(f,cx,cy){const bx=mapBox();if(!bx)return;const W=bx.clientWidth,H=bx.clientHeight;if(cx==null){cx=W/2;cy=H/2}const kmin=Math.min(W/MW_,H/MH_)*.7,k2=Math.max(kmin,Math.min(MV.k*f,3));MV.tx=cx-(cx-MV.tx)*(k2/MV.k);MV.ty=cy-(cy-MV.ty)*(k2/MV.k);MV.k=k2;mapApply();clSoon()}
+function mapFly(x,y,k){const bx=mapBox();if(!bx)return;MV.k=Math.max(MV.k,k||1.1);MV.tx=bx.clientWidth/2-x*MV.k;MV.ty=bx.clientHeight/2-y*MV.k;mapCluster()}
+function mapPop(){const el=document.getElementById('minfo'),bx=mapBox();if(!el||!bx||el.hidden||mapSel<0)return;const p=MP[mapSel],W=bx.clientWidth,H=bx.clientHeight;
+ let x=p.x*MV.k+MV.tx,y=p.y*MV.k+MV.ty;const w=el.offsetWidth,h=el.offsetHeight;let left=Math.max(8,Math.min(W-w-8,x-w/2)),top=y-h-26;if(top<8)top=Math.min(H-h-8,y+26);el.style.left=left+'px';el.style.top=top+'px'}
+function mapInfo(){const el=document.getElementById('minfo');if(!el)return;if(mapSel<0){el.hidden=true;return}const p=MP[mapSel],d=pDone(p);
+ el.innerHTML=`<button class="x" aria-label="Cerrar">×</button><span class="tag" style="background:${MAPCAT[p.cat][1]};color:#1a0b2e">${MAPCAT[p.cat][2]} ${MAPCAT[p.cat][0]}</span><h4>${esc(p.n)}</h4><p><b>${esc(p.z||p.pl)}</b>${p.w?' · '+esc(p.w):''}</p>${p.note?`<p>${esc(p.note)}</p>`:''}<div class="acts">${p.k?`<label class="chip mdone${d?' on':''}"><input type="checkbox" class="ck" id="mck" ${d?'checked':''}> ${d?'Encontrado':'Marcar como encontrado'}</label>`:''}</div>`;el.hidden=false;mapPop()}
+function mapSelect(i,fly){mapSel=i;const p=MP[i];if(mapOff.has(p.cat))mapOff.delete(p.cat);if(fly)mapFly(p.x,p.y,1.1);else for(const x of document.querySelectorAll('#mk button[data-i]'))x.classList.toggle('sel',+x.dataset.i===i);if(fly)mapCluster();mapInfo()}
+function mapRefresh(){const c=document.getElementById('mcats');if(c)c.innerHTML=mapCats();const tot=MP.filter(p=>p.k).length,d=MP.filter(pDone).length;const t=document.getElementById('mtot');if(t)t.textContent=`${d}/${tot} encontrados`;const b=document.querySelector('.mpbar i');if(b)b.style.width=(tot?Math.round(d/tot*100):0)+'%';const h=document.getElementById('mhide');if(h)h.setAttribute('aria-pressed',mapHide);mapCluster()}
+function mapSearch(){const r=document.getElementById('mres');if(!r)return;const q=norm(mapQ.trim());if(q.length<2){r.innerHTML='';return}
+ const hits=MP.map((p,i)=>[p,i]).filter(([p])=>norm(p.n+' '+(p.z||'')+' '+p.pl+' '+MAPCAT[p.cat][0]).includes(q)).slice(0,8);
+ r.innerHTML=hits.length?hits.map(([p,i])=>`<button data-go="${i}"><b style="background:${MAPCAT[p.cat][1]}">${MAPCAT[p.cat][2]}</b><span>${esc(p.n)}<small>${esc(p.pl)} · ${MAPCAT[p.cat][0]}</small></span>${pDone(p)?'<i>✓</i>':''}</button>`).join(''):'<p>Sin resultados.</p>'}
+function mapAfter(){const bx=mapBox();if(!bx)return;if(!MV.init)requestAnimationFrame(mapFit);else mapCluster();mapInfo();mapSearch();
  if(bx.dataset.bound)return;bx.dataset.bound=1;
- const pts=new Map();let last=null,moved=0;
- bx.addEventListener('pointerdown',e=>{if(e.target.closest('.minfo,.mzoom'))return;pts.set(e.pointerId,[e.clientX,e.clientY]);bx.setPointerCapture(e.pointerId);moved=0;bx.classList.add('drag')});
+ const pts=new Map();let moved=0;
+ bx.addEventListener('pointerdown',e=>{if(e.target.closest('.minfo,.mzoom,.mpo'))return;pts.set(e.pointerId,[e.clientX,e.clientY]);bx.setPointerCapture(e.pointerId);moved=0;bx.classList.add('drag')});
  bx.addEventListener('pointermove',e=>{if(!pts.has(e.pointerId))return;const pr=pts.get(e.pointerId);const r=bx.getBoundingClientRect();
   if(pts.size===2){const [a,b]=[...pts.values()];const d0=Math.hypot(a[0]-b[0],a[1]-b[1]);pts.set(e.pointerId,[e.clientX,e.clientY]);const [c,dd]=[...pts.values()];const d1=Math.hypot(c[0]-dd[0],c[1]-dd[1]);if(d0>0)mapZoom(d1/d0,(c[0]+dd[0])/2-r.left,(c[1]+dd[1])/2-r.top);moved+=5;return}
   MV.tx+=e.clientX-pr[0];MV.ty+=e.clientY-pr[1];moved+=Math.abs(e.clientX-pr[0])+Math.abs(e.clientY-pr[1]);pts.set(e.pointerId,[e.clientX,e.clientY]);mapApply()});
- const up=e=>{const was=pts.has(e.pointerId);pts.delete(e.pointerId);if(!pts.size)bx.classList.remove('drag');if(!was||moved>6)return;const b=document.elementFromPoint(e.clientX,e.clientY);const m=b&&b.closest('#mk button');if(m){mapSel=+m.dataset.i;for(const x of document.querySelectorAll('#mk button'))x.classList.toggle('sel',x===m);mapInfo()}};
+ const up=e=>{const was=pts.has(e.pointerId);pts.delete(e.pointerId);if(!pts.size)bx.classList.remove('drag');if(!was||moved>6)return;const t=document.elementFromPoint(e.clientX,e.clientY);
+  const m=t&&t.closest('#mk button');if(!m){if(t&&!t.closest('.minfo')&&mapSel>=0){mapSel=-1;mapInfo();for(const x of document.querySelectorAll('#mk button.sel'))x.classList.remove('sel')}return}
+  if(m.dataset.cl!=null){const c=MCL[+m.dataset.cl];const xs=c.m.map(i=>MP[i].x),ys=c.m.map(i=>MP[i].y);const W=bx.clientWidth,H=bx.clientHeight;const sw=Math.max(...xs)-Math.min(...xs)+120,sh=Math.max(...ys)-Math.min(...ys)+120;
+   const k=Math.min(3,Math.max(MV.k*2,Math.min(W/sw,H/sh)));MV.k=k;MV.tx=W/2-(Math.min(...xs)+Math.max(...xs))/2*k;MV.ty=H/2-(Math.min(...ys)+Math.max(...ys))/2*k;mapCluster();return}
+  mapSelect(+m.dataset.i,false)};
  bx.addEventListener('pointerup',up);bx.addEventListener('pointercancel',e=>{pts.delete(e.pointerId);bx.classList.remove('drag')});
  bx.addEventListener('wheel',e=>{e.preventDefault();const r=bx.getBoundingClientRect();mapZoom(e.deltaY<0?1.15:1/1.15,e.clientX-r.left,e.clientY-r.top)},{passive:false});
- new ResizeObserver(()=>{if(document.getElementById('mapbox'))mapApply()}).observe(bx)}
+ new ResizeObserver(()=>{if(mapBox())mapApply()}).observe(bx)}
 
 /* ---------- EVENTOS ---------- */
-function route(){const h=location.hash.slice(1);const nt=V[h]?h:'inicio';if(nt!==tab){tab=nt;q='';filt='todo'}entering=true;render();scrollTo(0,0)}
+function route(){if(mapFs){mapFs=false;document.body.style.overflow=''}const h=location.hash.slice(1);const nt=V[h]?h:'inicio';if(nt!==tab){tab=nt;q='';filt='todo'}entering=true;render();scrollTo(0,0)}
 addEventListener('hashchange',route);
 const V2=$('#view');
 V2.addEventListener('change',e=>{const t=e.target;
- if(t.id==='mck'){const p=MP[mapSel];if(p&&p.k){if(t.checked){S.done[p.k]=true;burst(t,16)}else delete S.done[p.k];save();header();tabs();const m=document.querySelector(`#mk button[data-i="${mapSel}"]`);if(m)m.classList.toggle('done',t.checked)}return}
+ if(t.id==='mck'){const p=MP[mapSel];if(p&&p.k){if(t.checked){S.done[p.k]=true;burst(t,16)}else delete S.done[p.k];save();header();tabs();mapRefresh();mapInfo()}return}
  if(t.dataset.k){const k=t.dataset.k;S.done[k]=t.checked;if(!t.checked)delete S.done[k];if(t.checked&&k[0]==='q'&&syncTro())flash('Trofeo de historia marcado');save();render();if(t.checked)celebrate(`[data-k="${k}"]`,14);checkAll()}
  else if(t.hasAttribute('data-story')){S.req.story=t.checked?1:0;save();render();if(t.checked)celebrate('[data-story]',30);checkAll()}
  else if(t.dataset.ri){const id=t.dataset.ri,r=REQ.find(x=>x[1]===id),was=cur(id)>=r[3];const v=Math.max(0,Math.min(parseInt(String(t.value).replace(/\D/g,''))||0,r[4]));S.req[id]=v;save();render();if(!was&&v>=r[3])celebrate(`[data-ri="${id}"]`,30);checkAll()}});
-V2.addEventListener('click',e=>{const mvb=e.target.closest('[data-mv]');if(mvb){mapView=mvb.dataset.mv;MV.init=false;render();return}const sm=e.target.closest('summary');if(sm&&sm.parentElement.matches('details.mg,details.mw')){e.preventDefault();const d=sm.parentElement;d.open=!d.open;return}const b=e.target.closest('button,.sp');if(!b)return;
+V2.addEventListener('input',e=>{if(e.target.id==='mq'){mapQ=e.target.value;mapSearch()}});
+V2.addEventListener('click',e=>{const mb=e.target.closest('[data-mp],[data-ma],[data-fs],[data-go]');if(mb){const d=mb.dataset;
+  if(d.mp!=null){mapPanel=d.mp==='1';document.getElementById('imap').classList.toggle('po',mapPanel);requestAnimationFrame(()=>{mapApply();clSoon()})}
+  else if(d.ma){if(d.ma==='all')mapOff.clear();else Object.keys(MAPCAT).forEach(c=>mapOff.add(c));mapSel=-1;mapInfo();mapRefresh()}
+  else if(d.fs){mapFs=!mapFs;const im=document.getElementById('imap');im.classList.toggle('fs',mapFs);mb.textContent=mapFs?'✕':'⛶';document.body.style.overflow=mapFs?'hidden':'';requestAnimationFrame(()=>{mapApply();clSoon()})}
+  else if(d.go!=null){mapSelect(+d.go,true);if(innerWidth<900){mapPanel=false;document.getElementById('imap').classList.remove('po');requestAnimationFrame(mapApply)}}
+  return}const sm=e.target.closest('summary');if(sm&&sm.parentElement.matches('details.mg,details.mw')){e.preventDefault();const d=sm.parentElement;d.open=!d.open;return}const b=e.target.closest('button,.sp');if(!b)return;
  if(b.classList.contains('sp')){e.preventDefault();b.classList.remove('sp');return}
  if(b.dataset.r){const r=REQ.find(x=>x[1]===b.dataset.r),was=cur(r[1])>=r[3];let v=b.dataset.set!=null?+b.dataset.set:(S.req[r[1]]||0)+ +b.dataset.d;S.req[r[1]]=Math.max(0,Math.min(v,r[4]));save();render();if(!was&&cur(r[1])>=r[3])celebrate(`[data-ri="${r[1]}"]`,30);checkAll()}
  else if(b.dataset.f){filt=b.dataset.f;render()}
  else if(b.id==='where'){openOb()}
  else if(b.id==='gonext'){const r=document.querySelector('.row.next');if(r){const d=r.closest('details');if(d)d.open=true;r.scrollIntoView({behavior:RM?'auto':'smooth',block:'center'})}}
  else if(b.dataset.done){const k=b.dataset.done;S.done[k]=true;const nt=syncTro();save();render();burst($('#ring'),30);if(nt)flash('Trofeo de historia marcado');checkAll()}
- else if(b.dataset.mc){const c=b.dataset.mc;mapOff.has(c)?mapOff.delete(c):mapOff.add(c);mapSel=-1;render()}
- else if(b.id==='mhide'){mapHide=!mapHide;mapSel=-1;render()}
+ else if(b.dataset.mc){const c=b.dataset.mc;mapOff.has(c)?mapOff.delete(c):mapOff.add(c);if(mapSel>=0&&MP[mapSel].cat===c){mapSel=-1;mapInfo()}mapRefresh()}
+ else if(b.id==='mhide'){mapHide=!mapHide;mapSel=-1;mapInfo();mapRefresh()}
  else if(b.dataset.z!=null){const z=+b.dataset.z;z?mapZoom(z):mapFit()}
  else if(b.classList.contains('x')&&b.closest('#minfo')){mapSel=-1;for(const x of document.querySelectorAll('#mk button.sel'))x.classList.remove('sel');mapInfo()}
  else if(b.dataset.gs){gsec=b.dataset.gs;render()}
@@ -1201,7 +1272,7 @@ V2.addEventListener('input',e=>{const t=e.target;if(t.id==='q'){q=t.value.trim()
 route();
 if(!S.setup)openOb();
 function showNews(){const n=NEWS[0];if(!n||(S.newsSeen||'')>=n.d)return;const el=$('#news');
- el.innerHTML=`<div class="nin"><b class="nt">${esc(n.h||'Nuevo descubrimiento')}</b><span class="nd">${esc(n.t)}</span><ul>${n.l.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><div class="nb"><button class="chip hot" id="nsee">${n.go==='inicio'?'Ver Inicio':'Ver guías'}</button><button class="chip" id="nclose">Entendido</button></div></div>`;el.hidden=false;if(!RM)setTimeout(()=>burst(el.querySelector('.nt'),24),400)}
+ el.innerHTML=`<div class="nin"><b class="nt">${esc(n.h||'Nuevo descubrimiento')}</b><span class="nd">${esc(n.t)}</span><ul>${n.l.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><div class="nb"><button class="chip hot" id="nsee">${n.go==='inicio'?'Ver Inicio':n.go==='mapa'?'Abrir el mapa':'Ver guías'}</button><button class="chip" id="nclose">Entendido</button></div></div>`;el.hidden=false;if(!RM)setTimeout(()=>burst(el.querySelector('.nt'),24),400)}
 $('#news').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;S.newsSeen=NEWS[0].d;save();$('#news').hidden=true;if(b.id==='nsee')location.hash='#'+(NEWS[0].go||'guias')});
 setTimeout(showNews,S.setup?900:0);
 

@@ -319,6 +319,69 @@ details.mw ol{margin:6px 0 4px;padding-left:22px;line-height:1.5}details.mw li{m
 .imap .minfo{z-index:8;left:0;top:0;right:auto;bottom:auto;width:min(340px,calc(100% - 16px));max-width:none}
 .imap .minfo::after{content:none}
 .mdone{display:flex;align-items:center;gap:8px;cursor:pointer}.mdone.on{background:color-mix(in srgb,#2fa34a 22%,var(--card));border-color:#2fa34a}
+.wv{position:fixed;inset:0;z-index:90;display:grid;place-items:center;padding:calc(14px + env(safe-area-inset-top)) 14px calc(14px + env(safe-area-inset-bottom));background:radial-gradient(80% 50% at 50% 110%,#ff3f7f88,transparent 70%),linear-gradient(180deg,#0d0620,#2a0e4c 60%,#5a1a66);color:#fff;animation:fade .4s both}
+.wv[hidden]{display:none}
+.wvin{width:min(980px,100%);height:min(720px,100%);display:grid;grid-template-rows:1fr auto auto;gap:12px}
+.wvstage{position:relative;border-radius:26px;overflow:hidden;background:#ffffff0a;border:1px solid #ffffff1f;display:grid;place-items:center;text-align:center;padding:24px}
+.wvstage::after{content:"";position:absolute;left:-10%;right:-10%;bottom:-2px;height:38%;background:repeating-linear-gradient(90deg,#ff3f7f33 0 2px,transparent 2px 60px),repeating-linear-gradient(0deg,#ff3f7f33 0 2px,transparent 2px 28px);transform:perspective(300px) rotateX(60deg);transform-origin:bottom;opacity:.6;pointer-events:none;animation:grid 2.4s linear infinite}
+@keyframes grid{to{background-position:0 0,0 28px}}
+.wv.paused .wvstage::after{animation-play-state:paused}
+.wvstart h2{font:400 clamp(34px,6vw,58px) Anton,Impact,sans-serif;margin:14px 0 4px;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.wvstart p{color:#d9c9ef;font-size:17px;margin:0 0 18px}
+.wvplay{font-size:19px;min-height:56px;padding:0 28px}
+.wvsc{position:relative;z-index:1;display:grid;justify-items:center;gap:6px;animation:wvin .6s cubic-bezier(.2,.8,.2,1) both}
+@keyframes wvin{from{opacity:0;transform:translateY(24px) scale(.96)}}
+.wvsc h3{font:400 clamp(30px,5vw,52px)/1.05 Anton,Impact,sans-serif;margin:14px 0 0;background:linear-gradient(90deg,#fff,#ffd27a);-webkit-background-clip:text;background-clip:text;color:transparent}
+.wvsc p{max-width:620px;color:#e6dbf5;font-size:clamp(16px,2.2vw,20px);margin:0}
+.wvvis{min-height:230px;display:grid;place-items:center;gap:10px}
+.wvlogo{width:150px;height:150px;animation:wvsun 6s ease-in-out both}.wvlogo.sm{width:96px;height:96px;margin:auto;border-radius:24px;background:linear-gradient(180deg,#ffe37a,#ff7a45 55%,#ff3f7f);box-shadow:0 20px 60px -10px #ff3f7f99}
+.wvlogo svg{width:100%;height:100%;filter:drop-shadow(0 0 40px #ff7a45aa)}
+@keyframes wvsun{from{transform:translateY(60px) scale(.7);opacity:0}25%{opacity:1}to{transform:none}}
+.wvbig{font:400 clamp(44px,8vw,84px) Anton,Impact,sans-serif;letter-spacing:.02em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;animation:wvin .8s .5s both}
+.wvcard{background:#fff;color:#1a0b2e;border-radius:20px;padding:16px 20px;text-align:left;width:min(440px,90vw);box-shadow:0 24px 60px -20px #000c;animation:wvin .6s .2s both}
+.wvcard.d2{animation-delay:2.2s;background:linear-gradient(90deg,#ff3f7f,#ffb347);color:#fff}
+.wvcard.wide{width:min(520px,92vw)}
+.wvcard small{display:block;font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:800;opacity:.7}
+.wvcard b{font-size:19px}.wvt{font:400 30px Anton,Impact,sans-serif!important}
+.wvbtns{display:flex;gap:8px;margin-top:10px}.wvbtns span{padding:8px 18px;border-radius:99px;border:2px solid #e3d6ee;font-weight:800}.wvbtns .on{background:#1a0b2e;color:#fff;border-color:#1a0b2e;animation:wvtap 1s 1.2s both}
+@keyframes wvtap{50%{transform:scale(.9)}}
+.wvcard ol{margin:8px 0 0;padding-left:22px}.wvcard li{margin:4px 0;font-weight:600;animation:wvin .5s both;animation-delay:calc(.8s + var(--i)*.7s)}
+.wvmap{position:relative;width:min(300px,60vw);aspect-ratio:1754/2449;border-radius:18px;overflow:hidden;box-shadow:0 24px 60px -20px #000c;animation:wvin .6s both}
+.wvmap img{width:100%;height:100%;object-fit:cover;animation:wvzoom 7s ease-in-out both}
+@keyframes wvzoom{to{transform:scale(1.35) translate(-6%,-4%)}}
+.wvmap i{position:absolute;left:var(--x);top:var(--y);width:28px;height:28px;margin:-14px;border-radius:50%;background:var(--c);border:2px solid #fff;display:grid;place-content:center;font-style:normal;font-weight:900;color:#1a0b2e;font-size:13px;animation:wvpop .5s both;animation-delay:calc(1s + var(--i,0)*.5s)}
+@keyframes wvpop{from{transform:scale(0)}70%{transform:scale(1.3)}}
+.wvw{display:flex;gap:10px;align-items:center;margin:8px 0 0;font-weight:700;animation:wvin .5s both;animation-delay:calc(.8s + var(--i)*.8s)}.wvw span{width:10px;height:10px;border-radius:50%;background:#ff3f7f;box-shadow:0 0 0 4px #ff3f7f33}
+.wvring{position:relative;width:200px;height:200px}.wvring svg{width:100%;height:100%;transform:rotate(-90deg)}.wvarc{stroke-dasharray:100;stroke-dashoffset:100;animation:wvarc 4.5s .6s cubic-bezier(.4,0,.2,1) forwards}
+@keyframes wvarc{to{stroke-dashoffset:0}}
+.wvring b{position:absolute;inset:0;display:grid;place-content:center;font:400 46px Anton,Impact,sans-serif}
+.wvnews{background:linear-gradient(135deg,#2a0e4c,#7a1f6a);border:1px solid #ffffff33;border-radius:20px;padding:18px 26px;box-shadow:0 0 0 0 #ff3f7f88;animation:wvin .6s .3s both,wvglow 1.6s 1s infinite}
+.wvnews b{display:block;font:400 34px Anton,Impact,sans-serif;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+@keyframes wvglow{50%{box-shadow:0 0 0 14px #ff3f7f00}}
+.wvcap{min-height:24px;text-align:center;color:#ffffffcc;font-size:15px}
+.wvbar{display:flex;align-items:center;gap:10px}
+.wvb{width:46px;height:46px;border-radius:14px;border:0;background:#ffffff1a;color:#fff;font-size:17px;cursor:pointer}
+.wvprog{flex:1;display:flex;gap:5px}.wvprog i{flex:1;height:6px;border-radius:9px;background:#ffffff26;overflow:hidden}.wvprog b{display:block;height:100%;width:0;background:linear-gradient(90deg,#ff3f7f,#ffc94a)}
+.wv .chip{color:#fff;border-color:#ffffff44;background:#ffffff12}.wv .chip.hot{color:#1a0b2e}
+.qz{background:#ffffff10;border:1.5px solid #ffffff26;border-radius:22px;padding:22px;margin:18px 0;animation:up .4s both}
+.qz small{display:block;color:#cbbbe3;font-size:13px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;margin-top:12px}
+.qz b{display:block;font:400 clamp(30px,5vw,44px)/1.1 Anton,Impact,sans-serif;color:#fff;margin:6px 0}
+.qz p{color:#e2d6f2;font-size:16px;margin:0 0 16px}
+.qzb{display:flex;gap:10px;flex-wrap:wrap}.qzb .chip{min-height:52px;font-size:17px;padding:0 22px}
+.qzbar{height:6px;border-radius:9px;background:#ffffff22;overflow:hidden}.qzbar i{display:block;height:100%;background:linear-gradient(90deg,#ff3f7f,#ffc94a);transition:width .3s}
+.obguess{background:linear-gradient(90deg,#ff3f7f33,#ffb34733);border:1px solid #ffb34766;border-radius:16px;padding:12px 16px;margin:12px 0;color:#fff}
+.road{grid-column:1/-1}
+.roadline{position:relative;display:flex;gap:4px;margin:30px 0 10px}
+.roadline .seg{position:relative;height:14px;border-radius:8px;background:repeating-linear-gradient(90deg,color-mix(in srgb,var(--ink) 14%,transparent) 0 10px,color-mix(in srgb,var(--ink) 6%,transparent) 10px 20px);overflow:visible}
+.roadline .seg i{position:absolute;left:0;top:0;bottom:0;border-radius:8px;background:linear-gradient(90deg,var(--pink),var(--gold))}
+.roadline .seg span{position:absolute;top:20px;left:0;font-size:12px;font-weight:700;color:var(--mut);white-space:nowrap}
+.roadline .car{position:absolute;top:-30px;transform:translateX(-50%);font-size:22px;transition:left .8s cubic-bezier(.2,.8,.2,1)}
+.road p{margin:30px 0 10px}
+.road .acts{display:flex;gap:8px;flex-wrap:wrap}
+.mk button.cl.pop{animation:clpop .45s ease-out forwards}
+@keyframes clpop{to{scale:1.8;opacity:0}}
+.mk button[data-i]{animation:mkin .35s cubic-bezier(.2,.8,.2,1.4) backwards}
+@keyframes mkin{from{opacity:0;scale:.3}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -341,6 +404,7 @@ details.mw ol{margin:6px 0 4px;padding-left:22px;line-height:1.5}details.mw li{m
 <div class="fx" id="fx" aria-hidden="true"></div>
 <div class="news" id="news" hidden role="status"></div>
 <div class="ob" id="ob" hidden role="dialog" aria-modal="true" aria-labelledby="obt"></div>
+<div class="wv" id="wv" hidden role="dialog" aria-modal="true" aria-label="Vídeo de bienvenida"></div>
 
 <script>
 {
@@ -594,7 +658,7 @@ const ARM=[
 // Cada elemento: [nombre, zona, dónde (con mis palabras), nota, fecha en que se añadió]
 // La fecha sirve para la etiqueta «Nuevo» y el aviso de «Nuevo descubrimiento».
 const NEWS=[
- {d:'2026-11-24d',go:'mapa',h:'Novedades en la app',t:'Mapa interactivo, nombres oficiales y guías paso a paso',l:['Mapa interactivo sobre el mapa oficial: panel de capas con progreso, buscador, iconos agrupados y pantalla completa','Las misiones usan ya los nombres del juego en castellano (según 3DJuegos, Vandal y Eurogamer)','Guía paso a paso en 45 misiones de los capítulos 1 y 3, también en tu siguiente paso de Inicio','Menú arriba y pantalla de Inicio con tu siguiente paso, avisos y progreso','Consejos en las 119 misiones y tareas, más una guía por capítulo','Mapa de Leonida con iconos por categoría, zoom y marcado desde la ficha','Sección Perdibles: 22 cosas que se pierden si avanzas la historia']},
+ {d:'2026-11-24e',go:'inicio',h:'Novedades en la app',t:'Vídeo de bienvenida, cuestionario y sonidos',l:['Vídeo de bienvenida con narración (lo vuelves a ver desde Inicio)','Cuestionario de sí o no que encuentra tu misión exacta','Tu recorrido: cuánto te queda por capítulo','Sonidos en botones, desplegables y logros (se pueden quitar)','Zoom animado al tocar las burbujas del mapa','Mapa interactivo sobre el mapa oficial: panel de capas con progreso, buscador, iconos agrupados y pantalla completa','Las misiones usan ya los nombres del juego en castellano (según 3DJuegos, Vandal y Eurogamer)','Guía paso a paso en 45 misiones de los capítulos 1 y 3, también en tu siguiente paso de Inicio','Menú arriba y pantalla de Inicio con tu siguiente paso, avisos y progreso','Consejos en las 119 misiones y tareas, más una guía por capítulo','Mapa de Leonida con iconos por categoría, zoom y marcado desde la ficha','Sección Perdibles: 22 cosas que se pierden si avanzas la historia']},
  {d:'2026-11-24',t:'Primeras guías detalladas',l:['Robos: las 39 operaciones de bandas, los 22 bancos y las 7 tiendas de préstamos','Coleccionables: 10 zonas de meditación, 18 lotes de cartas, 26 revistas, 16 puntos WAiNK y 8 flamencos','Actividades: 40 carreras por sede, 13 desafíos de carreras y 7 rivales de billar','Historia: guía con decisiones, desbloqueos y avisos en muchas misiones']}
 ];
 const BASE='2026-11-24';
@@ -1104,32 +1168,122 @@ function applyPoint(ch,sel){const before=new Set(Object.keys(S.done).filter(k=>S
  S.setup=1;save();return{m,t,ch}}
 function obRow(e,inH){const on=ob.sel.has(e.k);return `<button data-ok="${e.k}" class="${on?'on':''}" aria-pressed="${on}"><i class="obck"></i><span class="obtx"><b>${esc(e.es)}</b>${S.orig?`<small>${esc(e.en)}</small>`:''}${dsc(e)?`<em>${esc(dsc(e))}</em>`:''}<span>${stTags(e,inH)}${mtag(e)}</span></span></button>`}
 function obRender(){const o=$('#ob');let h='';
- if(ob.step==='ch'){h=`<h2 id="obt">¿Por dónde vas?</h2><p class="sub">Dime el capítulo y marca lo que ya has hecho. Así la app sabe tu punto exacto y te esconde lo que viene después.</p>
-  <div class="obgrid"><button data-oc="-1" style="--i:0"><b>Empezando</b><small>Aún no he jugado ninguna misión</small></button>${ST.map((l,i)=>`<button data-oc="${i}" style="--i:${i+1}"><b>Capítulo ${i+1}</b><small>${l.length} misiones y tareas</small></button>`).join('')}<button data-oc="5" style="--i:6"><b>Terminada</b><small>Ya vi los créditos</small></button></div>
+ if(ob.step==='ch'){h=`<h2 id="obt">¿Por dónde vas?</h2><p class="sub">Elige dónde estás ahora en el juego. Después te haré unas pocas preguntas de sí o no para encontrar tu misión exacta, sin enseñarte lo que viene después.</p>
+  <div class="obgrid"><button data-oc="-1" style="--i:0"><b>Empezando</b><small>Aún no he jugado ninguna misión</small></button>${ST.map((l,i)=>`<button data-oc="${i}" style="--i:${i+1}"><b>Capítulo ${i+1}</b><small>${CH_HINT[i]}</small></button>`).join('')}<button data-oc="5" style="--i:6"><b>Terminada</b><small>Ya vi los créditos</small></button></div>
   <div class="obbar"><button class="chip" data-ob="skip">Ahora no</button></div>`}
+ else if(ob.step==='quiz'){h=qzRender()}
  else if(ob.step==='mis'){const es=ALL.filter(e=>e.c===ob.ch),n=es.filter(e=>ob.sel.has(e.k)).length;
-  h=`<h2 id="obt">Capítulo ${ob.ch+1}</h2><p class="sub">Toca la <b>última</b> que hayas completado: se marcan también las anteriores. Luego toca las que quieras corregir una a una (por ejemplo, preparatorias de un golpe que hiciste en otro orden). Las opcionales no se marcan solas.</p>
+  h=`<h2 id="obt">Capítulo ${ob.ch+1}</h2><p class="sub">Toca la <b>última</b> que hayas completado: se marcan también las anteriores. Luego toca las que quieras corregir una a una (por ejemplo, preparatorias de un golpe que hiciste en otro orden). Las opcionales no se marcan solas.</p>${ob.guess?`<div class="obguess">Según tus respuestas, tu siguiente misión es <b>«${esc(ob.guess.es)}»</b>. Revisa la lista por si hiciste algo en otro orden y guarda.</div>`:''}
   <div class="oblist">${(()=>{const seen=new Set();return es.map(e=>{if(!e.h)return obRow(e);if(seen.has(e.h))return '';seen.add(e.h);const l=es.filter(x=>x.h===e.h),d=l.filter(x=>ob.sel.has(x.k)).length;
    return `<div class="obheist"><div class="obhh"><span class="hring" style="--p:${d/l.length*100}%"><b>${d}/${l.length}</b></span><span><b>${HEISTS[e.h][0]}</b><small>Toca el último paso que hayas hecho</small></span></div><div class="obhl">${l.map(x=>obRow(x,true)).join('')}</div></div>`}).join('')})()}</div>
   <div class="obbar obsticky"><button class="chip" data-ob="back">Volver</button><span class="obn">${n} de ${es.length} hechas</span><button class="chip hot" data-ob="ok">Guardar mi punto</button></div>`}
  else{const r=ob.res,fin=r.ch>=5,start=r.ch<0;
   h=`<h2 id="obt">${fin?'Historia completada':start?'Que empiece el viaje':'Listo'}</h2>
-  <p class="sub">${start?'No había nada que marcar todavía. ':`He marcado <b>${r.m}</b> misiones y tareas, y <b>${r.t}</b> trofeos de historia que ya tenías asegurados. `}Robos, coleccionables y actividades dependen de lo que hayas hecho tú: actualízalos en el checklist con las cifras de Progreso › Estadísticas.</p>
+  <p class="sub">${start?'No había nada que marcar todavía. ':`He marcado <b>${r.m}</b> misiones y tareas, y <b>${r.t}</b> trofeos de historia que ya tenías asegurados. `}${(()=>{const q=remaining();return q.tot?`Te quedan <b>${q.tot}</b> misiones principales (${q.ch} en este capítulo). `:''})()}Robos, coleccionables y actividades dependen de lo que hayas hecho tú: actualízalos en el checklist con las cifras de Progreso › Estadísticas.</p>
   <div class="obbar"><button class="chip hot" data-ob="go">Empezar</button><button class="chip" data-ob="back0">Corregir</button></div>`}
  const keep=o.querySelector('.oblist')?o.scrollTop:0;o.innerHTML=`<div class="obin">${h}</div>`;if(ob.step==='mis')o.scrollTop=keep}
-function openOb(){ob={step:'ch',ch:0,sel:new Set(),res:null};obRender();$('#ob').hidden=false;$('#ob').scrollTop=0}
+function openOb(){ob={step:'ch',ch:0,sel:new Set(),res:null,guess:null};obRender();$('#ob').hidden=false;$('#ob').scrollTop=0}
 function closeOb(){$('#ob').hidden=true}
 $('#ob').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
  if(b.dataset.oc!=null){const c=+b.dataset.oc;
   if(c===-1){for(const x of ALL)delete S.done[x.k];ob.res=applyPoint(-1,new Set());ob.res.ch=-1;ob.step='ok';obRender();render()}
   else if(c===5){ob.res=applyPoint(5,new Set());ob.step='ok';obRender();render();burst(b,40)}
-  else{ob.ch=c;ob.sel=new Set(ALL.filter(x=>x.c===c&&S.done[x.k]).map(x=>x.k));ob.step='mis';obRender();$('#ob').scrollTop=0}}
+  else{qzStart(c);obRender();$('#ob').scrollTop=0}}
+ else if(b.dataset.qz!=null){const q=ob.qz,v=b.dataset.qz;if(v==='list'){ob.ch=q.ch;ob.sel=new Set(ALL.filter(x=>x.c===q.ch&&S.done[x.k]).map(x=>x.k));ob.guess=null;ob.step='mis'}else{const m=qzMid();if(v==='1')q.lo=m+1;else q.hi=m;q.n++;if(q.lo>=q.hi)qzDone()}obRender();$('#ob').scrollTop=0}
  else if(b.dataset.ok){const k=b.dataset.ok,es=ALL.filter(x=>x.c===ob.ch),i=es.findIndex(x=>x.k===k);
   if(ob.sel.has(k))ob.sel.delete(k);else{ob.sel.add(k);for(let j=0;j<i;j++)if(es[j].t!=='o')ob.sel.add(es[j].k)}obRender()}
  else if(b.dataset.ob==='ok'){ob.res=applyPoint(ob.ch,ob.sel);ob.step='ok';obRender();render();$('#ob').scrollTop=0;burst(b,30)}
  else if(b.dataset.ob==='back'||b.dataset.ob==='back0'){ob.step='ch';obRender();$('#ob').scrollTop=0}
  else if(b.dataset.ob==='skip'){S.setup=1;save();closeOb();setTimeout(showNews,600)}
  else if(b.dataset.ob==='go'){closeOb();location.hash='#inicio';checkAll();setTimeout(showNews,800)}});
+
+/* ---------- SONIDOS (sintetizados con Web Audio, estilo synthwave; no son audios de Rockstar) ---------- */
+const SND=(()=>{let ac=null,mg=null;const on=()=>S.snd!==0;
+ function ctx(){if(!ac){const C=window.AudioContext||window.webkitAudioContext;if(!C)return null;ac=new C();mg=ac.createGain();mg.gain.value=.55;
+   const comp=ac.createDynamicsCompressor();mg.connect(comp);comp.connect(ac.destination)}if(ac.state==='suspended')ac.resume();return ac}
+ function tone(f,t0,d,{type='sine',v=.2,f2=null,a=.005,lp=null}={}){const c=ctx();if(!c)return;const o=c.createOscillator(),g=c.createGain();o.type=type;o.frequency.setValueAtTime(f,c.currentTime+t0);if(f2)o.frequency.exponentialRampToValueAtTime(f2,c.currentTime+t0+d);
+  g.gain.setValueAtTime(0,c.currentTime+t0);g.gain.linearRampToValueAtTime(v,c.currentTime+t0+a);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+t0+d);
+  let n=o;if(lp){const fl=c.createBiquadFilter();fl.type='lowpass';fl.frequency.value=lp;o.connect(fl);n=fl}n.connect(g);g.connect(mg);o.start(c.currentTime+t0);o.stop(c.currentTime+t0+d+.05)}
+ function noise(t0,d,f1,f2,v=.12){const c=ctx();if(!c)return;const len=Math.ceil(c.sampleRate*d),b=c.createBuffer(1,len,c.sampleRate),x=b.getChannelData(0);for(let i=0;i<len;i++)x[i]=Math.random()*2-1;
+  const s=c.createBufferSource();s.buffer=b;const bp=c.createBiquadFilter();bp.type='bandpass';bp.Q.value=1.4;bp.frequency.setValueAtTime(f1,c.currentTime+t0);bp.frequency.exponentialRampToValueAtTime(f2,c.currentTime+t0+d);
+  const g=c.createGain();g.gain.setValueAtTime(0,c.currentTime+t0);g.gain.linearRampToValueAtTime(v,c.currentTime+t0+d*.3);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+t0+d);s.connect(bp);bp.connect(g);g.connect(mg);s.start(c.currentTime+t0)}
+ const api={
+  unlock(){ctx()},
+  tap(){if(!on())return;tone(1320,0,.05,{v:.12,f2:980});tone(660,0,.04,{type:'triangle',v:.06})},
+  open(){if(!on())return;noise(0,.22,500,3200,.09);tone(520,.02,.12,{type:'triangle',v:.08,f2:880})},
+  close(){if(!on())return;noise(0,.18,2800,500,.07);tone(700,0,.1,{type:'triangle',v:.06,f2:420})},
+  nav(){if(!on())return;noise(0,.28,250,1800,.08);tone(220,0,.18,{type:'sawtooth',v:.05,f2:330,lp:900})},
+  check(){if(!on())return;tone(1318.5,0,.12,{v:.16});tone(1975.5,.07,.2,{v:.14})},
+  uncheck(){if(!on())return;tone(660,0,.09,{type:'triangle',v:.1,f2:440})},
+  win(){if(!on())return;[[261.6,0],[329.6,.09],[392,.18],[523.3,.27]].forEach(([f,t])=>{tone(f,t,.5,{type:'sawtooth',v:.07,lp:2200});tone(f*2,t,.35,{type:'square',v:.025,lp:3000})});tone(130.8,.27,.9,{type:'sawtooth',v:.09,lp:600});noise(.27,.6,6000,9000,.04)},
+  notif(){if(!on())return;tone(1568,0,.09,{v:.13});tone(2093,.12,.14,{v:.13})},
+  pad(){const c=ctx();if(!c||!on())return null;const g=c.createGain();g.gain.value=0;g.connect(mg);const os=[];[110,164.8,220,277.2].forEach((f,i)=>{const o=c.createOscillator();o.type=i%2?'sawtooth':'triangle';o.frequency.value=f;o.detune.value=(i-1.5)*7;const fl=c.createBiquadFilter();fl.type='lowpass';fl.frequency.value=900;o.connect(fl);fl.connect(g);o.start();os.push(o)});
+   g.gain.linearRampToValueAtTime(.05,c.currentTime+1.5);return{stop(){g.gain.cancelScheduledValues(c.currentTime);g.gain.linearRampToValueAtTime(0,c.currentTime+.8);setTimeout(()=>os.forEach(o=>{try{o.stop()}catch(e){}}),900)}}},
+  arp(step){if(!on())return;const n=[220,277.2,329.6,440,329.6,277.2][step%6];tone(n*2,0,.18,{type:'square',v:.03,lp:1800})}};
+ return api})();
+document.addEventListener('pointerdown',()=>SND.unlock(),{once:true,capture:true});
+document.addEventListener('click',e=>{const t=e.target;if(t.closest('summary')||t.closest('input'))return;if(t.closest('button,a,label.chip'))SND.tap()},true);
+document.addEventListener('toggle',e=>{if(e.target.tagName==='DETAILS'&&e.isTrusted!==false){e.target.open?SND.open():SND.close()}},true);
+document.addEventListener('change',e=>{const t=e.target;if(t.type==='checkbox'){t.checked?SND.check():SND.uncheck()}},true);
+addEventListener('hashchange',()=>SND.nav());
+{const _c=celebrate;celebrate=function(sel,n){if((n||0)>=20)SND.win();return _c(sel,n)}}
+
+/* ---------- VÍDEO DE BIENVENIDA (animación con narración) ---------- */
+const WV=[
+ {d:6500,t:'Bienvenido',s:'Tu compañero para completar GTA VI al 100%, sin destriparte la historia.',v:'Bienvenido a A Long Road. Tu compañero para completar GTA seis al cien por cien, sin destriparte la historia.',
+  h:`<div class="wvlogo"><svg viewBox="0 0 120 120"><defs><linearGradient id="wvg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe37a"/><stop offset=".5" stop-color="#ff7a45"/><stop offset="1" stop-color="#ff3f7f"/></linearGradient><clipPath id="wvc"><circle cx="60" cy="60" r="44"/></clipPath></defs><circle cx="60" cy="60" r="44" fill="url(#wvg)"/><g clip-path="url(#wvc)" fill="#2a0e4c">${[66,76,86,96].map((y,i)=>`<rect x="0" y="${y}" width="120" height="${4+i}"/>`).join('')}</g></svg></div><div class="wvbig">A Long Road</div>`},
+ {d:6500,t:'Te ubica en segundos',s:'Un cuestionario corto averigua por qué misión vas y marca lo que ya no puedes perderte.',v:'Primero, un cuestionario corto averigua por qué misión vas y marca solo lo que ya tienes hecho.',
+  h:`<div class="wvcard"><small>Cuestionario</small><b>¿Has completado «Comprobación de crédito»?</b><div class="wvbtns"><span class="on">Sí</span><span>No</span></div></div><div class="wvcard d2"><small>Resultado</small><b>Tu siguiente misión: «Costes explosivos»</b></div>`},
+ {d:7000,t:'Tu siguiente paso, siempre a mano',s:'Consejos, avisos y guía paso a paso de la misión que te toca.',v:'En Inicio verás siempre tu siguiente paso, con consejos, avisos y una guía paso a paso de esa misión.',
+  h:`<div class="wvcard wide"><small>Tu siguiente paso · cap. 3</small><b class="wvt">El golpe del cártel</b><ol>${['Detona las antenas','Abre la cámara en tres pasos','Coge primero los fajos grandes','Desarma a los guardias'].map((x,i)=>`<li style="--i:${i}">${x}</li>`).join('')}</ol></div>`},
+ {d:7000,t:'Mapa interactivo de Leonida',s:'Coleccionables, robos y actividades sobre el mapa oficial, con buscador y capas.',v:'El mapa interactivo de Leonida reúne coleccionables, robos y actividades, con buscador, capas y tu progreso.',
+  h:`<div class="wvmap"><img src="leonida.webp" alt=""><i style="--x:62%;--y:47%;--c:#2fa34a">$</i><i style="--x:40%;--y:30%;--c:#9b6bff;--i:1">◐</i><i style="--x:70%;--y:55%;--c:#ff5d97;--i:2">✦</i><i style="--x:52%;--y:70%;--c:#e8b100;--i:3">☠</i><i style="--x:33%;--y:52%;--c:#3b8cff;--i:4">⚑</i></div>`},
+ {d:6500,t:'Nada se queda atrás',s:'Perdibles antes de cada punto de no retorno, y los 55 trofeos con su guía.',v:'Te avisa de lo que se pierde antes de cada punto de no retorno, y lleva la cuenta de los cincuenta y cinco trofeos.',
+  h:`<div class="wvcard"><small>Antes de avanzar</small>${['Bolsa de «Fardo a fardo»','2 revistas del piso de Bayside','Compite contra Yago'].map((x,i)=>`<p class="wvw" style="--i:${i}"><span></span>${x}</p>`).join('')}</div>`},
+ {d:6500,t:'Camino al 100%',s:'Los 35 requisitos del trofeo «Un largo camino», con tu porcentaje real.',v:'Y te guía por los treinta y cinco requisitos del cien por cien, con tu porcentaje real en todo momento.',
+  h:`<div class="wvring"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="50" fill="none" stroke="#ffffff22" stroke-width="12"/><circle class="wvarc" cx="60" cy="60" r="50" fill="none" stroke="url(#wvg2)" stroke-width="12" stroke-linecap="round" pathLength="100"/><defs><linearGradient id="wvg2"><stop offset="0" stop-color="#ff3f7f"/><stop offset="1" stop-color="#ffc94a"/></linearGradient></defs></svg><b>100%</b></div>`},
+ {d:6000,t:'Se actualiza cada semana',s:'Cuando las guías descubran algo nuevo, te saldrá un aviso de «Nuevo descubrimiento».',v:'Cada semana se actualiza con lo que descubran las guías. Vamos a ver por dónde vas.',
+  h:`<div class="wvnews"><b>Nuevo descubrimiento</b><span>Nuevas guías paso a paso</span></div>`}];
+let wv=null;
+function wvSpeak(txt){if(!('speechSynthesis' in window)||S.snd===0||S.voz===0)return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(txt);u.lang='es-ES';u.rate=1.02;u.pitch=1;
+ const vs=speechSynthesis.getVoices();const v=vs.find(v=>/^es(-|_)ES/i.test(v.lang))||vs.find(v=>/^es/i.test(v.lang));if(v)u.voice=v;speechSynthesis.speak(u)}catch(e){}}
+function wvOpen(auto){const o=$('#wv');wv={i:-1,t:0,auto,play:false,raf:0,last:0,pad:null,arp:0};
+ o.innerHTML=`<div class="wvin"><div class="wvstage" id="wvs"><div class="wvstart"><div class="wvlogo sm"></div><h2>Vídeo de bienvenida</h2><p>45 segundos para ver todo lo que puede hacer la app.</p><button class="chip hot wvplay" data-wv="play">▶ Reproducir</button></div></div>
+  <div class="wvcap" id="wvcap"></div><div class="wvbar"><button class="wvb" data-wv="pp" aria-label="Pausa">❚❚</button><div class="wvprog">${WV.map(()=>'<i><b></b></i>').join('')}</div><button class="wvb" data-wv="voz" aria-label="Narración">${S.voz===0?'🔇':'🔊'}</button><button class="chip" data-wv="skip">Saltar</button></div></div>`;
+ o.hidden=false}
+function wvScene(i){wv.i=i;wv.t=0;const sc=WV[i],st=$('#wvs');st.innerHTML=`<div class="wvsc"><div class="wvvis">${sc.h}</div><h3>${sc.t}</h3><p>${sc.s}</p></div>`;$('#wvcap').textContent=sc.s;
+ for(const [j,b] of [...document.querySelectorAll('.wvprog b')].entries())b.style.width=j<i?'100%':'0%';SND.open();wvSpeak(sc.v)}
+function wvTick(ts){if(!wv||!wv.play)return;const dt=wv.last?ts-wv.last:0;wv.last=ts;wv.t+=dt;const sc=WV[wv.i];
+ const b=document.querySelectorAll('.wvprog b')[wv.i];if(b)b.style.width=Math.min(100,wv.t/sc.d*100)+'%';
+ const step=Math.floor(wv.t/400);if(step!==wv.arp){wv.arp=step;if(step%2===0)SND.arp(step/2)}
+ if(wv.t>=sc.d){if(wv.i<WV.length-1)wvScene(wv.i+1);else{wvEnd(true);return}}wv.raf=requestAnimationFrame(wvTick)}
+function wvPlay(){wv.play=true;wv.last=0;$('#wv').classList.remove('paused');const pp=document.querySelector('[data-wv="pp"]');if(pp)pp.textContent='❚❚';if(!wv.pad)wv.pad=SND.pad();wv.raf=requestAnimationFrame(wvTick)}
+function wvPause(){wv.play=false;cancelAnimationFrame(wv.raf);$('#wv').classList.add('paused');const pp=document.querySelector('[data-wv="pp"]');if(pp)pp.textContent='▶';try{speechSynthesis.cancel()}catch(e){}}
+function wvEnd(toQuiz){if(!wv)return;wv.play=false;cancelAnimationFrame(wv.raf);if(wv.pad)wv.pad.stop();try{speechSynthesis.cancel()}catch(e){}const auto=wv.auto;wv=null;$('#wv').hidden=true;S.intro=1;save();
+ if(auto||toQuiz){if(!S.setup||toQuiz)openOb()}}
+$('#wv').addEventListener('click',e=>{const b=e.target.closest('[data-wv]');if(!b||!wv)return;const a=b.dataset.wv;
+ if(a==='play'){SND.unlock();wvScene(0);wvPlay()}
+ else if(a==='pp'){if(wv.i<0)return;wv.play?wvPause():wvPlay()}
+ else if(a==='voz'){S.voz=S.voz===0?1:0;save();b.textContent=S.voz===0?'🔇':'🔊';if(S.voz===0)try{speechSynthesis.cancel()}catch(e){}}
+ else if(a==='skip'){wvEnd(wv.auto&&!S.setup)}});
+
+/* ---------- CUESTIONARIO PARA UBICARTE ---------- */
+const CH_HINT=['Vives en Cayo Lento y haces encargos para Brian','Estás escondido en el motel Starlet de Port Gellhorn','Vives en el piso de Bayside, en Vice City','Vives en Ocean Beach','La recta final de la historia'];
+function qzStart(ch){const ms=ALL.filter(e=>e.c===ch&&e.t==='m');ob.qz={ch,ms,lo:0,hi:ms.length,n:0,max:Math.ceil(Math.log2(ms.length+1))};ob.step='quiz'}
+function qzMid(){const q=ob.qz;return Math.floor((q.lo+q.hi)/2)}
+function qzDone(){const q=ob.qz,es=ALL.filter(e=>e.c===q.ch);const sel=new Set();if(q.lo>0){const last=q.ms[q.lo-1],li=es.findIndex(e=>e.k===last.k);for(let j=0;j<=li;j++)if(es[j].t!=='o')sel.add(es[j].k)}
+ ob.ch=q.ch;ob.sel=sel;ob.guess=q.ms[q.lo]||null;ob.step='mis'}
+function qzRender(){const q=ob.qz,m=q.ms[qzMid()];return `<h2 id="obt">Capítulo ${q.ch+1}</h2><p class="sub">Pregunta ${q.n+1} de ${q.max} como mucho. Solo te pregunto por misiones que ya habrías jugado o estás a punto de jugar.</p>
+ <div class="qz"><div class="qzbar"><i style="width:${q.n/q.max*100}%"></i></div><small>¿Has completado esta misión?</small><b>«${esc(m.es)}»</b><p>${esc(dsc(m))}</p>
+ <div class="qzb"><button class="chip hot" data-qz="1">Sí, ya la hice</button><button class="chip" data-qz="0">Todavía no</button></div></div>
+ <div class="obbar"><button class="chip" data-ob="back">Volver</button><button class="chip" data-qz="list">Prefiero marcarlo en la lista</button></div>`}
+function remaining(){const rest=ALL.filter(e=>e.t==='m'&&!S.done[e.k]);const n=nextEntry();return{tot:rest.length,ch:n?rest.filter(e=>e.c===n.c).length:0,chs:n?new Set(rest.map(e=>e.c)).size:0}}
+
+/* ---------- RECORRIDO EN INICIO ---------- */
+function roadStrip(){const tot=ALL.filter(e=>e.t==='m').length;const per=ST.map((l,c)=>{const ms=ALL.filter(e=>e.c===c&&e.t==='m');return{c,n:ms.length,d:ms.filter(e=>S.done[e.k]).length}});const r=remaining(),done=tot-r.tot,pc=done/tot*100;
+ return `<section class="hcard road"><h3>Tu recorrido</h3><div class="roadline">${per.map(p=>`<div class="seg" style="flex:${p.n}"><i style="width:${p.n?p.d/p.n*100:0}%"></i><span>Cap. ${p.c+1}</span></div>`).join('')}<b class="car" style="left:${pc}%" aria-hidden="true">🏁</b></div>
+ <p>${r.tot?`Te quedan <b>${r.tot}</b> misiones principales: <b>${r.ch}</b> en este capítulo${r.chs>1?` y ${r.chs-1} capítulo${r.chs>2?'s':''} más`:''}.`:'Has terminado todas las misiones principales.'}</p>
+ <div class="acts"><button class="chip" data-intro="1">▶ Vídeo de bienvenida</button><button class="chip" id="where">Cuestionario: ¿por dónde voy?</button><button class="chip" data-snd="1">${S.snd===0?'🔇 Sonidos desactivados':'🔊 Sonidos activados'}</button></div></section>`}
 
 /* ---------- INICIO ---------- */
 const PNR={'Tourist Trap':1,'Checking Out':1};
@@ -1140,6 +1294,7 @@ function vInicio(){const o=overall(),n=nextEntry(),cc=curChapter(),ch=Math.min(c
  let h=`<div class="home"><section class="hero2"><div class="sun" aria-hidden="true"><svg viewBox="0 0 200 200"><defs><linearGradient id="sg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff0a8"/><stop offset=".35" stop-color="#ffc94a"/><stop offset=".75" stop-color="#ff6a4d"/><stop offset="1" stop-color="#ff3f7f"/></linearGradient><clipPath id="sc"><circle cx="100" cy="100" r="92"/></clipPath></defs><circle cx="100" cy="100" r="92" fill="url(#sg)" opacity=".16"/><rect id="sunfill" x="0" y="192" width="200" height="0" fill="url(#sg)" clip-path="url(#sc)"/><g fill="#c42a78" clip-path="url(#sc)"><rect y="118" width="200" height="4"/><rect y="134" width="200" height="6"/><rect y="152" width="200" height="8"/><rect y="172" width="200" height="10"/></g><circle cx="100" cy="100" r="92" fill="none" stroke="#ffffff38" stroke-width="2"/></svg><div class="pct"><span id="pct">0%</span><small id="pcts"></small></div></div>
   <div><h1>GTA VI <span>al 100%</span></h1><p>${n?`Vas por el <b>capítulo ${n.c+1}</b>${n.c<5?' · '+CHT[n.c][0]:''}. ${o.d} de 35 requisitos del trofeo <b>Un largo camino</b>.`:'Historia terminada. Ahora, a por el 100% en juego libre.'}</p>
   <div class="stats">${st.map(([v,t,l,href])=>`<a href="#${href}"><b><span data-cu="${v}">${v}</span>${t}</b><small>${l}</small></a>`).join('')}</div></div></section>`;
+ h+=roadStrip();
  // siguiente paso
  if(n){const tip=TIPS[n.en]||'',warn=PNR[n.en];
   h+=`<section class="hcard nextc"><h3>Tu siguiente paso · cap. ${n.c+1}${n.h?' · '+HEISTS[n.h][0]:''}</h3><div class="nm2">${esc(n.es)}</div><div>${stTags(n,!!n.h)}</div><p>${esc(dsc(n))}</p>
@@ -1201,15 +1356,17 @@ function mapCluster(){const mk=document.getElementById('mk');if(!mk)return;const
   const cats=[...new Set(c.m.map(i=>MP[i].cat))];const dn=c.m.filter(i=>pDone(MP[i])).length;
   return `<button class="cl" data-cl="${ci}" data-x="${c.x}" data-y="${c.y}" style="--c1:${MAPCAT[cats[0]][1]};--c2:${MAPCAT[cats[cats.length>1?1:0]][1]}" aria-label="${c.m.length} puntos">${c.m.length}${dn===c.m.length?'<i>✓</i>':''}</button>`}).join('');
  mapApply()}
+function mapAnim(k,tx,ty,dur=480,done){const k0=MV.k,x0=MV.tx,y0=MV.ty,t0=performance.now();cancelAnimationFrame(mapAnim.r);const bx=mapBox();if(bx)bx.classList.add('anim');
+ const st=t=>{let u=Math.min(1,(t-t0)/dur);if(RM)u=1;const e=1-Math.pow(1-u,3);MV.k=k0+(k-k0)*e;MV.tx=x0+(tx-x0)*e;MV.ty=y0+(ty-y0)*e;mapApply();if(u<1)mapAnim.r=requestAnimationFrame(st);else{if(bx)bx.classList.remove('anim');mapCluster();done&&done()}};mapAnim.r=requestAnimationFrame(st)}
 function clSoon(){clearTimeout(clT);clT=setTimeout(mapCluster,120)}
 function mapFit(){const bx=mapBox();if(!bx)return;const W=bx.clientWidth,H=bx.clientHeight;MV.k=Math.min(W/MW_,H/MH_)*1.02;MV.tx=(W-MW_*MV.k)/2;MV.ty=(H-MH_*MV.k)/2;MV.init=true;mapCluster()}
 function mapZoom(f,cx,cy){const bx=mapBox();if(!bx)return;const W=bx.clientWidth,H=bx.clientHeight;if(cx==null){cx=W/2;cy=H/2}const kmin=Math.min(W/MW_,H/MH_)*.7,k2=Math.max(kmin,Math.min(MV.k*f,3));MV.tx=cx-(cx-MV.tx)*(k2/MV.k);MV.ty=cy-(cy-MV.ty)*(k2/MV.k);MV.k=k2;mapApply();clSoon()}
-function mapFly(x,y,k){const bx=mapBox();if(!bx)return;MV.k=Math.max(MV.k,k||1.1);MV.tx=bx.clientWidth/2-x*MV.k;MV.ty=bx.clientHeight/2-y*MV.k;mapCluster()}
+function mapFly(x,y,k,cb){const bx=mapBox();if(!bx)return;const k2=Math.max(MV.k,k||1.1);mapAnim(k2,bx.clientWidth/2-x*k2,bx.clientHeight/2-y*k2,650,cb)}
 function mapPop(){const el=document.getElementById('minfo'),bx=mapBox();if(!el||!bx||el.hidden||mapSel<0)return;const p=MP[mapSel],W=bx.clientWidth,H=bx.clientHeight;
  let x=p.x*MV.k+MV.tx,y=p.y*MV.k+MV.ty;const w=el.offsetWidth,h=el.offsetHeight;let left=Math.max(8,Math.min(W-w-8,x-w/2)),top=y-h-26;if(top<8)top=Math.min(H-h-8,y+26);el.style.left=left+'px';el.style.top=top+'px'}
 function mapInfo(){const el=document.getElementById('minfo');if(!el)return;if(mapSel<0){el.hidden=true;return}const p=MP[mapSel],d=pDone(p);
  el.innerHTML=`<button class="x" aria-label="Cerrar">×</button><span class="tag" style="background:${MAPCAT[p.cat][1]};color:#1a0b2e">${MAPCAT[p.cat][2]} ${MAPCAT[p.cat][0]}</span><h4>${esc(p.n)}</h4><p><b>${esc(p.z||p.pl)}</b>${p.w?' · '+esc(p.w):''}</p>${p.note?`<p>${esc(p.note)}</p>`:''}<div class="acts">${p.k?`<label class="chip mdone${d?' on':''}"><input type="checkbox" class="ck" id="mck" ${d?'checked':''}> ${d?'Encontrado':'Marcar como encontrado'}</label>`:''}</div>`;el.hidden=false;mapPop()}
-function mapSelect(i,fly){mapSel=i;const p=MP[i];if(mapOff.has(p.cat))mapOff.delete(p.cat);if(fly)mapFly(p.x,p.y,1.1);else for(const x of document.querySelectorAll('#mk button[data-i]'))x.classList.toggle('sel',+x.dataset.i===i);if(fly)mapCluster();mapInfo()}
+function mapSelect(i,fly){mapSel=i;const p=MP[i];if(mapOff.has(p.cat)){mapOff.delete(p.cat);mapRefresh()}if(fly){document.getElementById('minfo').hidden=true;mapFly(p.x,p.y,1.1,mapInfo);return}for(const x of document.querySelectorAll('#mk button[data-i]'))x.classList.toggle('sel',+x.dataset.i===i);mapInfo()}
 function mapRefresh(){const c=document.getElementById('mcats');if(c)c.innerHTML=mapCats();const tot=MP.filter(p=>p.k).length,d=MP.filter(pDone).length;const t=document.getElementById('mtot');if(t)t.textContent=`${d}/${tot} encontrados`;const b=document.querySelector('.mpbar i');if(b)b.style.width=(tot?Math.round(d/tot*100):0)+'%';const h=document.getElementById('mhide');if(h)h.setAttribute('aria-pressed',mapHide);mapCluster()}
 function mapSearch(){const r=document.getElementById('mres');if(!r)return;const q=norm(mapQ.trim());if(q.length<2){r.innerHTML='';return}
  const hits=MP.map((p,i)=>[p,i]).filter(([p])=>norm(p.n+' '+(p.z||'')+' '+p.pl+' '+MAPCAT[p.cat][0]).includes(q)).slice(0,8);
@@ -1224,7 +1381,7 @@ function mapAfter(){const bx=mapBox();if(!bx)return;if(!MV.init)requestAnimation
  const up=e=>{const was=pts.has(e.pointerId);pts.delete(e.pointerId);if(!pts.size)bx.classList.remove('drag');if(!was||moved>6)return;const t=document.elementFromPoint(e.clientX,e.clientY);
   const m=t&&t.closest('#mk button');if(!m){if(t&&!t.closest('.minfo')&&mapSel>=0){mapSel=-1;mapInfo();for(const x of document.querySelectorAll('#mk button.sel'))x.classList.remove('sel')}return}
   if(m.dataset.cl!=null){const c=MCL[+m.dataset.cl];const xs=c.m.map(i=>MP[i].x),ys=c.m.map(i=>MP[i].y);const W=bx.clientWidth,H=bx.clientHeight;const sw=Math.max(...xs)-Math.min(...xs)+120,sh=Math.max(...ys)-Math.min(...ys)+120;
-   const k=Math.min(3,Math.max(MV.k*2,Math.min(W/sw,H/sh)));MV.k=k;MV.tx=W/2-(Math.min(...xs)+Math.max(...xs))/2*k;MV.ty=H/2-(Math.min(...ys)+Math.max(...ys))/2*k;mapCluster();return}
+   const k=Math.min(1.6,Math.max(MV.k*2.2,Math.min(W/sw,H/sh)));m.classList.add('pop');SND.open();mapAnim(k,W/2-(Math.min(...xs)+Math.max(...xs))/2*k,H/2-(Math.min(...ys)+Math.max(...ys))/2*k,560);return}
   mapSelect(+m.dataset.i,false)};
  bx.addEventListener('pointerup',up);bx.addEventListener('pointercancel',e=>{pts.delete(e.pointerId);bx.classList.remove('drag')});
  bx.addEventListener('wheel',e=>{e.preventDefault();const r=bx.getBoundingClientRect();mapZoom(e.deltaY<0?1.15:1/1.15,e.clientX-r.left,e.clientY-r.top)},{passive:false});
@@ -1250,11 +1407,13 @@ V2.addEventListener('click',e=>{const mb=e.target.closest('[data-mp],[data-ma],[
  if(b.dataset.r){const r=REQ.find(x=>x[1]===b.dataset.r),was=cur(r[1])>=r[3];let v=b.dataset.set!=null?+b.dataset.set:(S.req[r[1]]||0)+ +b.dataset.d;S.req[r[1]]=Math.max(0,Math.min(v,r[4]));save();render();if(!was&&cur(r[1])>=r[3])celebrate(`[data-ri="${r[1]}"]`,30);checkAll()}
  else if(b.dataset.f){filt=b.dataset.f;render()}
  else if(b.id==='where'){openOb()}
+ else if(b.dataset.intro){wvOpen(false)}
+ else if(b.dataset.snd){S.snd=S.snd===0?1:0;save();render();if(S.snd)SND.check()}
  else if(b.id==='gonext'){const r=document.querySelector('.row.next');if(r){const d=r.closest('details');if(d)d.open=true;r.scrollIntoView({behavior:RM?'auto':'smooth',block:'center'})}}
  else if(b.dataset.done){const k=b.dataset.done;S.done[k]=true;const nt=syncTro();save();render();burst($('#ring'),30);if(nt)flash('Trofeo de historia marcado');checkAll()}
  else if(b.dataset.mc){const c=b.dataset.mc;mapOff.has(c)?mapOff.delete(c):mapOff.add(c);if(mapSel>=0&&MP[mapSel].cat===c){mapSel=-1;mapInfo()}mapRefresh()}
  else if(b.id==='mhide'){mapHide=!mapHide;mapSel=-1;mapInfo();mapRefresh()}
- else if(b.dataset.z!=null){const z=+b.dataset.z;z?mapZoom(z):mapFit()}
+ else if(b.dataset.z!=null){const z=+b.dataset.z,bx=mapBox();if(!bx)return;const W=bx.clientWidth,H=bx.clientHeight;if(z){const kmin=Math.min(W/1754,H/2449)*.7,k2=Math.max(kmin,Math.min(MV.k*z,3));mapAnim(k2,W/2-(W/2-MV.tx)*(k2/MV.k),H/2-(H/2-MV.ty)*(k2/MV.k),320)}else{const k2=Math.min(W/1754,H/2449)*1.02;mapAnim(k2,(W-1754*k2)/2,(H-2449*k2)/2,500)}}
  else if(b.classList.contains('x')&&b.closest('#minfo')){mapSel=-1;for(const x of document.querySelectorAll('#mk button.sel'))x.classList.remove('sel');mapInfo()}
  else if(b.dataset.gs){gsec=b.dataset.gs;render()}
  else if(b.id==='orig'){S.orig=!S.orig;save();render()}
@@ -1270,9 +1429,9 @@ V2.addEventListener('toggle',e=>{const d=e.target;if(d.classList&&d.classList.co
 V2.addEventListener('input',e=>{const t=e.target;if(t.id==='q'){q=t.value.trim().toLowerCase();render(true)}else if(t.id==='notes'){S.notes=t.value;save()}});
 
 route();
-if(!S.setup)openOb();
+if(!S.intro)wvOpen(true);else if(!S.setup)openOb();
 function showNews(){const n=NEWS[0];if(!n||(S.newsSeen||'')>=n.d)return;const el=$('#news');
- el.innerHTML=`<div class="nin"><b class="nt">${esc(n.h||'Nuevo descubrimiento')}</b><span class="nd">${esc(n.t)}</span><ul>${n.l.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><div class="nb"><button class="chip hot" id="nsee">${n.go==='inicio'?'Ver Inicio':n.go==='mapa'?'Abrir el mapa':'Ver guías'}</button><button class="chip" id="nclose">Entendido</button></div></div>`;el.hidden=false;if(!RM)setTimeout(()=>burst(el.querySelector('.nt'),24),400)}
+ el.innerHTML=`<div class="nin"><b class="nt">${esc(n.h||'Nuevo descubrimiento')}</b><span class="nd">${esc(n.t)}</span><ul>${n.l.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><div class="nb"><button class="chip hot" id="nsee">${n.go==='inicio'?'Ver Inicio':n.go==='mapa'?'Abrir el mapa':'Ver guías'}</button><button class="chip" id="nclose">Entendido</button></div></div>`;el.hidden=false;SND.notif();if(!RM)setTimeout(()=>burst(el.querySelector('.nt'),24),400)}
 $('#news').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;S.newsSeen=NEWS[0].d;save();$('#news').hidden=true;if(b.id==='nsee')location.hash='#'+(NEWS[0].go||'guias')});
 setTimeout(showNews,S.setup?900:0);
 

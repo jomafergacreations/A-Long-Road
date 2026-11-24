@@ -1,6 +1,6 @@
 // Service worker: la app funciona sin conexión.
 // Sube VERSION cada vez que cambies index.html para que la tablet coja la versión nueva.
-const VERSION = 'alr-v4';
+const VERSION = 'alr-v5';
 const SHELL = ['./', 'index.html', 'manifest.webmanifest', 'icons/icon.svg', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png'];
 
 self.addEventListener('install', e => {

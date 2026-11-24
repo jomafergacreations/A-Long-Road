@@ -321,7 +321,7 @@ details.mw ol{margin:6px 0 4px;padding-left:22px;line-height:1.5}details.mw li{m
 .mdone{display:flex;align-items:center;gap:8px;cursor:pointer}.mdone.on{background:color-mix(in srgb,#2fa34a 22%,var(--card));border-color:#2fa34a}
 .wv{position:fixed;inset:0;z-index:90;display:grid;place-items:center;padding:calc(14px + env(safe-area-inset-top)) 14px calc(14px + env(safe-area-inset-bottom));background:radial-gradient(80% 50% at 50% 110%,#ff3f7f88,transparent 70%),linear-gradient(180deg,#0d0620,#2a0e4c 60%,#5a1a66);color:#fff;animation:fade .4s both}
 .wv[hidden]{display:none}
-.wvin{width:min(980px,100%);height:min(720px,100%);display:grid;grid-template-rows:1fr auto auto;gap:12px}
+.wvin{width:min(980px,100%);height:min(720px,100%);display:grid;grid-template-rows:1fr auto;gap:14px}
 .wvstage{position:relative;border-radius:26px;overflow:hidden;background:#ffffff0a;border:1px solid #ffffff1f;display:grid;place-items:center;text-align:center;padding:24px}
 .wvstage::after{content:"";position:absolute;left:-10%;right:-10%;bottom:-2px;height:38%;background:repeating-linear-gradient(90deg,#ff3f7f33 0 2px,transparent 2px 60px),repeating-linear-gradient(0deg,#ff3f7f33 0 2px,transparent 2px 28px);transform:perspective(300px) rotateX(60deg);transform-origin:bottom;opacity:.6;pointer-events:none;animation:grid 2.4s linear infinite}
 @keyframes grid{to{background-position:0 0,0 28px}}
@@ -473,7 +473,7 @@ details.mw ol{margin:6px 0 4px;padding-left:22px;line-height:1.5}details.mw li{m
 </header>
 <div class="content">
  <main id="view"></main>
- <footer><button class="chip danger" data-reset="1" style="margin:0 0 10px">↺ Restablecer app</button><br>Versión 18 · 24/11/2026. Datos recopilados de guías publicadas tras el lanzamiento (19/11/2026): PowerPyx, Timesaver, Dexerto, GamerTweak y TechNerdiness. Algunas listas aún se están verificando; donde hay dudas lo indico. El % pesa igual los 35 requisitos; el juego puede ponderarlos distinto.</footer>
+ <footer><button class="chip danger" data-reset="1" style="margin:0 0 10px">↺ Restablecer app</button><br>Versión 19 · 24/11/2026. Datos recopilados de guías publicadas tras el lanzamiento (19/11/2026): PowerPyx, Timesaver, Dexerto, GamerTweak y TechNerdiness. Algunas listas aún se están verificando; donde hay dudas lo indico. El % pesa igual los 35 requisitos; el juego puede ponderarlos distinto.</footer>
 </div>
 <div class="save" id="save">Guardado</div>
 <div class="fx" id="fx" aria-hidden="true"></div>
@@ -1332,50 +1332,54 @@ addEventListener('hashchange',()=>SND.nav());
 
 /* ---------- MÚSICA DE FONDO (synthwave generada en directo, original) ---------- */
 const SYN=(()=>{let c=null,out=null,rev=null,on=false,timer=0,next=0,step=0,bar=0;
- const BPM=88,SPB=60/BPM/4; // semicorchea
+ const BPM=72,SPB=60/BPM/4; // semicorchea
  const N=m=>440*Math.pow(2,(m-69)/12);
  // progresiones (acordes en MIDI): Am F C G  /  Dm Am F E
  const PR=[[[57,60,64],[53,57,60],[48,52,55],[55,59,62]],[[50,53,57],[57,60,64],[53,57,60],[52,56,59]]];
  function init(){c=SND.ctx();if(!c)return false;if(out)return true;out=c.createGain();out.gain.value=0;
   rev=c.createConvolver();const len=c.sampleRate*2.4,b=c.createBuffer(2,len,c.sampleRate);for(let ch=0;ch<2;ch++){const d=b.getChannelData(ch);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,2.6)}rev.buffer=b;
-  const wet=c.createGain();wet.gain.value=.35;rev.connect(wet);wet.connect(out);out.connect(SND.bus());return true}
+  const wet=c.createGain();wet.gain.value=.45;rev.connect(wet);wet.connect(out);const lp=c.createBiquadFilter();lp.type='lowpass';lp.frequency.value=1600;lp.Q.value=.3;out.connect(lp);lp.connect(SND.bus());LOFI.add(c);return true}
  function env(g,t,a,d,v){g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+a);g.gain.exponentialRampToValueAtTime(.0001,t+d)}
  function voice(type,f,t,d,v,lp,send=.4){const o=c.createOscillator(),g=c.createGain(),fl=c.createBiquadFilter();o.type=type;o.frequency.setValueAtTime(f,t);fl.type='lowpass';fl.frequency.value=lp;o.connect(fl);fl.connect(g);env(g,t,Math.min(.02,d/4),d,v);g.connect(out);if(send){const s=c.createGain();s.gain.value=send;g.connect(s);s.connect(rev)}o.start(t);o.stop(t+d+.05);return o}
- function pad(ch,t,d){ch.forEach((m,i)=>{[-6,6].forEach(dt=>{const o=c.createOscillator(),g=c.createGain(),fl=c.createBiquadFilter();o.type='sawtooth';o.frequency.value=N(m);o.detune.value=dt;fl.type='lowpass';fl.frequency.setValueAtTime(700,t);fl.frequency.linearRampToValueAtTime(1400,t+d/2);fl.frequency.linearRampToValueAtTime(700,t+d);
+ function pad(ch,t,d){ch.forEach((m,i)=>{[-6,6].forEach(dt=>{const o=c.createOscillator(),g=c.createGain(),fl=c.createBiquadFilter();o.type='sawtooth';o.frequency.value=N(m);o.detune.value=dt;fl.type='lowpass';fl.frequency.setValueAtTime(450,t);fl.frequency.linearRampToValueAtTime(850,t+d/2);fl.frequency.linearRampToValueAtTime(450,t+d);
    o.connect(fl);fl.connect(g);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.022,t+.6);g.gain.setValueAtTime(.022,t+d-.4);g.gain.linearRampToValueAtTime(0,t+d);g.connect(out);const s=c.createGain();s.gain.value=.6;g.connect(s);s.connect(rev);o.start(t);o.stop(t+d+.1)})})}
  function noise(t,d,f,v,q=1){const len=Math.ceil(c.sampleRate*d),b=c.createBuffer(1,len,c.sampleRate),x=b.getChannelData(0);for(let i=0;i<len;i++)x[i]=Math.random()*2-1;const s=c.createBufferSource();s.buffer=b;const fl=c.createBiquadFilter();fl.type='bandpass';fl.frequency.value=f;fl.Q.value=q;const g=c.createGain();env(g,t,.002,d,v);s.connect(fl);fl.connect(g);g.connect(out);const r=c.createGain();r.gain.value=.25;g.connect(r);r.connect(rev);s.start(t)}
- function kick(t){const o=c.createOscillator(),g=c.createGain();o.frequency.setValueAtTime(120,t);o.frequency.exponentialRampToValueAtTime(42,t+.18);env(g,t,.003,.3,.32);o.connect(g);g.connect(out);o.start(t);o.stop(t+.35)}
+ function kick(t){const o=c.createOscillator(),g=c.createGain();o.frequency.setValueAtTime(90,t);o.frequency.exponentialRampToValueAtTime(40,t+.2);env(g,t,.004,.28,.18);o.connect(g);g.connect(out);o.start(t);o.stop(t+.35)}
  function sched(){while(next<c.currentTime+.15){const t=next,s=step%16,prog=PR[Math.floor(bar/8)%2],ch=prog[bar%4];
    if(s===0)pad(ch,t,SPB*16);
-   if(s%2===0)voice('sawtooth',N(ch[0]-24),t,SPB*1.8,.07,380,0);            // bajo
-   const arpN=[0,1,2,1,2,0,1,2][Math.floor(s/2)%8];if(bar%8>1)voice('triangle',N(ch[arpN]+12+(s%4===3?12:0)),t,SPB*1.6,.035,2600,.5); // arpegio
-   if(bar%8>3){if(s===0||s===8)kick(t);if(s===4||s===12)noise(t,.22,1800,.07,.8);}
-   if(bar%8>1&&s%2===0)noise(t,.05,8000,.018,.6);                           // charles
+   if(s%4===0)voice('triangle',N(ch[0]-24),t,SPB*3.6,.08,260,0);            // bajo
+   const arpN=[0,1,2,1,2,0,1,2][Math.floor(s/2)%8];if(bar%8>1&&s%2===0)voice('sine',N(ch[arpN]+12),t,SPB*2.4,.03,1100,.6); // arpegio suave
+   if(bar%8>3){if(s===0||s===10)kick(t);if(s===4||s===12)noise(t,.18,900,.035,.7);}
+   if(bar%8>1&&s%4===2)noise(t,.04,5000,.006,.6);                           // charles muy suave
    next+=SPB;step++;if(step%16===0)bar++}}
  const api={
   start(){if(S.mus===0)return;if(!init())return;if(on)return;on=true;if(c.state==='suspended')c.resume();next=c.currentTime+.1;step=0;out.gain.cancelScheduledValues(c.currentTime);out.gain.setValueAtTime(out.gain.value,c.currentTime);out.gain.linearRampToValueAtTime(api.vol(),c.currentTime+2.5);timer=setInterval(sched,30)},
   stop(f=1){if(!on||!c)return;on=false;out.gain.cancelScheduledValues(c.currentTime);out.gain.setValueAtTime(out.gain.value,c.currentTime);out.gain.linearRampToValueAtTime(0,c.currentTime+f);setTimeout(()=>{if(!on)clearInterval(timer)},f*1000+60)},
-  vol(){return .9*Math.pow(S.mv==null?.5:S.mv,1.5)},
+  vol(){return .75*Math.pow(S.mv==null?.35:S.mv,1.5)},
   setVol(){if(on&&c){out.gain.cancelScheduledValues(c.currentTime);out.gain.setTargetAtTime(api.vol(),c.currentTime,.1)}},
   get on(){return on}};
  return api})();
+/* Crujido de vinilo muy suave para el toque lo-fi */
+const LOFI=(()=>{let g=null;return{add(c){if(g)return;const len=c.sampleRate*4,b=c.createBuffer(1,len,c.sampleRate),d=b.getChannelData(0);for(let i=0;i<len;i++){d[i]=(Math.random()*2-1)*.012;if(Math.random()<.0006)d[i]+=(Math.random()*2-1)*.6}
+ const s=c.createBufferSource();s.buffer=b;s.loop=true;const bp=c.createBiquadFilter();bp.type='bandpass';bp.frequency.value=2500;bp.Q.value=.5;g=c.createGain();g.gain.value=0;s.connect(bp);bp.connect(g);g.connect(SND.bus());s.start()},
+ set(on){if(!g)return;const c=SND.ctx();g.gain.cancelScheduledValues(c.currentTime);g.gain.setTargetAtTime(on&&S.mus!==0?.09*Math.min(1,(S.mv==null?.35:S.mv)*2):0,c.currentTime,.4)}}})();
 /* Pistas libres de derechos (CC0) de Alex McCulloch en OpenGameArt; si no cargan, suena la synthwave generada */
 const MUS=(()=>{const TR=[{u:'https://opengameart.org/sites/default/files/80s_song_mastered.mp3',t:'Synth Wave by Alex'},{u:'https://opengameart.org/sites/default/files/Synth%20Wave.mp3',t:'Synth Wave'}];
  let a=null,g=null,mode=null,on=false,ti=0,fadeT=0;
  function teardown(){if(a){try{a.pause()}catch(e){}a.removeAttribute('src');try{a.load()}catch(e){}}a=null;g=null}
  function setup(cors){a=new Audio();a.preload='auto';a.loop=false;if(cors)a.crossOrigin='anonymous';a.src=TR[ti].u;
   a.addEventListener('ended',()=>{ti=(ti+1)%TR.length;a.src=TR[ti].u;a.play().catch(()=>{})});
-  a.addEventListener('error',()=>{if(mode==='syn')return;if(cors){teardown();setup(false);if(on)play()}else{teardown();mode='syn';if(on)SYN.start()}});
-  if(cors){try{const c=SND.ctx();const src=c.createMediaElementSource(a);g=c.createGain();g.gain.value=0;src.connect(g);g.connect(SND.bus());mode='wa'}catch(e){g=null;mode='el'}}else mode='el';
+  a.addEventListener('error',()=>{if(mode==='syn')return;if(cors){teardown();setup(false);if(on)play()}else{teardown();mode='syn';if(on){SYN.start();setTimeout(()=>LOFI.set(true),300)}}});
+  if(cors){try{const c=SND.ctx();const src=c.createMediaElementSource(a);g=c.createGain();g.gain.value=0;const lp=c.createBiquadFilter();lp.type='lowpass';lp.frequency.value=1500;lp.Q.value=.4;const hs=c.createBiquadFilter();hs.type='highshelf';hs.frequency.value=3000;hs.gain.value=-8;src.connect(lp);lp.connect(hs);hs.connect(g);g.connect(SND.bus());LOFI.add(c);mode='wa'}catch(e){g=null;mode='el'}}else mode='el';
   if(mode==='el')a.volume=0}
  function fade(to,sec){if(mode==='wa'&&g){const c=SND.ctx();g.gain.cancelScheduledValues(c.currentTime);g.gain.setValueAtTime(g.gain.value,c.currentTime);g.gain.linearRampToValueAtTime(to,c.currentTime+sec)}
   else if(mode==='el'&&a){clearInterval(fadeT);const from=a.volume,t0=performance.now();fadeT=setInterval(()=>{const u=Math.min(1,(performance.now()-t0)/(sec*1000));a.volume=Math.max(0,Math.min(1,from+(to-from)*u));if(u>=1)clearInterval(fadeT)},50)}}
- function play(){if(!a)return;a.play().then(()=>fade(api.vol(),2.5)).catch(()=>{})}
+ function play(){if(!a)return;a.play().then(()=>{fade(api.vol(),2.5);LOFI.set(true)}).catch(()=>{})}
  const api={
-  start(){if(S.mus===0)return;SND.unlock();if(on)return;on=true;if(mode==='syn'){SYN.start();return}if(!a)setup(true);play()},
-  stop(f=1){if(!on)return;on=false;if(mode==='syn'){SYN.stop(f);return}fade(0,f);setTimeout(()=>{if(!on&&a)a.pause()},f*1000+80)},
-  vol(){return Math.min(1,1.1*Math.pow(S.mv==null?.5:S.mv,1.5))},
-  setVol(){if(mode==='syn'){SYN.setVol();return}if(on)fade(api.vol(),.15)},
+  start(){if(S.mus===0)return;SND.unlock();if(on)return;on=true;if(mode==='syn'){SYN.start();setTimeout(()=>LOFI.set(true),300);return}if(!a)setup(true);play()},
+  stop(f=1){if(!on)return;on=false;LOFI.set(false);if(mode==='syn'){SYN.stop(f);return}fade(0,f);setTimeout(()=>{if(!on&&a)a.pause()},f*1000+80)},
+  vol(){return Math.min(1,.75*Math.pow(S.mv==null?.35:S.mv,1.5))},
+  setVol(){LOFI.set(on);if(mode==='syn'){SYN.setVol();return}if(on)fade(api.vol(),.15)},
   get on(){return on},get src(){return mode==='syn'?'syn':TR[ti].t}};
  document.addEventListener('visibilitychange',()=>{if(document.hidden)api.stop(.3);else if(S.mus!==0&&a||mode==='syn')api.start()});
  document.addEventListener('pointerdown',()=>{if(S.mus!==0)api.start()},{capture:true});
@@ -1383,8 +1387,8 @@ const MUS=(()=>{const TR=[{u:'https://opengameart.org/sites/default/files/80s_so
 
 /* ---------- AJUSTES ---------- */
 function setRender(){const p=$('#setp');p.innerHTML=`<div class="setin"><div class="seth"><b>Ajustes</b><button class="setx" data-sp="close" aria-label="Cerrar">×</button></div>
- <label class="sw"><span><b>Música de fondo</b><small>Synthwave ochentera mientras usas la app</small></span><input type="checkbox" id="smus" ${S.mus!==0?'checked':''}><i></i></label>
- <label class="vol${S.mus===0?' off':''}"><span>Volumen</span><input type="range" id="smv" min="0" max="1" step="0.05" value="${S.mv==null?.5:S.mv}"></label>
+ <label class="sw"><span><b>Música de fondo</b><small>Synthwave lo-fi, suave y de fondo</small></span><input type="checkbox" id="smus" ${S.mus!==0?'checked':''}><i></i></label>
+ <label class="vol${S.mus===0?' off':''}"><span>Volumen</span><input type="range" id="smv" min="0" max="1" step="0.05" value="${S.mv==null?.35:S.mv}"></label>
  <p class="setcr">${MUS.src==='syn'?'Sin conexión: suena la synthwave generada por la app.':'Música: «Synth Wave by Alex» y «Synth Wave», de Alex McCulloch (licencia CC0, OpenGameArt).'}</p>
  <label class="sw"><span><b>Sonidos de la interfaz</b><small>Toques, desplegables y logros</small></span><input type="checkbox" id="ssnd" ${S.snd!==0?'checked':''}><i></i></label>
  <div class="setl"><button data-sp="intro">▶ Vídeo de bienvenida</button><button data-sp="quiz">Cuestionario: ¿por dónde voy?</button><button data-sp="reset" class="danger">↺ Restablecer app</button></div></div>`}
@@ -1415,9 +1419,9 @@ const WV=[
 let wv=null;
 function wvOpen(auto){const o=$('#wv');wv={i:-1,t:0,auto,play:false,raf:0,last:0,pad:null,arp:0};
  o.innerHTML=`<div class="wvin"><div class="wvstage" id="wvs"><div class="wvstart"><div class="wvlogo sm"></div><h2>Vídeo de bienvenida</h2><p>45 segundos para ver todo lo que puede hacer la app. Con música: sube el volumen.</p><button class="chip hot wvplay" data-wv="play">▶ Reproducir</button></div></div>
-  <div class="wvcap" id="wvcap"></div><div class="wvbar"><button class="wvb" data-wv="pp" aria-label="Pausa">❚❚</button><div class="wvprog">${WV.map(()=>'<i><b></b></i>').join('')}</div><button class="chip" data-wv="skip">Saltar</button></div></div>`;
+  <div class="wvbar"><button class="wvb" data-wv="pp" aria-label="Pausa">❚❚</button><div class="wvprog">${WV.map(()=>'<i><b></b></i>').join('')}</div><button class="chip" data-wv="skip">Saltar</button></div></div>`;
  o.hidden=false}
-function wvScene(i){wv.i=i;wv.t=0;const sc=WV[i],st=$('#wvs');if(i===0&&S.name){sc._t=sc._t||sc.t;sc.t=`Bienvenido, ${S.name}`;sc._v=sc._v||sc.v;sc.v=`Hola, ${S.name}. `+sc._v}st.innerHTML=`<div class="wvsc"><div class="wvvis">${sc.h}</div><h3>${sc.t}</h3><p>${sc.s}</p></div>`;$('#wvcap').textContent=sc.s;
+function wvScene(i){wv.i=i;wv.t=0;const sc=WV[i],st=$('#wvs');if(i===0&&S.name){sc._t=sc._t||sc.t;sc.t=`Bienvenido, ${S.name}`;sc._v=sc._v||sc.v;sc.v=`Hola, ${S.name}. `+sc._v}st.innerHTML=`<div class="wvsc"><div class="wvvis">${sc.h}</div><h3>${sc.t}</h3><p>${sc.s}</p></div>`;
  for(const [j,b] of [...document.querySelectorAll('.wvprog b')].entries())b.style.width=j<i?'100%':'0%';SND.open()}
 function wvTick(ts){if(!wv||!wv.play)return;const dt=wv.last?ts-wv.last:0;wv.last=ts;wv.t+=dt;const sc=WV[wv.i];
  const b=document.querySelectorAll('.wvprog b')[wv.i];if(b)b.style.width=Math.min(100,wv.t/sc.d*100)+'%';

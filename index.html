@@ -251,7 +251,7 @@ details.chg summary::before{content:"▸";transition:transform .2s}details.chg[o
 .chgrid ul{margin:0;padding-left:18px}.chgrid li{margin:3px 0}
 /* ---- Mapa ---- */
 .mapwrap{position:relative}
-.mapbox{position:relative;height:max(460px,calc(100vh - 250px));border-radius:22px;overflow:hidden;touch-action:none;cursor:grab;background:light-dark(#9fd3e6,#0b2a3f);box-shadow:var(--sh);user-select:none}
+.mapbox{position:relative;height:max(460px,calc(100vh - 250px));border-radius:22px;overflow:hidden;touch-action:none;cursor:grab;background:#1fa9c9;box-shadow:var(--sh);user-select:none}
 .mapbox.drag{cursor:grabbing}
 .mapbox svg{position:absolute;inset:0;width:100%;height:100%}
 .mk{position:absolute;inset:0;pointer-events:none}
@@ -815,15 +815,9 @@ const PERD=[
 ];
 // ---------- MAPA (esquema propio y aproximado; no a escala) ----------
 // Coordenadas en un lienzo de 1000 × 1300.
-const PLACES={
- 'Port Gellhorn':[175,430],'Ambrosia':[470,560],'Lago Leonida':[540,650],'Buckskin Swamp':[380,650],'Camp Moonflower':[290,520],
- 'Monte Kalaga':[500,170],'Kalaga':[500,170],'Tallaloko':[360,215],'Moreau':[285,290],'Manifest Canyon':[430,320],'Milport':[640,250],'Grayson':[760,330],
- 'Belville':[770,520],'Waning Sands':[880,610],
- 'Grassrivers':[520,980],'Pelican Valley':[455,1070],'Watson Bay':[400,1150],'Capri':[330,1110],'Belpoint':[300,1200],'Key Lento':[580,1235],
- 'Hamlet':[690,1110],'Southside':[760,1045],'Little Cuba':[745,1000],'Rockridge':[725,950],'Balsero':[690,980],'Peacock Bay':[710,1030],'La Perle':[790,915],'Crosstown':[780,965],'Downtown':[805,990],'Bayside':[825,940],'Salton':[760,895],'Vespucci Island':[860,975],'Gloriana Key':[845,1035],'VCIA':[700,905],
- 'Ocean Beach':[905,1010],'Washington Beach':[905,955],'Oldby Island':[890,915],'Tequesta':[900,870],'Dalton Island':[880,1060],'Corsair Key':[935,1085],
- 'Vice City':[790,975],'Vice Beach':[900,950]
-};
+/* Coordenadas en píxeles sobre el mapa oficial de Leonida (1754×2449, recortado sin marco) */
+const PLACES={'Port Gellhorn':[511,882],'Ambrosia':[973,870],'Lago Leonida':[1075,745],'Buckskin Swamp':[839,1161],'Monte Kalaga':[872,519],'Kalaga':[872,519],'Tallaloko':[1041,409],'Moreau':[907,363],'Manifest Canyon':[665,696],'Milport':[1175,528],'Grayson':[651,496],'Belville':[1174,956],'Waning Sands':[1328,768],'Grassrivers':[784,1645],'Pelican Valley':[918,1821],'Watson Bay':[748,1747],'Capri':[477,1294],'Belpoint':[265,1350],'Key Lento':[1005,2081],'Hamlet':[991,1702],'Southside':[1109,1608],'Little Cuba':[1180,1309],'Rockridge':[1164,1218],'Balsero':[1039,1223],'Peacock Bay':[1154,1582],'La Perle':[1214,1132],'Crosstown':[1248,1214],'Downtown':[1258,1312],'Bayside':[1289,1153],'Salton':[1106,1328],'Vespucci Island':[1394,1183],'Vespucci':[1394,1183],'Gloriana Key':[1428,1545],'VCIA':[999,1403],'Ocean Beach':[1558,1280],'Washington Beach':[1565,1081],'Oldby Island':[1510,1115],'Tequesta':[1205,1469],'Dalton Island':[1565,1468],'Corsair Key':[1209,1836],'Vice City':[1195,1278],'Vice Beach':[1542,1195],'Gellhorn Raceway':[498,1058],'Gellhorn Dragway':[498,1058],'Gellhorn':[597,1087],'Mud Club':[836,739],'Big Pine':[676,1540],'Draper Island':[397,707],'Emerald Springs':[802,1018],'Stockyard':[1297,1093],'Decor District':[1303,1052],'Leaf Links':[1377,1013],'Starfish Island':[1415,1260],'Catalan Key':[1309,1588],'Bluegrass':[990,1565],'Bobcat Key':[553,1588],'Southwind':[551,2137],'Mile Zero':[457,2186],'Frogswater':[754,821],'Bonanza':[842,301],'Breakwater Quarry':[751,1437],'Port Vice City':[1451,1368],'Waxman Island':[1385,1309],'Lummox':[872,454],'Kelly':[733,953],'Leonard':[1252,861],'Mariana':[711,1816],'Vice-Dale':[1292,1415]};
+const COUNTIES=new Set(["Lummox", "Kelly", "Leonard", "Mariana", "Vice-Dale"]);
 const REGIONS=[
  {n:'Lummox',d:'M60 60 L940 60 L940 380 L700 400 L520 380 L330 400 L120 360 Z',c:'#3f7a4a',l:[480,120]},
  {n:'Kelly',d:'M120 360 L330 400 L520 380 L620 470 L640 760 L420 800 L230 700 L150 560 Z',c:'#b98a45',l:[300,470]},
@@ -836,14 +830,14 @@ const BASES=[['Casa de Jason','Key Lento','Capítulo 1'],['Motel Starlet','Port 
 const MAPCAT={medit:['Meditaciones','#9b6bff','◐'],mags:['Revistas','#ffb347','▤'],waink:['WAiNK','#38c6c0','◉'],flam:['Flamencos','#ff5d97','✦'],gang:['Operaciones de bandas','#e8b100','☠'],bank:['Bancos','#2fa34a','$'],payday:['Préstamos','#7ccf4d','¢'],races:['Carreras','#3b8cff','⚑'],rchal:['Desafíos de carreras','#5aa9ff','⏱'],pool:['Billar','#b07a4a','●'],base:['Bases de la historia','#ffffff','⌂']};
 // Dónde situar las operaciones de bandas que solo dicen la banda
 const GANGPOS={'Kingfishers':'Grassrivers','Kolts & Associates':'Port Gellhorn','M7':'Little Cuba','La Polilla Negra':'Watson Bay','Final Chapter':'Ambrosia','San4San':'La Perle','PTT Youngin$':'Southside','Guardia Brothers':'Downtown','Otros criminales':''};
-function placeOf(txt){if(!txt)return null;const keys=Object.keys(PLACES).sort((a,b)=>b.length-a.length);for(const k of keys)if(txt.includes(k))return k;return null}
+function placeOf(txt){if(!txt)return null;const keys=Object.keys(PLACES).filter(k=>!COUNTIES.has(k)).sort((a,b)=>b.length-a.length);for(const k of keys)if(txt.includes(k))return k;for(const k of COUNTIES)if(txt.includes(k))return k;return null}
 function mapPoints(){const pts=[];
  for(const g of GUIDE){if(!MAPCAT[g.id])continue;g.l.forEach((it,i)=>{const txt=[it[0],it[1],it[2]].join(' · ');let pl=placeOf(txt);if(!pl&&g.id==='gang')pl=GANGPOS[it[1]]||null;if(!pl)return;
-   const [x,y]=PLACES[pl];const a=(i*137.5)*Math.PI/180,r=pts.filter(p=>p.pl===pl).length?10+4*Math.sqrt(pts.filter(p=>p.pl===pl).length):0;
+   const [x,y]=PLACES[pl];const a=(i*137.5)*Math.PI/180,r=pts.filter(p=>p.pl===pl).length?20+8*Math.sqrt(pts.filter(p=>p.pl===pl).length):0;
    pts.push({cat:g.id,k:gk(g,it[0]),n:it[0],z:it[1],w:it[2],note:it[3],pl,x:x+Math.cos(a)*r,y:y+Math.sin(a)*r})})}
- BASES.forEach(([n,pl,ch])=>{const [x,y]=PLACES[pl];pts.push({cat:'base',k:'',n,z:pl,w:ch,pl,x,y:y-14})});
+ BASES.forEach(([n,pl,ch])=>{const [x,y]=PLACES[pl];pts.push({cat:'base',k:'',n,z:pl,w:ch,pl,x,y:y-28})});
  /* separa los iconos que se pisan (relajación simple) */
- const D=17;for(let it=0;it<40;it++){let mv=0;for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const a=pts[i],c=pts[j];let dx=c.x-a.x,dy=c.y-a.y,d=Math.hypot(dx,dy);if(d>=D)continue;if(d<.01){dx=Math.cos(j);dy=Math.sin(j);d=1}const f=(D-d)/2/d;a.x-=dx*f;a.y-=dy*f;c.x+=dx*f;c.y+=dy*f;mv++}if(!mv)break}
+ const D=32;for(let it=0;it<40;it++){let mv=0;for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const a=pts[i],c=pts[j];let dx=c.x-a.x,dy=c.y-a.y,d=Math.hypot(dx,dy);if(d>=D)continue;if(d<.01){dx=Math.cos(j);dy=Math.sin(j);d=1}const f=(D-d)/2/d;a.x-=dx*f;a.y-=dy*f;c.x+=dx*f;c.y+=dy*f;mv++}if(!mv)break}
  return pts}
 const TABS=[['inicio','Inicio','⌂'],['historia','Historia','❖'],['mapa','Mapa','⌖'],['guias','Guías','✦'],['checklist','Checklist','✓'],['perdibles','Perdibles','⚠'],['secundarias','Secundarias','☺'],['desafios','Desafíos','★'],['trofeos','Trofeos','♛'],['armas','Armas','⚔'],['notas','Notas','✎']];
 
@@ -1081,22 +1075,14 @@ function vPerdibles(){const cc=curChapter();let h=head('Perdibles','Casi nada im
 /* ---------- MAPA ---------- */
 let MV={k:1,tx:0,ty:0,init:false},mapOff=new Set(),mapHide=false,mapSel=-1,MP=[];
 function vMapa(){MP=mapPoints();const cats=Object.keys(MAPCAT);
- return head('Mapa','Esquema de Leonida hecho a mano con lo que ya está localizado en las guías. Arrastra para moverte, pellizca o usa + y − para el zoom, y toca un icono para ver la ficha y marcarlo.')
+ return head('Mapa','Mapa oficial de Leonida con lo que ya está localizado en las guías. Arrastra para moverte, pellizca o usa + y − para el zoom, y toca un icono para ver la ficha y marcarlo.')
  +`<div class="mlegend">${cats.map(c=>{const n=MP.filter(p=>p.cat===c).length;if(!n)return '';return `<button data-mc="${c}" aria-pressed="${!mapOff.has(c)}"><b style="background:${MAPCAT[c][1]}">${MAPCAT[c][2]}</b>${MAPCAT[c][0]} <small>${n}</small></button>`}).join('')}<button id="mhide" aria-pressed="${mapHide}" style="padding-left:12px">Ocultar hechos</button></div>
- <div class="mapwrap"><div class="mapbox" id="mapbox"><svg aria-label="Mapa esquemático de Leonida"><defs><pattern id="wv" width="40" height="20" patternUnits="userSpaceOnUse"><path d="M0 10 Q10 4 20 10 T40 10" fill="none" stroke="#ffffff22" stroke-width="2"/></pattern></defs><rect x="-5000" y="-5000" width="11000" height="11000" fill="url(#wv)"/><g id="mapg">
-  ${REGIONS.map(r=>`<path d="${r.d}" fill="${r.c}" fill-opacity=".55" stroke="#fff" stroke-opacity=".7" stroke-width="3" stroke-linejoin="round"/>`).join('')}
-  <path d="M600 640 Q620 600 660 620 T700 680 Q680 720 630 710 Q590 690 600 640Z" fill="#7cc4e0" stroke="#fff" stroke-width="2" transform="translate(-80 -10)"/>
-  <path d="M870 840 L885 1100" stroke="#f6e3b4" stroke-width="16" stroke-linecap="round"/><path d="M930 1060 L945 1110" stroke="#f6e3b4" stroke-width="10" stroke-linecap="round"/>
-  ${[[560,1235],[610,1250],[655,1262],[500,1240],[700,1268],[740,1270]].map(([x,y])=>`<ellipse cx="${x}" cy="${y}" rx="22" ry="8" fill="#3a8f7a" stroke="#fff" stroke-width="2"/>`).join('')}
-  <path d="M430 900 q40 30 90 10 t90 30" fill="none" stroke="#2c6e5c" stroke-width="6" stroke-dasharray="2 10" stroke-linecap="round"/>
-  ${REGIONS.map(r=>`<text x="${r.l[0]}" y="${r.l[1]}" class="mrg">${r.n.toUpperCase()}</text>`).join('')}
-  ${Object.entries(PLACES).filter(([n])=>!['Kalaga','Vice City','Vice Beach','Downtown'].includes(n)||n==='Vice City').map(([n,[x,y]])=>`<circle cx="${x}" cy="${y}" r="3.5" fill="#fff"/><text x="${x+7}" y="${y-6}" class="mpl${n==='Vice City'?' big':''}">${esc(n)}</text>`).join('')}
- </g></svg><div class="mk" id="mk"></div><div class="mzoom"><button data-z="1.5" aria-label="Acercar">+</button><button data-z="0.67" aria-label="Alejar">−</button><button data-z="0" aria-label="Encuadrar">⤢</button></div><div class="minfo" id="minfo" hidden></div></div></div>
- <p class="mnote">Posiciones aproximadas por zona; no es el mapa oficial ni está a escala. Para el punto exacto usa el <a href="https://www.gtabase.com/gta-6/map/" target="_blank" rel="noopener">mapa interactivo de GTABase</a>. ${MP.length} puntos situados; los demás elementos de las guías aún no tienen zona conocida.</p>`}
-function mapApply(){const g=document.getElementById('mapg');if(!g)return;g.setAttribute('transform',`translate(${MV.tx} ${MV.ty}) scale(${MV.k})`);g.style.setProperty('--ik',Math.max(.9,Math.min(2.2,1/MV.k)));
- const mk=document.getElementById('mk');if(mk)mk.style.setProperty('--ms',MV.k<.55?.72:MV.k<.9?.85:1);for(const b of document.querySelectorAll('#mk button')){const p=MP[+b.dataset.i];b.style.transform=`translate(${p.x*MV.k+MV.tx}px,${p.y*MV.k+MV.ty}px)`}}
-function mapFit(){const bx=document.getElementById('mapbox');if(!bx)return;const W=bx.clientWidth,H=bx.clientHeight;MV.k=Math.min(W/1000,H/1300)*.96;MV.tx=(W-1000*MV.k)/2;MV.ty=(H-1300*MV.k)/2;MV.init=true;mapApply()}
-function mapZoom(f,cx,cy){const bx=document.getElementById('mapbox');const W=bx.clientWidth,H=bx.clientHeight;if(cx==null){cx=W/2;cy=H/2}const kmin=Math.min(W/1000,H/1300)*.6,k2=Math.max(kmin,Math.min(MV.k*f,8));MV.tx=cx-(cx-MV.tx)*(k2/MV.k);MV.ty=cy-(cy-MV.ty)*(k2/MV.k);MV.k=k2;mapApply()}
+ <div class="mapwrap"><div class="mapbox" id="mapbox"><svg aria-label="Mapa oficial de Leonida"><g id="mapg"><image href="leonida.webp" x="0" y="0" width="1754" height="2449"/></g></svg><div class="mk" id="mk"></div><div class="mzoom"><button data-z="1.5" aria-label="Acercar">+</button><button data-z="0.67" aria-label="Alejar">−</button><button data-z="0" aria-label="Encuadrar">⤢</button></div><div class="minfo" id="minfo" hidden></div></div></div>
+ <p class="mnote">Mapa © Rockstar Games (descarga gratuita oficial). Los iconos van en la zona o pueblo que indican las guías, no en el punto exacto; los que solo tienen condado van sobre su nombre. Para el punto exacto usa el <a href="https://www.gtabase.com/gta-6/map/" target="_blank" rel="noopener">mapa interactivo de GTABase</a>. ${MP.length} puntos situados; los demás elementos de las guías aún no tienen zona conocida.</p>`}
+function mapApply(){const g=document.getElementById('mapg');if(!g)return;const bx=document.getElementById('mapbox');if(bx){const W=bx.clientWidth,H=bx.clientHeight,iw=1754*MV.k,ih=2449*MV.k,m=40;MV.tx=iw+2*m<=W?(W-iw)/2:Math.min(m,Math.max(W-iw-m,MV.tx));MV.ty=ih+2*m<=H?(H-ih)/2:Math.min(m,Math.max(H-ih-m,MV.ty))}g.setAttribute('transform',`translate(${MV.tx} ${MV.ty}) scale(${MV.k})`);g.style.setProperty('--ik',Math.max(.9,Math.min(2.2,1/MV.k)));
+ const mk=document.getElementById('mk');if(mk)mk.style.setProperty('--ms',MV.k<.3?.7:MV.k<.55?.85:1);for(const b of document.querySelectorAll('#mk button')){const p=MP[+b.dataset.i];b.style.transform=`translate(${p.x*MV.k+MV.tx}px,${p.y*MV.k+MV.ty}px)`}}
+function mapFit(){const bx=document.getElementById('mapbox');if(!bx)return;const W=bx.clientWidth,H=bx.clientHeight;MV.k=Math.min(W/1754,H/2449)*1.02;MV.tx=(W-1754*MV.k)/2;MV.ty=(H-2449*MV.k)/2;MV.init=true;mapApply()}
+function mapZoom(f,cx,cy){const bx=document.getElementById('mapbox');const W=bx.clientWidth,H=bx.clientHeight;if(cx==null){cx=W/2;cy=H/2}const kmin=Math.min(W/1754,H/2449)*.7,k2=Math.max(kmin,Math.min(MV.k*f,3));MV.tx=cx-(cx-MV.tx)*(k2/MV.k);MV.ty=cy-(cy-MV.ty)*(k2/MV.k);MV.k=k2;mapApply()}
 function mapInfo(){const el=document.getElementById('minfo');if(!el)return;if(mapSel<0){el.hidden=true;return}const p=MP[mapSel],d=p.k&&S.done[p.k];
  el.innerHTML=`<button class="x" aria-label="Cerrar">×</button><span class="tag" style="background:${MAPCAT[p.cat][1]};color:#1a0b2e">${MAPCAT[p.cat][0]}</span><h4>${esc(p.n)}</h4><p><b>${esc(p.z||p.pl)}</b>${p.w?' · '+esc(p.w):''}</p>${p.note?`<p>${esc(p.note)}</p>`:''}<div class="acts">${p.k?`<label class="chip" style="display:flex;align-items:center;gap:8px"><input type="checkbox" class="ck" id="mck" ${d?'checked':''}> Hecho</label>`:''}<a class="chip" href="https://www.gtabase.com/gta-6/map/" target="_blank" rel="noopener" style="text-decoration:none;display:flex;align-items:center">Mapa interactivo</a></div>`;el.hidden=false}
 function mapAfter(){const bx=document.getElementById('mapbox');if(!bx)return;const mk=document.getElementById('mk');

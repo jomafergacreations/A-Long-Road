@@ -108,6 +108,13 @@ details.tip[open] summary~*{animation:up .3s both}
 .row .nm{display:inline;font-weight:600;background:linear-gradient(var(--sea),var(--sea)) 0 58%/0 2px no-repeat;transition:background-size .35s,color .35s}
 .row.done .nm{color:var(--mut);background-size:100% 2px}
 .ds{color:var(--mut);font-size:14px;margin-top:2px}
+.row small.en{display:block;color:var(--mut);font-size:12.5px;font-style:italic}
+.row .ds{color:var(--ink);opacity:.82;font-size:14px;line-height:1.4;margin-top:3px}
+.tag.mk{background:transparent;border:1px dashed var(--line);color:var(--mut);font-weight:600}
+.obtx em{display:block;font-style:normal;color:#e6dbf5;font-size:13.5px;line-height:1.35;margin:4px 0 2px}
+.obtx .tag.mk{border-color:#ffffff40;color:#d2c2ea}
+details.help{margin:12px 0 4px}details.help summary{cursor:pointer;font-weight:700;color:var(--ink);min-height:36px;display:flex;align-items:center}
+details.help ul{margin:6px 0 2px;padding-left:20px}details.help li{margin:4px 0}
 .tag{display:inline-block;font-size:12px;font-weight:700;border-radius:7px;padding:1px 8px;margin:4px 4px 0 0;background:var(--line);color:var(--ink);white-space:nowrap}
 .tag.p{background:var(--gold);color:#3a2400}.tag.s{background:#d6dbe6;color:#22283a}.tag.b{background:#eab08a;color:#3a1d06}.tag.pl{background:#9ff0ea;color:#063a38}
 .ck{appearance:none;width:32px;height:32px;border:2.5px solid var(--mut);border-radius:10px;margin:0;cursor:pointer;display:grid;place-content:center;background:var(--bg);transition:background .2s,border-color .2s}
@@ -115,7 +122,7 @@ details.tip[open] summary~*{animation:up .3s both}
 .ck:checked::after{content:"";width:13px;height:7px;border:3px solid #fff;border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}
 @keyframes pop{40%{transform:scale(1.25)}}
 .lab{display:contents;cursor:pointer}
-.sp .nm,.sp .ds{filter:blur(6px);cursor:pointer;user-select:none}
+.sp .nm,.sp .ds,.sp small.en,.sp .tag.mk{filter:blur(6px);cursor:pointer;user-select:none}
 .note{background:color-mix(in srgb,var(--gold) 14%,var(--card));border:1px solid color-mix(in srgb,var(--gold) 50%,var(--line));border-radius:16px;padding:14px 16px;font-size:14.5px;margin:14px 0}
 .mini{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:12px 0 4px}
 .mini div{background:var(--card);border-radius:18px;box-shadow:var(--sh);padding:12px 16px}
@@ -288,6 +295,127 @@ const ST=[
  [['Ocean Beach','Ocean Beach','JL','m'],['Another Life','Otra vida','L','m'],['Pool Day','Día de piscina','','t'],['Company Cars','Coches de empresa','JL','m'],['Lawyer Up','Busca un abogado','JL','m'],["It's a Date!",'¡Es una cita!','','t'],['Party Hard','De fiesta a tope','JL','m'],['Heavy Lifting','Trabajo pesado','JL','m'],["Pay Abe's Fee",'Paga los honorarios de Abe','','t'],['Photo/Shoot','Sesión de fotos (y de tiros)','JL','m'],['Making Gainz','Ganando músculo','L','m','v'],['Blood Sweat and Gear','Sangre, sudor y equipo','L','t','v'],['Watch It','Ten cuidado','J','m'],['Call Nate','Llama a Nate','L','t','v'],['Cash Injections','Inyecciones de dinero','L','m','v'],['Amateur Hour','Cosa de aficionados','L','m','v'],['Dirty Work','Trabajo sucio','JL','m','v'],['Nate Will Be in Touch','Nate se pondrá en contacto','','t','v'],['Too Much Baggage','Demasiado equipaje','J','m','v'],['Adventures in Babysitting','Aventuras de canguro','J','m'],["Rafa's Kidnapping",'El secuestro de Rafa','J','t'],['Fresh Evidence','Nuevas pruebas','J','m'],['Power Play','Juego de poder','L','m','v'],["Child's Play",'Juego de niños','JL','m'],['Headliners','Cabezas de cartel','JL','m'],['Close Surveillance','Vigilancia estrecha','J','m','v'],['Delivery Method','Método de entrega','J','m','v'],['Team Building','Formar equipo','L','m','v'],['Fully Catered','Catering completo','JL','m','v'],['Heist Plans in Place','Planes del golpe listos','','t','v'],['VCIA Takedown','Golpe en el VCIA','JL','m','v'],['Tie Up Loose Ends','Atar cabos sueltos','','t'],['Call Valentina Back','Devuelve la llamada a Valentina','','t'],['Sunset','Atardecer','JL','m'],['Starting From Zero','Empezar de cero','','m']],
  [['Bird in the Hand','Más vale pájaro en mano','JL','m'],['Taking Liberties','Tomarse libertades','','m'],['Doggie Bag','Para llevar','','m'],['VC Baby','VC, nena','','m'],['Operation Savage Glory','Operación Gloria Salvaje','','m'],['Honest Abe','El honrado Abe','','o'],['Unfinished Business','Asuntos pendientes','','o'],["Pay Abe's Fee",'Paga los honorarios de Abe','','o'],['Protective Custody','Custodia de protección','JL','m'],['The End of the Road','El final del camino','','m']]
 ];
+// Descripción breve (sin spoilers gordos) e icono de inicio en el mapa cuando se conoce
+const DESC={
+'Prologue':['Lucia habla con su orientadora de la cárcel sobre su detención y la libertad anticipada.'],
+'Gone Fishing':['Un contrabando con Cal y Donnie sale mal y Jason tiene que meterse en territorio de los Kingfishers, en Pelican Valley.'],
+'Gear Up':['Jason va al Ammu-Nation a por un arma larga nueva.','Pick Up Another Gun'],
+'Unwanted Attention':['Cal y Jason van a Hamlet a recuperar del depósito policial un pago que le deben a Brian.','Go See Cal'],
+'Pipework':['Cobrar el alquiler a Mandy, inquilina de Brian, acaba en reparaciones de fontanería.','Collect Mandy\'s Rent'],
+'Lab Fees':['Jason cobra el alquiler de Brian en una tienda de regalos que esconde algo más que souvenirs.','Collect Brian\'s Rent'],
+'Just a Scratch':['Jason lleva su Ganado destrozado a Joey, en Coastal Auto Care.','Fix Your Car'],
+'Hey Arnold!':['Arnold, el intermediario de Brian, no contesta: Jason y Cal lo buscan.','Meet Brian'],
+'Island Dreams':['Kenton quiere que Jason guíe una despedida de soltero buceando en un pecio, con búsqueda de tesoro.','Work for Kenton'],
+'Feng Shui':['Jason y Cal reorganizan los muebles de casa antes de que llegue Lucia.','Meet Cal'],
+'Coming Home':['Lucia sale de la prisión de Hamlet y necesita que la lleven a casa.','Lucia\'s Release'],
+'Clean Up After Donnie':['Un paquete perdido en la entrega fallida de Donnie emite señal desde un sitio de pesca en Hamlet.','Donnie\'s Drop'],
+'Buck Me':['Lucia necesita una cuenta para cobrar los servicios comunitarios: Jason queda con ella en el banco Fleeca.','Set Up Bank Account'],
+'Down to Earth':['Brian cita a Jason en el puerto deportivo para un trabajo y Lucia se apunta. Aquí sale el tutorial de meditación.','Meet Brian'],
+'Deposit Cash Into BuckMe':['Ingresa dinero en tu cuenta BuckMe en cualquier cajero.'],
+'Save for the Future':['Sigue metiendo dinero en los ahorros familiares hasta el siguiente objetivo.'],
+'Day Release':['Kat y Mattia invitan a Jason y Lucia a un día de fiesta que empieza en el Rusty Anchor.','Meet Mattia & Kat'],
+'Clear Skies':['Brian tiene un trabajo para Jason y Donnie que empieza en Southwind.','Join Donnie On A Job'],
+'Building a Life':['Jason y Lucia arreglan su casa y Jason le da a Lucia una clase de tiro.'],
+'Swamped':['Brian cita a Jason en el puerto antes de ir a ver a los Kingfishers.','Meet Brian'],
+'Don Gone':['Brian manda a Jason a vaciar la caravana de Donnie en Key Lento.','Head to Donnie\'s Trailer'],
+'Recalibration':['Cal lo está pasando mal y Jason y Lucia intentan animarlo.','Talk to Lucia'],
+'Tourist Trap':['Mattia ofrece a Jason y Lucia un trabajo sencillo que podría traer otros bien pagados.','Take Up Mattia\'s Offer'],
+'Home Sweet Home':['Lucia vuelve a casa de Jason a recoger cosas antes de que se larguen.'],
+'Discharge Time':['Lucia va al hospital de Vice City, pero allí le espera un problema. Cierra el capítulo 1.'],
+"What's in the Bag?":['Jason y Lucia despiertan en un motel de Port Gellhorn y por fin miran qué hay en la bolsa.'],
+'Ambulance Chaser':['Lucia tiene que deshacerse de la ambulancia de la huida antes de que la encuentre la policía.','Move the Ambulance'],
+'Take Care of Jason':['Ve viendo cómo está Jason en el motel hasta que se recupere.','Play Nurse'],
+'Overnight Charges':['Pregunta en la recepción del motel cuánto se debe por la habitación.','See Linda, The Manager'],
+'Just Moved In':['Compra provisiones en la tienda Alpha que hay junto al motel.'],
+"Girls' Trip":['Jason necesita analgésicos y Lucia pregunta por el motel.','Find Painkillers'],
+'Moses':['Vicki dice que un mecánico, Moses, puede conseguirle coche a Lucia: llévale un vehículo discreto.','Take A Vehicle to Moses'],
+'New Look':['Lleva a Lucia a la peluquería Pearl House a cambiar de peinado.'],
+'How Do I Look?':['Compra ropa nueva a Lucia, o barata en Bargain World.'],
+'Painkiller Supplier':['Dunk llama cuando tiene una pista de analgésicos para Jason.'],
+'Daily Driver':['Moses quiere recuperar un Canis Crawler del 82 de unos clientes que no pagaron.','Steal the Crawler for Moses'],
+'Behind on Payments':['Linda retiene el collar de Lucia hasta que pagues los 900 $ de la habitación.'],
+'Slam Dunk':['Ve a la caravana de Dunk a ver cómo piensa conseguir analgésicos más fuertes.','Find Painkillers'],
+'Breakfast Run':['Vuelve al motel a ver cómo sigue Jason.','Check on Jason'],
+'Coffee Break':['Tras unos cuantos atracos, Jason y Lucia planean su siguiente paso con un café.'],
+'Prepare for Vice City':['Reúne al menos 15.000 $ mientras Dre\'Quan os busca sitio en Vice City.'],
+'Afternoon Delight':['Vicki quiere atracar a su jefe en Delights y repartir el botín.','Rob Vicki\'s Boss'],
+'Checking Out':['Jason y Lucia hacen las maletas, dejan el motel y se van a Vice City.','Move to Vice City'],
+'Welcome to Vice City':['Jason y Lucia llegan a Vice City y buscan a Dre\'Quan, viejo amigo de Jason.'],
+"Dealer's Choice":['Boobie dice que Jason le debe un favor por el piso y lo manda a un trapicheo con Dre\'Quan.','Go See Dre\'Quan'],
+'Meet the Heders':['Cita doble con Brian y Lori Heder.','Meet Brian & Lori'],
+'Dubious Provenance':['Llevan la estatua a un anticuario de Capri para saber qué es.','Visit the Antique Store'],
+'Mami Knows Best':['Lucia se pone al día con su madre, Mia, que acaba de abrir una inmobiliaria.','Catch Up With Mia'],
+'South Leonida Real Estate':['Lucia vuelve a ver a Mia y tiene otro encontronazo con la banda M7.','Meet Mia'],
+'Tyrone':['Jason va a ver a Tyrone por un trabajo.'],
+'Here, Kitty Kitty':['Jason habla con Tyrone y acaba buscando a un tal Charles.','Speak with Tyrone'],
+'Send Money to Lorena':['Envía un pago a Lorena.'],
+'Encrypted Hard Drive':['Averigua más sobre el disco duro cifrado de la bolsa.'],
+'Car Service':['Lucia roba un coche para Raul.','Steal The Car for Raul'],
+'Send More Money to Lorena':['Envía otro pago a Lorena.'],
+'Top Billing':['Jason, Lucia y Dre\'Quan van a ver el concierto de los Real Dimez.','Watch the Real Dimez'],
+'Boobie Time':['Jason pasa el rato haciendo de chófer de Boobie por Vice City.','Talk to Boobie'],
+'First Impressions':['Jason y Lucia conocen a Raul.','Meeting with Raul'],
+'Caught Slipping':['Jason y Lucia tienen que impedir un robo.'],
+'Crosstown Traffic':['Lucia sigue a un pandillero para Raul mientras Jason queda con Karim.','Meet Raul / Meet Karim'],
+'Credit Check':['Raul invita a Jason y Lucia a su base para conocer a su equipo. Desbloquea bancos y payday loans.','Meet Raul\'s Crew'],
+"Clonin' Keys, Makin' GS":['Jason y Lucia roban un Zorrusso de lujo para Randy.','Steal the Zorrusso for Randy'],
+"Raul's Next Job":['Raul se pone en contacto por su siguiente trabajo.'],
+'Sinfrontera National Bank':['Jason y Lucia inspeccionan un banco: empiezan los preparativos del gran golpe.','Scope Out the Bank'],
+'Security Expert':['Conocen a un experto en seguridad que podría ayudar con el golpe.'],
+'Heist Planning':['Repasa el plan del golpe.'],
+'Ride or Die':['Jason echa una mano a Dre\'Quan.','Meet Dre\'Quan'],
+'Company Property':['Jason y Lucia quedan con Brian y ayudan con un cargamento de armas.','Meet Brian'],
+'The Missing Link':['Lucia conoce a Andrea y la pista la lleva a una pelea de gallos.','Meet Andrea'],
+'Safe Word':['Lucia roba una caja fuerte de práctica y aprende una habilidad nueva.','Steal the Practice Safe'],
+'Cooties':['Lucia ayuda a rodar un videoclip.','Shoot the Music Video'],
+'Bricked Up':['Jason y Lucia hacen un trabajo para Boobie.','Return to the Apartment'],
+'Hidden Charges':['Jason y Lucia preparan los explosivos para el golpe.','Prepping the Explosives'],
+'The Cartel Heist':['El plan está listo: hora de asaltar el banco. Cierra el capítulo 3.','Start the Heist'],
+'Ocean Beach':['Jason y Lucia se instalan en Ocean Beach.'],
+'Another Life':['Lucia recuerda su pasado.'],
+'Pool Day':['Toca un día de piscina.'],
+'Company Cars':['Jason y Lucia consiguen coches nuevos.','Speak to the Concierge'],
+'Lawyer Up':['Jason y Lucia conocen al abogado Abe Gonzalez.','Meet Abe Gonzalez'],
+"It's a Date!":['Toca noche de cita.'],
+'Party Hard':['Jason y Lucia hacen de seguridad personal de una celebridad.','Work Personal Security'],
+'Heavy Lifting':['Jason y Lucia tienen una entrega que hacer.'],
+"Pay Abe's Fee":['Los servicios de Abe no son baratos: toca pagarle.'],
+'Photo/Shoot':['Jason, Lucia y Dre\'Quan graban un vídeo promocional.','Shoot a Promo'],
+'Making Gainz':['Raul tiene un plan y Lucia conoce a alguien nuevo.','Meet Raul'],
+'Blood Sweat and Gear':['Lucia va al gimnasio a entrenar.','Work Out'],
+'Watch It':['Jason y Dre\'Quan conocen al dueño de un club.','Meet Dre\'Quan'],
+'Call Nate':['Lucia llama a Nate.'],
+'Cash Injections':['Lucia pasa el rato con Nate y ayuda a un conocido.','Hang Out With Nate'],
+'Amateur Hour':['Lucia ayuda a Cisco a enfrentarse a un director.'],
+'Dirty Work':['Jason y Lucia se ocupan de Raina y abren nuevas puertas.','Deal with Raina'],
+'Nate Will Be in Touch':['Ayuda a la banda de Kordell mientras esperas noticias de Nate.','Help Kordell\'s Crew'],
+'Too Much Baggage':['Jason inspecciona el aeropuerto y hace de mozo de equipajes.','Scope Out the Airport'],
+'Adventures in Babysitting':['Jason trabaja de seguridad en una discoteca para Andrés.','Work Security for Andrés'],
+"Rafa's Kidnapping":['Jason se ve metido en un problema con Rafa.'],
+'Fresh Evidence':['Jason y Dre\'Quan van a por material de chantaje.','Meet Dre\'Quan'],
+'Power Play':['Ayuda a la banda de Kordell y consigue información.','Help Kordell\'s Crew'],
+"Child's Play":['Jason y Lucia ayudan a un conocido.','Rescue Rafa'],
+'Headliners':['Los Dimez actúan en VYB y Jason y Lucia ayudan con la fiesta de lanzamiento.','Help With The Launch Party'],
+'Close Surveillance':['Jason vigila a unos culturistas con un dron espía.','Spy on the Bodybuilders'],
+'Delivery Method':['Jason se infiltra para ayudar a Andrea.','Help Andrea'],
+'Team Building':['Lucia conoce a Kordell y tiene que demostrar lo que vale.','Meet Kordell'],
+'Fully Catered':['Jason y Lucia roban un camión de catering.','Steal a Catering Truck'],
+'Heist Plans in Place':['Todo listo para el golpe en el aeropuerto.'],
+'VCIA Takedown':['Luz verde al golpe en el aeropuerto.','Start the Airport Heist'],
+'Tie Up Loose Ends':['Tras el golpe quedan cabos sueltos por atar.'],
+'Call Valentina Back':['Valentina quiere que la llames.'],
+'Sunset':['Jason y Lucia buscan respuestas.','Stop by the Front Desk'],
+'Starting From Zero':['La última misión del capítulo 4.'],
+'Bird in the Hand':['Arranca el capítulo final.'],
+'Taking Liberties':['Misión principal del capítulo 5.'],
+'Doggie Bag':['Hay que ver a Vinny.','Meet Vinny'],
+'VC Baby':['Hay que hablar con Mattia.','Talk to Mattia'],
+'Operation Savage Glory':['Hay que recuperar un cargamento.'],
+'Honest Abe':['Opcional: negocia un trato con Abe.'],
+'Unfinished Business':['Opcional: asuntos pendientes.'],
+'Protective Custody':['Hay que ver a Abe.','Meet Abe'],
+'The End of the Road':['La misión final de la historia.']
+};
 const slug=s=>s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
 const ALL=[];ST.forEach((l,c)=>l.forEach(([en,es,who,t,h],i)=>ALL.push({c,i,en,es,who,t,h:h||'',k:'q'+c+':'+slug(en)})));
 const KEY=(en,c)=>(ALL.find(e=>e.en===en&&(c==null||e.c===c))||{}).k;
@@ -392,8 +520,11 @@ const tools=(ph,extra='')=>`<div class="tools"><input type="search" id="q" place
 const showF=d=>filt==='todo'||(filt==='hecho'?d:!d);
 const grp=(name,count,c)=>`<div class="grp"${c?` style="--c:${c}"`:''}><h3>${name}</h3><span>${count}</span></div>`;
 const head=(t,sub)=>`<div class="vhead"><h2>${t}</h2></div><p class="sub">${sub}</p>`;
-function ckRow(key,name,desc,tags,extra=''){const d=!!S.done[key];if(!showF(d)||!match(name+' '+desc))return '';
- return `<li class="row${d?' done':''}${extra}"><label class="lab"><input type="checkbox" class="ck" data-k="${key}" ${d?'checked':''}><div><span class="nm">${esc(name)}</span>${desc?`<div class="ds">${esc(desc)}</div>`:''}${tags||''}</div></label></li>`}
+function ckRow(key,name,desc,tags,extra='',sub=''){const d=!!S.done[key];if(!showF(d)||!match(name+' '+desc+' '+sub))return '';
+ return `<li class="row${d?' done':''}${extra}"><label class="lab"><input type="checkbox" class="ck" data-k="${key}" ${d?'checked':''}><div><span class="nm">${esc(name)}</span>${sub?`<small class="en">${esc(sub)}</small>`:''}${desc?`<div class="ds">${esc(desc)}</div>`:''}${tags||''}</div></label></li>`}
+const dsc=e=>(DESC[e.en]||[''])[0];
+const mk=e=>(DESC[e.en]||[])[1];
+const mtag=e=>mk(e)?`<span class="tag mk" title="Objetivo que verás en el mapa o el menú">◆ ${esc(mk(e))}</span>`:'';
 const GC={'Historia y tareas':'var(--pink)','Exploración y actividades':'var(--sea)','Descubrimiento':'var(--sun)'};
 
 function vChecklist(){let h=head('Checklist 100%','Los 35 requisitos de <b>A Long Road</b>. Nada es perdible: todo se puede terminar en juego libre tras la historia. Los trucos desactivan el guardado, no los uses.')+tools('Buscar requisito…');
@@ -413,16 +544,17 @@ function stTags(e,inH){const hd=e.h?ALL.filter(x=>x.h===e.h):[];const pos=e.h?hd
  const ht=e.h?(pos===hd.length?'Golpe final':'Paso '+pos+' de '+(hd.length-1)):'';
  return `${inH?`<span class="tag ${pos===hd.length?'p':''}">${ht}</span>`:`<span class="tag">${e.c+1}.${e.i+1}</span>`}${e.who?`<span class="tag">${WHO[e.who]}</span>`:''}${e.t==='t'?'<span class="tag">Tarea</span>':''}${e.t==='o'?'<span class="tag">Opcional</span>':''}${e.h&&!inH?`<span class="tag ${e.h==='c'?'p':'pl'}">${HEISTS[e.h][0]} · ${ht.toLowerCase()}</span>`:''}`}
 const openH=new Set();
-function heistBlock(hk,hide){const l=ALL.filter(e=>e.h===hk),d=l.filter(e=>S.done[e.k]).length,rows=l.map(e=>ckRow(e.k,e.es,e.en,stTags(e,true),hide?' sp':'')).join('');if(!rows)return '';
+function heistBlock(hk,hide){const l=ALL.filter(e=>e.h===hk),d=l.filter(e=>S.done[e.k]).length,rows=l.map(e=>ckRow(e.k,e.es,dsc(e),stTags(e,true)+mtag(e),hide?' sp':'',e.en)).join('');if(!rows)return '';
  const open=openH.has(hk)||(!openH.has('x'+hk)&&d>0&&d<l.length)||!!q;
  return `<li class="heist${d>=l.length?' hdone':''}"><details data-h="${hk}" ${open?'open':''}><summary class="hs${hide?' sp':''}"><span class="hring" style="--p:${d/l.length*100}%"><b>${d}/${l.length}</b></span><span class="nm"><b>${HEISTS[hk][0]}</b><small>${HEISTS[hk][1]} · ${l.length-1} preparativos y el golpe final</small><span class="hbar"><i style="width:${d/l.length*100}%"></i></span></span><span class="chev" aria-hidden="true"></span></summary><ul>${rows}</ul></details></li>`}
 function vHistoria(){const cc=curChapter(),tt=ALL.filter(e=>e.t==='t'),td=tt.filter(e=>S.done[e.k]).length;
  let h=head('Historia',`${misTot} misiones principales y ${tt.length} tareas de historia (pagos, llamadas, preparativos de los golpes) en 5 capítulos. Nombres traducidos por mí; debajo, el nombre original en inglés.`)
  +`<div class="tools" style="position:static;padding:0"><button class="chip hot" id="where">Actualizar por dónde voy</button></div>`
  +`<div class="mini"><div class="${misDone()>=misTot?'ok':''}"><b>${misDone()}/${misTot}</b><small>misiones principales</small></div><div class="${td>=tt.length?'ok':''}"><b>${td}/${tt.length}</b><small>tareas de historia</small></div>${Object.keys(HEISTS).filter(k=>!(S.spoil&&k==='v'&&cc<3)).map(k=>{const l=ALL.filter(e=>e.h===k),d=l.filter(e=>S.done[e.k]).length;return `<div class="${d>=l.length?'ok':''}"><b>${d}/${l.length}</b><small>${HEISTS[k][0]}</small></div>`}).join('')}</div>`
+ +`<details class="note help"><summary>¿Cómo sé en el juego si ya la he hecho?</summary><ul><li><b>Pendientes:</b> abre el mapa y pulsa el icono del <b>libro rosa</b>: despliega todas las misiones de historia que tienes disponibles. Si una no sale ahí y ya la conoces, está hecha.</li><li><b>Hechas:</b> en el menú de pausa, <b>Progreso › Resumen de la historia</b> (Story Recap) muestra lo que ya has completado, aunque no deja repetirlo.</li><li><b>No se pueden rejugar:</b> GTA VI no tiene "repetir misión". Si quieres volver a una, guarda a mano antes (hay 15 ranuras).</li><li>El <b>◆</b> de cada misión es el objetivo con el que aparece en el mapa, por si lo ves ahí ahora mismo: entonces está pendiente.</li></ul></details>`
  +tools('Buscar misión…',`<button class="chip" id="spoil" aria-pressed="${S.spoil}">Sin spoilers</button>`);
  ST.forEach((l,c)=>{const es=ALL.filter(e=>e.c===c),main=es.filter(e=>e.t==='m'),d=main.filter(e=>S.done[e.k]).length,hide=S.spoil&&c>cc;
-  const seen=new Set();const rows=es.map(e=>{if(e.h){if(seen.has(e.h))return '';seen.add(e.h);return heistBlock(e.h,hide)}return ckRow(e.k,e.es,e.en,stTags(e),hide?' sp':'')}).join('');
+  const seen=new Set();const rows=es.map(e=>{if(e.h){if(seen.has(e.h))return '';seen.add(e.h);return heistBlock(e.h,hide)}return ckRow(e.k,e.es,dsc(e),stTags(e)+mtag(e),hide?' sp':'',e.en)}).join('');
   if(rows)h+=grp(hide?'Capítulo '+(c+1):`Capítulo ${c+1} · ${CHT[c][0]}`,d+'/'+main.length,['var(--sea)','var(--pink)','var(--sun)','var(--gold)','var(--pink)'][c])+`<ul class="list">${rows}</ul>`});
  return h}
 
@@ -489,7 +621,7 @@ function applyPoint(ch,sel){const before=new Set(Object.keys(S.done).filter(k=>S
  for(const e of ALL)if(e.c===ch&&e.t==='o'){if(sel.has(e.k))S.done[e.k]=true;else delete S.done[e.k]}
  syncTro();for(const k of Object.keys(S.done))if(!before.has(k)){if(k[0]==='q')m++;else if(k[0]==='t')t++}
  S.setup=1;save();return{m,t,ch}}
-function obRow(e,inH){const on=ob.sel.has(e.k);return `<button data-ok="${e.k}" class="${on?'on':''}" aria-pressed="${on}"><i class="obck"></i><span class="obtx"><b>${esc(e.es)}</b><small>${esc(e.en)}</small><span>${stTags(e,inH)}</span></span></button>`}
+function obRow(e,inH){const on=ob.sel.has(e.k);return `<button data-ok="${e.k}" class="${on?'on':''}" aria-pressed="${on}"><i class="obck"></i><span class="obtx"><b>${esc(e.es)}</b><small>${esc(e.en)}</small>${dsc(e)?`<em>${esc(dsc(e))}</em>`:''}<span>${stTags(e,inH)}${mtag(e)}</span></span></button>`}
 function obRender(){const o=$('#ob');let h='';
  if(ob.step==='ch'){h=`<h2 id="obt">¿Por dónde vas?</h2><p class="sub">Dime el capítulo y marca lo que ya has hecho. Así la app sabe tu punto exacto y te esconde lo que viene después.</p>
   <div class="obgrid"><button data-oc="-1" style="--i:0"><b>Empezando</b><small>Aún no he jugado ninguna misión</small></button>${ST.map((l,i)=>`<button data-oc="${i}" style="--i:${i+1}"><b>Capítulo ${i+1}</b><small>${l.length} misiones y tareas</small></button>`).join('')}<button data-oc="5" style="--i:6"><b>Terminada</b><small>Ya vi los créditos</small></button></div>

@@ -421,7 +421,7 @@ details.mw ol{margin:6px 0 4px;padding-left:22px;line-height:1.5}details.mw li{m
 </header>
 <div class="content">
  <main id="view"></main>
- <footer><button class="chip danger" data-reset="1" style="margin:0 0 10px">↺ Restablecer app</button><br>Versión 13 · 24/11/2026. Datos recopilados de guías publicadas tras el lanzamiento (19/11/2026): PowerPyx, Timesaver, Dexerto, GamerTweak y TechNerdiness. Algunas listas aún se están verificando; donde hay dudas lo indico. El % pesa igual los 35 requisitos; el juego puede ponderarlos distinto.</footer>
+ <footer><button class="chip danger" data-reset="1" style="margin:0 0 10px">↺ Restablecer app</button><br>Versión 14 · 24/11/2026. Datos recopilados de guías publicadas tras el lanzamiento (19/11/2026): PowerPyx, Timesaver, Dexerto, GamerTweak y TechNerdiness. Algunas listas aún se están verificando; donde hay dudas lo indico. El % pesa igual los 35 requisitos; el juego puede ponderarlos distinto.</footer>
 </div>
 <div class="save" id="save">Guardado</div>
 <div class="fx" id="fx" aria-hidden="true"></div>
@@ -1284,21 +1284,23 @@ const WV=[
  {d:6000,t:'Se actualiza cada semana',s:'Cuando las guías descubran algo nuevo, te saldrá un aviso de «Nuevo descubrimiento».',v:'Cada semana se actualiza con lo que descubran las guías. Vamos a ver por dónde vas.',
   h:`<div class="wvnews"><b>Nuevo descubrimiento</b><span>Nuevas guías paso a paso</span></div>`}];
 let wv=null;
+const NARR=0; /* pon 1 cuando existan voz/1.mp3 … voz/7.mp3 */
+let wvAud=null;function wvVoice(i,txt){if(S.snd===0||S.voz===0)return;if(NARR){try{if(wvAud)wvAud.pause();wvAud=new Audio('voz/'+(i+1)+'.mp3');wvAud.play().catch(()=>wvSpeak(txt));return}catch(e){}}wvSpeak(txt)}
 function wvSpeak(txt){if(!('speechSynthesis' in window)||S.snd===0||S.voz===0)return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(txt);u.lang='es-ES';u.rate=1.02;u.pitch=1;
- const vs=speechSynthesis.getVoices();const v=vs.find(v=>/^es(-|_)ES/i.test(v.lang))||vs.find(v=>/^es/i.test(v.lang));if(v)u.voice=v;speechSynthesis.speak(u)}catch(e){}}
+ const vs=speechSynthesis.getVoices(),es=vs.filter(v=>/^es(-|_)ES/i.test(v.lang)),any=vs.filter(v=>/^es/i.test(v.lang)),good=x=>/premium|enhanced|mejorad|natural|neural|siri|online/i.test(x.name);const v=es.find(good)||any.find(good)||es.find(v=>/m[oó]nica|jorge|google/i.test(v.name))||es[0]||any[0];if(v)u.voice=v;u.rate=.98;speechSynthesis.speak(u)}catch(e){}}
 function wvOpen(auto){const o=$('#wv');wv={i:-1,t:0,auto,play:false,raf:0,last:0,pad:null,arp:0};
  o.innerHTML=`<div class="wvin"><div class="wvstage" id="wvs"><div class="wvstart"><div class="wvlogo sm"></div><h2>Vídeo de bienvenida</h2><p>45 segundos para ver todo lo que puede hacer la app.</p><button class="chip hot wvplay" data-wv="play">▶ Reproducir</button></div></div>
   <div class="wvcap" id="wvcap"></div><div class="wvbar"><button class="wvb" data-wv="pp" aria-label="Pausa">❚❚</button><div class="wvprog">${WV.map(()=>'<i><b></b></i>').join('')}</div><button class="wvb" data-wv="voz" aria-label="Narración">${S.voz===0?'🔇':'🔊'}</button><button class="chip" data-wv="skip">Saltar</button></div></div>`;
  o.hidden=false}
 function wvScene(i){wv.i=i;wv.t=0;const sc=WV[i],st=$('#wvs');if(i===0&&S.name){sc._t=sc._t||sc.t;sc.t=`Bienvenido, ${S.name}`;sc._v=sc._v||sc.v;sc.v=`Hola, ${S.name}. `+sc._v}st.innerHTML=`<div class="wvsc"><div class="wvvis">${sc.h}</div><h3>${sc.t}</h3><p>${sc.s}</p></div>`;$('#wvcap').textContent=sc.s;
- for(const [j,b] of [...document.querySelectorAll('.wvprog b')].entries())b.style.width=j<i?'100%':'0%';SND.open();wvSpeak(sc.v)}
+ for(const [j,b] of [...document.querySelectorAll('.wvprog b')].entries())b.style.width=j<i?'100%':'0%';SND.open();wvVoice(i,sc.v)}
 function wvTick(ts){if(!wv||!wv.play)return;const dt=wv.last?ts-wv.last:0;wv.last=ts;wv.t+=dt;const sc=WV[wv.i];
  const b=document.querySelectorAll('.wvprog b')[wv.i];if(b)b.style.width=Math.min(100,wv.t/sc.d*100)+'%';
  const step=Math.floor(wv.t/400);if(step!==wv.arp){wv.arp=step;if(step%2===0)SND.arp(step/2)}
  if(wv.t>=sc.d){if(wv.i<WV.length-1)wvScene(wv.i+1);else{wvEnd(true);return}}wv.raf=requestAnimationFrame(wvTick)}
 function wvPlay(){wv.play=true;wv.last=0;$('#wv').classList.remove('paused');const pp=document.querySelector('[data-wv="pp"]');if(pp)pp.textContent='❚❚';if(!wv.pad)wv.pad=SND.pad();wv.raf=requestAnimationFrame(wvTick)}
-function wvPause(){wv.play=false;cancelAnimationFrame(wv.raf);$('#wv').classList.add('paused');const pp=document.querySelector('[data-wv="pp"]');if(pp)pp.textContent='▶';try{speechSynthesis.cancel()}catch(e){}}
-function wvEnd(toQuiz){if(!wv)return;wv.play=false;cancelAnimationFrame(wv.raf);if(wv.pad)wv.pad.stop();try{speechSynthesis.cancel()}catch(e){}const auto=wv.auto;wv=null;$('#wv').hidden=true;S.intro=1;save();
+function wvPause(){wv.play=false;cancelAnimationFrame(wv.raf);$('#wv').classList.add('paused');const pp=document.querySelector('[data-wv="pp"]');if(pp)pp.textContent='▶';try{speechSynthesis.cancel()}catch(e){}if(wvAud)wvAud.pause()}
+function wvEnd(toQuiz){if(!wv)return;wv.play=false;cancelAnimationFrame(wv.raf);if(wv.pad)wv.pad.stop();try{speechSynthesis.cancel()}catch(e){}if(wvAud)wvAud.pause();const auto=wv.auto;wv=null;$('#wv').hidden=true;S.intro=1;save();
  if(auto||toQuiz){if(!S.setup||toQuiz)openOb()}}
 $('#wv').addEventListener('click',e=>{const b=e.target.closest('[data-wv]');if(!b||!wv)return;const a=b.dataset.wv;
  if(a==='play'){SND.unlock();wvScene(0);wvPlay()}

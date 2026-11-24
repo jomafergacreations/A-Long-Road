@@ -1,6 +1,6 @@
 // Service worker: la app funciona sin conexión.
 // Sube VERSION cada vez que cambies index.html para que la tablet coja la versión nueva.
-const VERSION = 'alr-v12';
+const VERSION = 'alr-v13';
 const SHELL = ['./', 'index.html', 'manifest.webmanifest', 'icons/icon.svg', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png', 'leonida.webp'];
 
 self.addEventListener('install', e => {
@@ -19,7 +19,7 @@ self.addEventListener('fetch', e => {
   const url = new URL(req.url);
   // Página: primero la red (para coger cambios), si no hay conexión, la copia guardada.
   if (req.mode === 'navigate') {
-    e.respondWith(fetch(req).then(r => { caches.open(VERSION).then(c => c.put('index.html', r.clone())); return r; })
+    e.respondWith(fetch(req, { cache: 'no-store' }).then(r => { caches.open(VERSION).then(c => c.put('index.html', r.clone())); return r; })
       .catch(() => caches.match('index.html')));
     return;
   }

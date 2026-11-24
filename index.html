@@ -399,6 +399,12 @@ details.mw ol{margin:6px 0 4px;padding-left:22px;line-height:1.5}details.mw li{m
 .cfin h3{margin:0 0 8px;font-size:24px}.cfin p{margin:0 0 14px;line-height:1.5}
 .cfok{display:flex;gap:10px;align-items:center;font-weight:700;padding:12px 14px;border-radius:14px;background:color-mix(in srgb,var(--pink) 10%,var(--card));cursor:pointer;min-height:52px}
 .cfb{display:flex;justify-content:flex-end;gap:10px;margin-top:14px}.cfb .chip{min-height:48px;padding:0 18px}.cfb .chip[disabled]{opacity:.4;pointer-events:none}
+.obname{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:10px 0 4px;color:#e2d6f2;font-weight:700}
+.obname input{flex:1;min-width:200px;max-width:360px;font:inherit;font-size:18px;padding:12px 16px;border-radius:14px;border:1.5px solid #ffffff40;background:#ffffff12;color:#fff;min-height:52px}
+.obname input::placeholder{color:#cbbbe399}
+.hello{font-weight:800;font-size:clamp(16px,2vw,20px);color:var(--gold);margin-bottom:2px}
+.cftype{display:grid;gap:6px;margin-top:10px;font-size:14.5px}.cftype input{font:inherit;font-size:17px;padding:11px 14px;border-radius:12px;border:2px solid var(--line);background:var(--bg);color:var(--ink);letter-spacing:.1em;min-height:48px}
+.chip.danger{border-color:color-mix(in srgb,#e5484d 55%,var(--line));color:#e5484d}.chip.hot.danger{background:#e5484d;color:#fff;border-color:#e5484d}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -415,7 +421,7 @@ details.mw ol{margin:6px 0 4px;padding-left:22px;line-height:1.5}details.mw li{m
 </header>
 <div class="content">
  <main id="view"></main>
- <footer>Datos recopilados de guías publicadas tras el lanzamiento (19/11/2026): PowerPyx, Timesaver, Dexerto, GamerTweak y TechNerdiness. Algunas listas aún se están verificando; donde hay dudas lo indico. El % pesa igual los 35 requisitos; el juego puede ponderarlos distinto.</footer>
+ <footer><button class="chip danger" data-reset="1" style="margin:0 0 10px">↺ Restablecer app</button><br>Versión 13 · 24/11/2026. Datos recopilados de guías publicadas tras el lanzamiento (19/11/2026): PowerPyx, Timesaver, Dexerto, GamerTweak y TechNerdiness. Algunas listas aún se están verificando; donde hay dudas lo indico. El % pesa igual los 35 requisitos; el juego puede ponderarlos distinto.</footer>
 </div>
 <div class="save" id="save">Guardado</div>
 <div class="fx" id="fx" aria-hidden="true"></div>
@@ -1110,8 +1116,9 @@ function chConfirm(c){const es=ALL.filter(e=>e.c===c&&e.t!=='o'),full=es.every(e
 function chApply(c,mark){if(mark){for(const e of ALL)if(e.c<=c&&e.t!=='o')S.done[e.k]=true;syncTro()}
  else{for(const e of ALL)if(e.c>=c)delete S.done[e.k];for(const [ti,k] of Object.entries(STORY_TRO))if(!S.done[k])delete S.done['t'+ti]}
  S.hc=S.hc||{};S.hc[c]=1;save();render();header();tabs();if(mark){celebrate(`[data-hk="${c}"]`,30)}else flash('Capítulo desmarcado')}
-$('#cf').addEventListener('change',e=>{if(e.target.id==='cfck'){const b=$('#cf').querySelector('[data-c]');b.disabled=!e.target.checked}});
-$('#cf').addEventListener('click',e=>{const b=e.target.closest('[data-cf]');if(!b&&e.target.id==='cf'){$('#cf').hidden=true;return}if(!b)return;const a=b.dataset.cf;$('#cf').hidden=true;if(a==='do')chApply(+b.dataset.c,true);else if(a==='un')chApply(+b.dataset.c,false)});
+$('#cf').addEventListener('change',e=>{if(e.target.id==='cfck'){if($('#cftx')){resetOk();return}const b=$('#cf').querySelector('[data-c]');b.disabled=!e.target.checked}});
+$('#cf').addEventListener('input',e=>{if(e.target.id==='cftx')resetOk()});
+$('#cf').addEventListener('click',e=>{const b=e.target.closest('[data-cf]');if(!b&&e.target.id==='cf'){$('#cf').hidden=true;return}if(!b)return;const a=b.dataset.cf;$('#cf').hidden=true;if(a==='do')chApply(+b.dataset.c,true);else if(a==='un')chApply(+b.dataset.c,false);else if(a==='reset')resetAll()});
 
 const sfk=id=>'sf:'+id;
 function vSec(){const cc=curChapter(),strands=SFX.filter(g=>g.y==='y'&&g.l.every(m=>S.done[sfk(m[0])])).length,tot=SF_ALL.length,dn=SF_ALL.filter(id=>S.done[sfk(id)]).length;
@@ -1199,7 +1206,7 @@ function applyPoint(ch,sel){const before=new Set(Object.keys(S.done).filter(k=>S
  S.setup=1;save();return{m,t,ch}}
 function obRow(e,inH){const on=ob.sel.has(e.k);return `<button data-ok="${e.k}" class="${on?'on':''}" aria-pressed="${on}"><i class="obck"></i><span class="obtx"><b>${esc(e.es)}</b>${S.orig?`<small>${esc(e.en)}</small>`:''}${dsc(e)?`<em>${esc(dsc(e))}</em>`:''}<span>${stTags(e,inH)}${mtag(e)}</span></span></button>`}
 function obRender(){const o=$('#ob');let h='';
- if(ob.step==='ch'){h=`<h2 id="obt">¿Por dónde vas?</h2><p class="sub">Elige dónde estás ahora en el juego. Después te haré unas pocas preguntas de sí o no para encontrar tu misión exacta, sin enseñarte lo que viene después.</p>
+ if(ob.step==='ch'){h=`<h2 id="obt">${S.name?`${esc(S.name)}, ¿por dónde vas?`:'¿Por dónde vas?'}</h2><label class="obname"><span>¿Cómo te llamas?</span><input id="obnm" type="text" maxlength="24" autocomplete="given-name" placeholder="Tu nombre" value="${esc(S.name||'')}"></label><p class="sub">Elige dónde estás ahora en el juego. Después te haré unas pocas preguntas de sí o no para encontrar tu misión exacta, sin enseñarte lo que viene después.</p>
   <div class="obgrid"><button data-oc="-1" style="--i:0"><b>Empezando</b><small>Aún no he jugado ninguna misión</small></button>${ST.map((l,i)=>`<button data-oc="${i}" style="--i:${i+1}"><b>Capítulo ${i+1}</b><small>${CH_HINT[i]}</small></button>`).join('')}<button data-oc="5" style="--i:6"><b>Terminada</b><small>Ya vi los créditos</small></button></div>
   <div class="obbar"><button class="chip" data-ob="skip">Ahora no</button></div>`}
  else if(ob.step==='quiz'){h=qzRender()}
@@ -1209,12 +1216,13 @@ function obRender(){const o=$('#ob');let h='';
    return `<div class="obheist"><div class="obhh"><span class="hring" style="--p:${d/l.length*100}%"><b>${d}/${l.length}</b></span><span><b>${HEISTS[e.h][0]}</b><small>Toca el último paso que hayas hecho</small></span></div><div class="obhl">${l.map(x=>obRow(x,true)).join('')}</div></div>`}).join('')})()}</div>
   <div class="obbar obsticky"><button class="chip" data-ob="back">Volver</button><span class="obn">${n} de ${es.length} hechas</span><button class="chip hot" data-ob="ok">Guardar mi punto</button></div>`}
  else{const r=ob.res,fin=r.ch>=5,start=r.ch<0;
-  h=`<h2 id="obt">${fin?'Historia completada':start?'Que empiece el viaje':'Listo'}</h2>
+  h=`<h2 id="obt">${fin?'Historia completada':start?'Que empiece el viaje':'Listo'}${S.name?', '+esc(S.name):''}</h2>
   <p class="sub">${start?'No había nada que marcar todavía. ':`He marcado <b>${r.m}</b> misiones y tareas, y <b>${r.t}</b> trofeos de historia que ya tenías asegurados. `}${(()=>{const q=remaining();return q.tot?`Te quedan <b>${q.tot}</b> misiones principales (${q.ch} en este capítulo). `:''})()}Robos, coleccionables y actividades dependen de lo que hayas hecho tú: actualízalos en el checklist con las cifras de Progreso › Estadísticas.</p>
   <div class="obbar"><button class="chip hot" data-ob="go">Empezar</button><button class="chip" data-ob="back0">Corregir</button></div>`}
  const keep=o.querySelector('.oblist')?o.scrollTop:0;o.innerHTML=`<div class="obin">${h}</div>`;if(ob.step==='mis')o.scrollTop=keep}
 function openOb(){ob={step:'ch',ch:0,sel:new Set(),res:null,guess:null};obRender();$('#ob').hidden=false;$('#ob').scrollTop=0}
 function closeOb(){$('#ob').hidden=true}
+$('#ob').addEventListener('input',e=>{if(e.target.id==='obnm'){S.name=e.target.value.trim().slice(0,24);save()}});
 $('#ob').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
  if(b.dataset.oc!=null){const c=+b.dataset.oc;
   if(c===-1){for(const x of ALL)delete S.done[x.k];ob.res=applyPoint(-1,new Set());ob.res.ch=-1;ob.step='ok';obRender();render()}
@@ -1282,7 +1290,7 @@ function wvOpen(auto){const o=$('#wv');wv={i:-1,t:0,auto,play:false,raf:0,last:0
  o.innerHTML=`<div class="wvin"><div class="wvstage" id="wvs"><div class="wvstart"><div class="wvlogo sm"></div><h2>Vídeo de bienvenida</h2><p>45 segundos para ver todo lo que puede hacer la app.</p><button class="chip hot wvplay" data-wv="play">▶ Reproducir</button></div></div>
   <div class="wvcap" id="wvcap"></div><div class="wvbar"><button class="wvb" data-wv="pp" aria-label="Pausa">❚❚</button><div class="wvprog">${WV.map(()=>'<i><b></b></i>').join('')}</div><button class="wvb" data-wv="voz" aria-label="Narración">${S.voz===0?'🔇':'🔊'}</button><button class="chip" data-wv="skip">Saltar</button></div></div>`;
  o.hidden=false}
-function wvScene(i){wv.i=i;wv.t=0;const sc=WV[i],st=$('#wvs');st.innerHTML=`<div class="wvsc"><div class="wvvis">${sc.h}</div><h3>${sc.t}</h3><p>${sc.s}</p></div>`;$('#wvcap').textContent=sc.s;
+function wvScene(i){wv.i=i;wv.t=0;const sc=WV[i],st=$('#wvs');if(i===0&&S.name){sc._t=sc._t||sc.t;sc.t=`Bienvenido, ${S.name}`;sc._v=sc._v||sc.v;sc.v=`Hola, ${S.name}. `+sc._v}st.innerHTML=`<div class="wvsc"><div class="wvvis">${sc.h}</div><h3>${sc.t}</h3><p>${sc.s}</p></div>`;$('#wvcap').textContent=sc.s;
  for(const [j,b] of [...document.querySelectorAll('.wvprog b')].entries())b.style.width=j<i?'100%':'0%';SND.open();wvSpeak(sc.v)}
 function wvTick(ts){if(!wv||!wv.play)return;const dt=wv.last?ts-wv.last:0;wv.last=ts;wv.t+=dt;const sc=WV[wv.i];
  const b=document.querySelectorAll('.wvprog b')[wv.i];if(b)b.style.width=Math.min(100,wv.t/sc.d*100)+'%';
@@ -1310,11 +1318,20 @@ function qzRender(){const q=ob.qz,m=q.ms[qzMid()];return `<h2 id="obt">Capítulo
  <div class="obbar"><button class="chip" data-ob="back">Volver</button><button class="chip" data-qz="list">Prefiero marcarlo en la lista</button></div>`}
 function remaining(){const rest=ALL.filter(e=>e.t==='m'&&!S.done[e.k]);const n=nextEntry();return{tot:rest.length,ch:n?rest.filter(e=>e.c===n.c).length:0,chs:n?new Set(rest.map(e=>e.c)).size:0}}
 
+function hola(){const h=new Date().getHours();return h<6?'Buenas noches':h<13?'Buenos días':h<21?'Buenas tardes':'Buenas noches'}
+function resetAsk(){const o=$('#cf');o.innerHTML=`<div class="cfin"><h3 id="cft">¿Restablecer la app?</h3><p>Se borrará <b>todo</b> lo guardado${docRef?' en este dispositivo y en tu cuenta':' en este dispositivo'}: misiones, tareas, checklist, guías, trofeos, desafíos, armas, notas, tu nombre y ajustes. La app quedará como recién instalada, para empezar una partida nueva. No se puede deshacer.</p>
+ <label class="cfok"><input type="checkbox" class="ck" id="cfck"> Entiendo que se borra todo</label><label class="cftype">Escribe <b>BORRAR</b> para confirmar<input id="cftx" type="text" autocomplete="off" autocapitalize="characters"></label>
+ <div class="cfb"><button class="chip" data-cf="no">Cancelar</button><button class="chip hot danger" data-cf="reset" data-c="r" disabled>Restablecer</button></div></div>`;o.hidden=false;SND.open()}
+function resetOk(){const b=$('#cf').querySelector('[data-cf="reset"]');if(b)b.disabled=!($('#cfck')&&$('#cfck').checked&&($('#cftx').value||'').trim().toUpperCase()==='BORRAR')}
+async function resetAll(){clearTimeout(timer);S={v:1,ts:Date.now(),req:{},done:{},notes:'',spoil:true};try{localStorage.removeItem(LS)}catch(e){}
+ if(docRef){try{await docRef.set(JSON.parse(JSON.stringify(S)))}catch(e){}}MV.init=false;mapOff.clear();mapHide=false;mapSel=-1;
+ location.hash='#inicio';render();header();tabs();flash('App restablecida');setTimeout(()=>wvOpen(true),400)}
+document.addEventListener('click',e=>{if(e.target.closest('[data-reset]'))resetAsk()});
 /* ---------- RECORRIDO EN INICIO ---------- */
 function roadStrip(){const tot=ALL.filter(e=>e.t==='m').length;const per=ST.map((l,c)=>{const ms=ALL.filter(e=>e.c===c&&e.t==='m');return{c,n:ms.length,d:ms.filter(e=>S.done[e.k]).length}});const r=remaining(),done=tot-r.tot,pc=done/tot*100;
  return `<section class="hcard road"><h3>Tu recorrido</h3><div class="roadline">${per.map(p=>`<div class="seg" style="flex:${p.n}"><i style="width:${p.n?p.d/p.n*100:0}%"></i><span>Cap. ${p.c+1}</span></div>`).join('')}<b class="car" style="left:${pc}%" aria-hidden="true">🏁</b></div>
  <p>${r.tot?`Te quedan <b>${r.tot}</b> misiones principales: <b>${r.ch}</b> en este capítulo${r.chs>1?` y ${r.chs-1} capítulo${r.chs>2?'s':''} más`:''}.`:'Has terminado todas las misiones principales.'}</p>
- <div class="acts"><button class="chip" data-intro="1">▶ Vídeo de bienvenida</button><button class="chip" id="where">Cuestionario: ¿por dónde voy?</button><button class="chip" data-snd="1">${S.snd===0?'🔇 Sonidos desactivados':'🔊 Sonidos activados'}</button></div></section>`}
+ <div class="acts"><button class="chip" data-intro="1">▶ Vídeo de bienvenida</button><button class="chip" id="where">Cuestionario: ¿por dónde voy?</button><button class="chip" data-snd="1">${S.snd===0?'🔇 Sonidos desactivados':'🔊 Sonidos activados'}</button><button class="chip danger" data-reset="1">↺ Restablecer app</button></div></section>`}
 
 /* ---------- INICIO ---------- */
 const PNR={'Tourist Trap':1,'Checking Out':1};
@@ -1323,7 +1340,7 @@ function countUp(){if(RM)return;for(const el of document.querySelectorAll('[data
 function vInicio(){const o=overall(),n=nextEntry(),cc=curChapter(),ch=Math.min(cc,4),tro=TRO.filter((t,i)=>S.done['t'+i]).length;
  const st=[[o.d,'/35','requisitos','checklist'],[misDone(),'/'+misTot,'misiones','historia'],[GUIDE.reduce((a,g)=>a+guideDone(g),0),'/'+GUIDE.reduce((a,g)=>a+g.l.length,0),'en guías','guias'],[tro,'/55','trofeos','trofeos']];
  let h=`<div class="home"><section class="hero2"><div class="sun" aria-hidden="true"><svg viewBox="0 0 200 200"><defs><linearGradient id="sg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff0a8"/><stop offset=".35" stop-color="#ffc94a"/><stop offset=".75" stop-color="#ff6a4d"/><stop offset="1" stop-color="#ff3f7f"/></linearGradient><clipPath id="sc"><circle cx="100" cy="100" r="92"/></clipPath></defs><circle cx="100" cy="100" r="92" fill="url(#sg)" opacity=".16"/><rect id="sunfill" x="0" y="192" width="200" height="0" fill="url(#sg)" clip-path="url(#sc)"/><g fill="#c42a78" clip-path="url(#sc)"><rect y="118" width="200" height="4"/><rect y="134" width="200" height="6"/><rect y="152" width="200" height="8"/><rect y="172" width="200" height="10"/></g><circle cx="100" cy="100" r="92" fill="none" stroke="#ffffff38" stroke-width="2"/></svg><div class="pct"><span id="pct">0%</span><small id="pcts"></small></div></div>
-  <div><h1>GTA VI <span>al 100%</span></h1><p>${n?`Vas por el <b>capítulo ${n.c+1}</b>${n.c<5?' · '+CHT[n.c][0]:''}. ${o.d} de 35 requisitos del trofeo <b>Un largo camino</b>.`:'Historia terminada. Ahora, a por el 100% en juego libre.'}</p>
+  <div>${S.name?`<div class="hello">${hola()}, ${esc(S.name)}</div>`:''}<h1>GTA VI <span>al 100%</span></h1><p>${n?`Vas por el <b>capítulo ${n.c+1}</b>${n.c<5?' · '+CHT[n.c][0]:''}. ${o.d} de 35 requisitos del trofeo <b>Un largo camino</b>.`:'Historia terminada. Ahora, a por el 100% en juego libre.'}</p>
   <div class="stats">${st.map(([v,t,l,href])=>`<a href="#${href}"><b><span data-cu="${v}">${v}</span>${t}</b><small>${l}</small></a>`).join('')}</div></div></section>`;
  h+=roadStrip();
  // siguiente paso

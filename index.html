@@ -441,6 +441,9 @@ details.mw ol{margin:6px 0 4px;padding-left:22px;line-height:1.5}details.mw li{m
 .sw input:focus-visible+i{outline:3px solid var(--pink);outline-offset:2px}
 .vol{display:flex;align-items:center;gap:12px;padding:0 4px 12px;font-size:14px;font-weight:600;color:var(--mut)}.vol input{flex:1;accent-color:var(--pink);height:30px}.vol.off{opacity:.4;pointer-events:none}
 .setl{display:grid;gap:6px;border-top:1px solid var(--line);padding-top:12px}.setl button{text-align:left;font:inherit;font-weight:700;font-size:14.5px;border:0;background:color-mix(in srgb,var(--ink) 5%,transparent);color:var(--ink);border-radius:12px;padding:11px 12px;cursor:pointer;min-height:46px}.setl .danger{color:#e5484d}
+.qzclue{margin:10px 0 12px;padding:12px 14px;border-radius:16px;background:linear-gradient(90deg,#ffb3471f,#ff3f7f1a);border:1px solid #ffb34755}
+.qzclue span{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#ffd27a;margin-bottom:4px}
+.qzclue p{margin:0!important;color:#fff!important;font-size:18px!important;line-height:1.4}.qz .qzclue b{display:inline;font:inherit;font-weight:800;color:#ffd27a;margin:0}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -457,7 +460,7 @@ details.mw ol{margin:6px 0 4px;padding-left:22px;line-height:1.5}details.mw li{m
 </header>
 <div class="content">
  <main id="view"></main>
- <footer><button class="chip danger" data-reset="1" style="margin:0 0 10px">↺ Restablecer app</button><br>Versión 16 · 24/11/2026. Datos recopilados de guías publicadas tras el lanzamiento (19/11/2026): PowerPyx, Timesaver, Dexerto, GamerTweak y TechNerdiness. Algunas listas aún se están verificando; donde hay dudas lo indico. El % pesa igual los 35 requisitos; el juego puede ponderarlos distinto.</footer>
+ <footer><button class="chip danger" data-reset="1" style="margin:0 0 10px">↺ Restablecer app</button><br>Versión 17 · 24/11/2026. Datos recopilados de guías publicadas tras el lanzamiento (19/11/2026): PowerPyx, Timesaver, Dexerto, GamerTweak y TechNerdiness. Algunas listas aún se están verificando; donde hay dudas lo indico. El % pesa igual los 35 requisitos; el juego puede ponderarlos distinto.</footer>
 </div>
 <div class="save" id="save">Guardado</div>
 <div class="fx" id="fx" aria-hidden="true"></div>
@@ -1396,13 +1399,107 @@ $('#wv').addEventListener('click',e=>{const b=e.target.closest('[data-wv]');if(!
 
 /* ---------- CUESTIONARIO PARA UBICARTE ---------- */
 const CH_HINT=['Vives en Cayo Lento y haces encargos para Brian','Estás escondido en el motel Starlet de Port Gellhorn','Vives en el piso de Bayside, en Vice City','Vives en Ocean Beach','La recta final de la historia'];
+/* Pistas mínimas para el cuestionario: quién juega y un detalle vago, sin nombres nuevos ni giros */
+const QHINT={
+ 'Prologue':'Con Lucía, nada más empezar la partida.',
+ 'Gone Fishing':'Con Jason, la primera vez que lo controlas. Hay barcas de por medio.',
+ 'Gear Up':'Con Jason, de compras en una tienda de armas.',
+ 'Unwanted Attention':'Con Jason y un amigo suyo, recuperando un coche.',
+ 'Pipework':'Con Jason, cobrando un alquiler que acaba en chapuza doméstica.',
+ 'Lab Fees':'Con Jason, cobrando un alquiler en una tienda.',
+ 'Just a Scratch':'Con Jason, en un taller mecánico.',
+ 'Hey Arnold!':'Con Jason, buscando a alguien que no contesta al teléfono.',
+ 'Island Dreams':'Con Jason, bajo el agua.',
+ 'Feng Shui':'Con Jason, en casa, cambiando cosas de sitio.',
+ 'Coming Home':'Con Jason, recogiendo a alguien en coche.',
+ 'Clean Up After Donnie':'Con Jason, buscando algo que se perdió.',
+ 'Buck Me':'Con Jason, de papeleo en un banco.',
+ 'Down to Earth':'Con Jason, un encargo que empieza en el puerto.',
+ 'Day Release':'Con los dos, un día de fiesta.',
+ 'Clear Skies':'Con Jason, un trabajo que empieza en un aeródromo.',
+ 'Swamped':'Con Jason, un encargo por zona de pantanos.',
+ 'Don Gone':'Con Jason, limpiando una caravana.',
+ 'Recalibration':'Con Jason, una tarde tranquila con un amigo.',
+ 'Tourist Trap':'Con los dos, un trabajo que parece sencillo.',
+ 'Home Sweet Home':'Con Lucía, de vuelta a casa a por cosas.',
+ 'Discharge Time':'Con Lucía, en un hospital. Cierra el capítulo.',
+ "What's in the Bag?":'Con Lucía, en una habitación de motel.',
+ 'Ambulance Chaser':'Con Lucía, deshaciéndote de un vehículo.',
+ 'Just Moved In':'Con Lucía, comprando cosas básicas.',
+ "Girls' Trip":'Con Lucía, buscando algo para Jason.',
+ 'Moses':'Con Lucía, llevando un coche a un mecánico.',
+ 'Daily Driver':'Con Lucía, recuperando un coche para alguien.',
+ 'Slam Dunk':'Con Lucía, visitando una caravana.',
+ 'Breakfast Run':'Con Lucía, volviendo a ver cómo está Jason.',
+ 'Coffee Break':'Con los dos, haciendo planes delante de un café.',
+ 'Afternoon Delight':'Con los dos, un golpe por la tarde.',
+ 'Checking Out':'Con los dos, haciendo las maletas. Cierra el capítulo.',
+ 'Welcome to Vice City':'Con los dos, al llegar a la gran ciudad.',
+ "Dealer's Choice":'Con Jason, un favor a cambio de un sitio donde vivir.',
+ 'Meet the Heders':'Con los dos, una cena en pareja con conocidos.',
+ 'Dubious Provenance':'Con los dos, enseñando un objeto a un experto.',
+ 'Mami Knows Best':'Con Lucía, un reencuentro familiar.',
+ 'South Leonida Real Estate':'Con Lucía, otra visita familiar que se complica.',
+ 'Tyrone':'Con Jason, una reunión corta.',
+ 'Here, Kitty Kitty':'Con Jason, buscando a una persona por la ciudad.',
+ 'Car Service':'Con Lucía, robando un coche por encargo.',
+ 'Top Billing':'Con los dos, una noche de concierto.',
+ 'Boobie Time':'Con Jason, haciendo de chófer.',
+ 'First Impressions':'Con los dos, conociendo a un contacto nuevo.',
+ 'Caught Slipping':'Con los dos, al volver a casa.',
+ 'Crosstown Traffic':'Con los dos, cada uno por su lado.',
+ 'Credit Check':'Con los dos, conociendo a un equipo.',
+ "Clonin' Keys, Makin' GS":'Con los dos, un coche de lujo por encargo.',
+ 'Sinfrontera National Bank':'Con los dos, observando un edificio.',
+ 'Security Expert':'Con los dos, buscando a alguien con un talento útil.',
+ 'Ride or Die':'Con Jason, echando una mano a un amigo.',
+ 'Company Property':'Con los dos, una entrega con vehículos de por medio.',
+ 'The Missing Link':'Con Lucía, siguiendo una pista.',
+ 'Safe Word':'Con los dos, practicando algo que hará falta más adelante.',
+ 'Cooties':'Con Lucía, en un rodaje.',
+ 'Bricked Up':'Con los dos, un recado para un conocido.',
+ 'Hidden Charges':'Con los dos, últimos preparativos.',
+ 'The Cartel Heist':'Con los dos, el gran momento del capítulo. Lo cierra.',
+ 'Ocean Beach':'Con los dos, estrenando casa.',
+ 'Another Life':'Con Lucía, un momento personal.',
+ 'Company Cars':'Con los dos, consiguiendo coches.',
+ 'Lawyer Up':'Con los dos, una cita con un profesional.',
+ 'Party Hard':'Con los dos, trabajando en una fiesta.',
+ 'Heavy Lifting':'Con los dos, una entrega.',
+ 'Photo/Shoot':'Con los dos, delante de una cámara.',
+ 'Making Gainz':'Con Lucía, conociendo a alguien.',
+ 'Watch It':'Con Jason, visitando un local nocturno.',
+ 'Cash Injections':'Con Lucía, ayudando a un conocido.',
+ 'Amateur Hour':'Con Lucía, ayudando a alguien con un problema de trabajo.',
+ 'Dirty Work':'Con los dos, un trabajo poco limpio.',
+ 'Too Much Baggage':'Con Jason, entre maletas.',
+ 'Adventures in Babysitting':'Con Jason, de seguridad en un local.',
+ 'Fresh Evidence':'Con Jason, buscando material comprometedor.',
+ 'Power Play':'Con Lucía, haciendo favores a cambio de información.',
+ "Child's Play":'Con los dos, ayudando a un conocido.',
+ 'Headliners':'Con los dos, una fiesta con música en directo.',
+ 'Close Surveillance':'Con Jason, vigilando desde el aire.',
+ 'Delivery Method':'Con Jason, infiltrándose en un sitio.',
+ 'Team Building':'Con Lucía, demostrando lo que vale.',
+ 'Fully Catered':'Con los dos, un vehículo de comida.',
+ 'VCIA Takedown':'Con los dos, el gran momento del capítulo.',
+ 'Sunset':'Con los dos, buscando respuestas.',
+ 'Starting From Zero':'La última misión del capítulo 4.',
+ 'Bird in the Hand':'La primera misión del último capítulo.',
+ 'Taking Liberties':'Segunda misión del último capítulo.',
+ 'VC Baby':'Una charla pendiente en el último capítulo.',
+ 'Doggie Bag':'Una visita en el último capítulo.',
+ 'Operation Savage Glory':'Recuperar algo, en el último capítulo.',
+ 'Protective Custody':'Una cita con alguien de confianza.',
+ 'The End of the Road':'La misión final de la historia.'
+};
 function qzStart(ch){const ms=ALL.filter(e=>e.c===ch&&e.t==='m');ob.qz={ch,ms,lo:0,hi:ms.length,n:0,max:Math.ceil(Math.log2(ms.length+1))};ob.step='quiz'}
 function fogClear(i){const c=$('#ob').querySelectorAll('.chq')[i];ob.anim=null;if(!c)return;c.classList.add('just');requestAnimationFrame(()=>requestAnimationFrame(()=>c.classList.add('clear')))}
 function qzMid(){const q=ob.qz;return Math.floor((q.lo+q.hi)/2)}
 function qzDone(){const q=ob.qz,es=ALL.filter(e=>e.c===q.ch);const sel=new Set();if(q.lo>0){const last=q.ms[q.lo-1],li=es.findIndex(e=>e.k===last.k);for(let j=0;j<=li;j++)if(es[j].t!=='o')sel.add(es[j].k)}
  ob.ch=q.ch;ob.sel=sel;ob.guess=q.ms[q.lo]||null;ob.step='mis'}
 function qzRender(){const q=ob.qz,m=q.ms[qzMid()];return `<h2 id="obt">Capítulo ${q.ch+1}</h2><p class="sub">Pregunta ${q.n+1} de ${q.max} como mucho. Solo te pregunto por misiones que ya habrías jugado o estás a punto de jugar.</p>
- <div class="qz"><div class="qzbar"><i style="width:${q.n/q.max*100}%"></i></div><small>¿Has completado esta misión?</small><div class="qzfog${ob.qzShow?' clear':''}"><b>«${esc(m.es)}»</b><p>${esc(dsc(m))}</p><span class="mist" aria-hidden="true"></span>${ob.qzShow?'':`<button class="qzrev" data-qzs="1">Despejar la niebla</button>`}</div><p class="qzhint">${ob.qzShow?'':'Puede ser una misión que aún no has jugado. Si quieres, despeja la niebla para verla; si crees que todavía no has llegado, pulsa «Todavía no».'}</p>
+ <div class="qz"><div class="qzbar"><i style="width:${q.n/q.max*100}%"></i></div><small>¿Has completado esta misión?</small><div class="qzclue"><span>Misión ${qzMid()+1} de ${q.ms.length} del capítulo</span><p><b>Pista:</b> ${esc(QHINT[m.en]||'Sin pista para esta misión.')}</p></div><div class="qzfog${ob.qzShow?' clear':''}"><b>«${esc(m.es)}»</b><p>${esc(dsc(m))}</p><span class="mist" aria-hidden="true"></span>${ob.qzShow?'':`<button class="qzrev" data-qzs="1">Despejar la niebla</button>`}</div><p class="qzhint">${ob.qzShow?'':'Con la pista suele bastar. Si dudas, despeja la niebla para ver el nombre (puede ser una misión que aún no has jugado).'}</p>
  <div class="qzb"><button class="chip hot" data-qz="1">Sí, ya la hice</button><button class="chip" data-qz="0">Todavía no</button></div></div>
  <div class="obbar"><button class="chip" data-ob="back">Volver</button><button class="chip" data-qz="list">Prefiero marcarlo en la lista</button></div>`}
 function remaining(){const rest=ALL.filter(e=>e.t==='m'&&!S.done[e.k]);const n=nextEntry();return{tot:rest.length,ch:n?rest.filter(e=>e.c===n.c).length:0,chs:n?new Set(rest.map(e=>e.c)).size:0}}

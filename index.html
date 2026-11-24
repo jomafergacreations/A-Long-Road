@@ -444,6 +444,19 @@ details.mw ol{margin:6px 0 4px;padding-left:22px;line-height:1.5}details.mw li{m
 .qzclue{margin:10px 0 12px;padding:12px 14px;border-radius:16px;background:linear-gradient(90deg,#ffb3471f,#ff3f7f1a);border:1px solid #ffb34755}
 .qzclue span{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#ffd27a;margin-bottom:4px}
 .qzclue p{margin:0!important;color:#fff!important;font-size:18px!important;line-height:1.4}.qz .qzclue b{display:inline;font:inherit;font-weight:800;color:#ffd27a;margin:0}
+.qpl{display:grid;gap:8px;margin:16px 0 90px}
+.qp0{font:inherit;font-weight:700;text-align:left;color:#e2d6f2;background:#ffffff0a;border:1.5px dashed #ffffff33;border-radius:16px;padding:14px 16px;cursor:pointer;min-height:52px}.qp0.on{border-style:solid;border-color:#ffb347;color:#fff;background:#ffb34722}
+.qpc{position:relative;display:flex;align-items:stretch;gap:6px;border-radius:18px;background:#ffffff0d;border:1.5px solid #ffffff22;transition:background .3s,border-color .3s}
+.qpc.done{background:#2fa34a1c;border-color:#2fa34a66}.qpc.last{border-color:#5fd47a;box-shadow:0 0 0 3px #5fd47a33}.qpc.nextm{border-color:#ffb347;box-shadow:0 0 0 3px #ffb34733}
+.qpb{flex:1;display:flex;align-items:center;gap:14px;text-align:left;font:inherit;color:#fff;background:none;border:0;padding:12px 14px;cursor:pointer;min-height:68px;border-radius:18px}
+.qpn{flex:none;width:36px;height:36px;border-radius:50%;display:grid;place-content:center;font:400 18px Anton,Impact,sans-serif;background:#ffffff1a;color:#ffd27a}
+.qpc.done .qpn{background:#2fa34a;color:#fff}
+.qpt{flex:1;display:grid;gap:4px;min-width:0}.qpt small{color:#e2d6f2;font-size:15px;line-height:1.35}
+.qpt .qzfog{padding:2px 6px;margin-left:-6px}.qpt .qzfog b{display:block;font:400 22px/1.15 Anton,Impact,sans-serif;color:#fff}
+.qpk{font-style:normal;font-weight:900;color:#5fd47a;font-size:20px}.qpb em{font-style:normal;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#1a0b2e;background:#ffb347;border-radius:99px;padding:4px 10px}
+.qrv{flex:none;align-self:center;margin-right:10px;font:inherit;font-size:13px;font-weight:700;color:#e2d6f2;background:#ffffff12;border:1px solid #ffffff33;border-radius:99px;padding:8px 12px;cursor:pointer;min-height:40px}
+.obbar .chip[disabled]{opacity:.4;pointer-events:none}
+.setcr{margin:-4px 4px 10px;font-size:12px;color:var(--mut);line-height:1.4}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -460,7 +473,7 @@ details.mw ol{margin:6px 0 4px;padding-left:22px;line-height:1.5}details.mw li{m
 </header>
 <div class="content">
  <main id="view"></main>
- <footer><button class="chip danger" data-reset="1" style="margin:0 0 10px">↺ Restablecer app</button><br>Versión 17 · 24/11/2026. Datos recopilados de guías publicadas tras el lanzamiento (19/11/2026): PowerPyx, Timesaver, Dexerto, GamerTweak y TechNerdiness. Algunas listas aún se están verificando; donde hay dudas lo indico. El % pesa igual los 35 requisitos; el juego puede ponderarlos distinto.</footer>
+ <footer><button class="chip danger" data-reset="1" style="margin:0 0 10px">↺ Restablecer app</button><br>Versión 18 · 24/11/2026. Datos recopilados de guías publicadas tras el lanzamiento (19/11/2026): PowerPyx, Timesaver, Dexerto, GamerTweak y TechNerdiness. Algunas listas aún se están verificando; donde hay dudas lo indico. El % pesa igual los 35 requisitos; el juego puede ponderarlos distinto.</footer>
 </div>
 <div class="save" id="save">Guardado</div>
 <div class="fx" id="fx" aria-hidden="true"></div>
@@ -1264,7 +1277,7 @@ function obRender(){const o=$('#ob');let h='';
   h=`<h2 id="obt">${fin?'Historia completada':start?'Que empiece el viaje':'Listo'}${S.name?', '+esc(S.name):''}</h2>
   <p class="sub">${start?'No había nada que marcar todavía. ':`He marcado <b>${r.m}</b> misiones y tareas, y <b>${r.t}</b> trofeos de historia que ya tenías asegurados. `}${(()=>{const q=remaining();return q.tot?`Te quedan <b>${q.tot}</b> misiones principales (${q.ch} en este capítulo). `:''})()}Robos, coleccionables y actividades dependen de lo que hayas hecho tú: actualízalos en el checklist con las cifras de Progreso › Estadísticas.</p>
   <div class="obbar"><button class="chip hot" data-ob="go">Empezar</button><button class="chip" data-ob="back0">Corregir</button></div>`}
- const keep=o.querySelector('.oblist')?o.scrollTop:0;o.innerHTML=`<div class="obin">${h}</div>`;if(ob.step==='mis')o.scrollTop=keep}
+ const keep=o.querySelector('.oblist,.qpl')?o.scrollTop:0;o.innerHTML=`<div class="obin">${h}</div>`;if(ob.step==='mis'||ob.step==='quiz')o.scrollTop=keep}
 function openOb(){ob={step:'ch',ch:0,sel:new Set(),res:null,guess:null,cq:0,rev:null};obRender();$('#ob').hidden=false;$('#ob').scrollTop=0}
 function closeOb(){$('#ob').hidden=true}
 $('#ob').addEventListener('input',e=>{if(e.target.id==='obnm'){S.name=e.target.value.trim().slice(0,24);save()}});
@@ -1275,8 +1288,9 @@ $('#ob').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)r
   else{qzStart(c);obRender();$('#ob').scrollTop=0}}
  else if(b.dataset.cq!=null){const i=ob.cq||0;if(b.dataset.cq==='1'){SND.check();if(i>=4){ob.res=applyPoint(5,new Set());ob.step='ok';obRender();render();burst(b,40);return}ob.cq=i+1;ob.anim=i;obRender();fogClear(i)}
   else{ob.rev=i;ob.anim=i;obRender();fogClear(i);SND.open();setTimeout(()=>{if(ob.step!=='ch')return;ob.rev=null;qzStart(i);obRender();$('#ob').scrollTop=0},1500)}}
- else if(b.dataset.qzs){ob.qzShow=true;obRender();SND.open()}
- else if(b.dataset.qz!=null){ob.qzShow=false;const q=ob.qz,v=b.dataset.qz;if(v==='list'){ob.ch=q.ch;ob.sel=new Set(ALL.filter(x=>x.c===q.ch&&S.done[x.k]).map(x=>x.k));ob.guess=null;ob.step='mis'}else{const m=qzMid();if(v==='1')q.lo=m+1;else q.hi=m;q.n++;if(q.lo>=q.hi)qzDone()}obRender();$('#ob').scrollTop=0}
+ else if(b.dataset.qp!=null){ob.qz.pick=+b.dataset.qp;obRender();SND.check()}
+ else if(b.dataset.qr!=null){ob.qz.rv.add(+b.dataset.qr);obRender();SND.open()}
+ else if(b.dataset.qz!=null){const q=ob.qz,v=b.dataset.qz;if(v==='list'){ob.ch=q.ch;ob.sel=new Set(ALL.filter(x=>x.c===q.ch&&S.done[x.k]).map(x=>x.k));ob.guess=null;ob.step='mis'}else if(v==='ok'&&q.pick!=null){q.lo=q.pick+1;qzDone()}obRender();$('#ob').scrollTop=0}
  else if(b.dataset.ok){const k=b.dataset.ok,es=ALL.filter(x=>x.c===ob.ch),i=es.findIndex(x=>x.k===k);
   if(ob.sel.has(k))ob.sel.delete(k);else{ob.sel.add(k);for(let j=0;j<i;j++)if(es[j].t!=='o')ob.sel.add(es[j].k)}obRender()}
  else if(b.dataset.ob==='ok'){ob.res=applyPoint(ob.ch,ob.sel);ob.step='ok';obRender();render();$('#ob').scrollTop=0;burst(b,30)}
@@ -1317,7 +1331,7 @@ addEventListener('hashchange',()=>SND.nav());
 {const _c=celebrate;celebrate=function(sel,n){if((n||0)>=20)SND.win();return _c(sel,n)}}
 
 /* ---------- MÚSICA DE FONDO (synthwave generada en directo, original) ---------- */
-const MUS=(()=>{let c=null,out=null,rev=null,on=false,timer=0,next=0,step=0,bar=0;
+const SYN=(()=>{let c=null,out=null,rev=null,on=false,timer=0,next=0,step=0,bar=0;
  const BPM=88,SPB=60/BPM/4; // semicorchea
  const N=m=>440*Math.pow(2,(m-69)/12);
  // progresiones (acordes en MIDI): Am F C G  /  Dm Am F E
@@ -1344,14 +1358,34 @@ const MUS=(()=>{let c=null,out=null,rev=null,on=false,timer=0,next=0,step=0,bar=
   vol(){return .9*Math.pow(S.mv==null?.5:S.mv,1.5)},
   setVol(){if(on&&c){out.gain.cancelScheduledValues(c.currentTime);out.gain.setTargetAtTime(api.vol(),c.currentTime,.1)}},
   get on(){return on}};
- document.addEventListener('visibilitychange',()=>{if(document.hidden)api.stop(.3);else if(S.mus!==0&&c)api.start()});
+ return api})();
+/* Pistas libres de derechos (CC0) de Alex McCulloch en OpenGameArt; si no cargan, suena la synthwave generada */
+const MUS=(()=>{const TR=[{u:'https://opengameart.org/sites/default/files/80s_song_mastered.mp3',t:'Synth Wave by Alex'},{u:'https://opengameart.org/sites/default/files/Synth%20Wave.mp3',t:'Synth Wave'}];
+ let a=null,g=null,mode=null,on=false,ti=0,fadeT=0;
+ function teardown(){if(a){try{a.pause()}catch(e){}a.removeAttribute('src');try{a.load()}catch(e){}}a=null;g=null}
+ function setup(cors){a=new Audio();a.preload='auto';a.loop=false;if(cors)a.crossOrigin='anonymous';a.src=TR[ti].u;
+  a.addEventListener('ended',()=>{ti=(ti+1)%TR.length;a.src=TR[ti].u;a.play().catch(()=>{})});
+  a.addEventListener('error',()=>{if(mode==='syn')return;if(cors){teardown();setup(false);if(on)play()}else{teardown();mode='syn';if(on)SYN.start()}});
+  if(cors){try{const c=SND.ctx();const src=c.createMediaElementSource(a);g=c.createGain();g.gain.value=0;src.connect(g);g.connect(SND.bus());mode='wa'}catch(e){g=null;mode='el'}}else mode='el';
+  if(mode==='el')a.volume=0}
+ function fade(to,sec){if(mode==='wa'&&g){const c=SND.ctx();g.gain.cancelScheduledValues(c.currentTime);g.gain.setValueAtTime(g.gain.value,c.currentTime);g.gain.linearRampToValueAtTime(to,c.currentTime+sec)}
+  else if(mode==='el'&&a){clearInterval(fadeT);const from=a.volume,t0=performance.now();fadeT=setInterval(()=>{const u=Math.min(1,(performance.now()-t0)/(sec*1000));a.volume=Math.max(0,Math.min(1,from+(to-from)*u));if(u>=1)clearInterval(fadeT)},50)}}
+ function play(){if(!a)return;a.play().then(()=>fade(api.vol(),2.5)).catch(()=>{})}
+ const api={
+  start(){if(S.mus===0)return;SND.unlock();if(on)return;on=true;if(mode==='syn'){SYN.start();return}if(!a)setup(true);play()},
+  stop(f=1){if(!on)return;on=false;if(mode==='syn'){SYN.stop(f);return}fade(0,f);setTimeout(()=>{if(!on&&a)a.pause()},f*1000+80)},
+  vol(){return Math.min(1,1.1*Math.pow(S.mv==null?.5:S.mv,1.5))},
+  setVol(){if(mode==='syn'){SYN.setVol();return}if(on)fade(api.vol(),.15)},
+  get on(){return on},get src(){return mode==='syn'?'syn':TR[ti].t}};
+ document.addEventListener('visibilitychange',()=>{if(document.hidden)api.stop(.3);else if(S.mus!==0&&a||mode==='syn')api.start()});
  document.addEventListener('pointerdown',()=>{if(S.mus!==0)api.start()},{capture:true});
  return api})();
 
 /* ---------- AJUSTES ---------- */
 function setRender(){const p=$('#setp');p.innerHTML=`<div class="setin"><div class="seth"><b>Ajustes</b><button class="setx" data-sp="close" aria-label="Cerrar">×</button></div>
- <label class="sw"><span><b>Música de fondo</b><small>Synthwave tranquila mientras usas la app</small></span><input type="checkbox" id="smus" ${S.mus!==0?'checked':''}><i></i></label>
+ <label class="sw"><span><b>Música de fondo</b><small>Synthwave ochentera mientras usas la app</small></span><input type="checkbox" id="smus" ${S.mus!==0?'checked':''}><i></i></label>
  <label class="vol${S.mus===0?' off':''}"><span>Volumen</span><input type="range" id="smv" min="0" max="1" step="0.05" value="${S.mv==null?.5:S.mv}"></label>
+ <p class="setcr">${MUS.src==='syn'?'Sin conexión: suena la synthwave generada por la app.':'Música: «Synth Wave by Alex» y «Synth Wave», de Alex McCulloch (licencia CC0, OpenGameArt).'}</p>
  <label class="sw"><span><b>Sonidos de la interfaz</b><small>Toques, desplegables y logros</small></span><input type="checkbox" id="ssnd" ${S.snd!==0?'checked':''}><i></i></label>
  <div class="setl"><button data-sp="intro">▶ Vídeo de bienvenida</button><button data-sp="quiz">Cuestionario: ¿por dónde voy?</button><button data-sp="reset" class="danger">↺ Restablecer app</button></div></div>`}
 function setOpen(v){const p=$('#setp');if(v){setRender();p.hidden=false;SND.open()}else{p.hidden=true}$('#setb').setAttribute('aria-expanded',!!v)}
@@ -1493,15 +1527,16 @@ const QHINT={
  'Protective Custody':'Una cita con alguien de confianza.',
  'The End of the Road':'La misión final de la historia.'
 };
-function qzStart(ch){const ms=ALL.filter(e=>e.c===ch&&e.t==='m');ob.qz={ch,ms,lo:0,hi:ms.length,n:0,max:Math.ceil(Math.log2(ms.length+1))};ob.step='quiz'}
+function qzStart(ch){const ms=ALL.filter(e=>e.c===ch&&e.t==='m');const dn=ms.map((e,i)=>S.done[e.k]?i:-1).filter(i=>i>=0);ob.qz={ch,ms,lo:0,hi:ms.length,pick:dn.length?Math.max(...dn):null,rv:new Set()};ob.step='quiz'}
 function fogClear(i){const c=$('#ob').querySelectorAll('.chq')[i];ob.anim=null;if(!c)return;c.classList.add('just');requestAnimationFrame(()=>requestAnimationFrame(()=>c.classList.add('clear')))}
 function qzMid(){const q=ob.qz;return Math.floor((q.lo+q.hi)/2)}
 function qzDone(){const q=ob.qz,es=ALL.filter(e=>e.c===q.ch);const sel=new Set();if(q.lo>0){const last=q.ms[q.lo-1],li=es.findIndex(e=>e.k===last.k);for(let j=0;j<=li;j++)if(es[j].t!=='o')sel.add(es[j].k)}
  ob.ch=q.ch;ob.sel=sel;ob.guess=q.ms[q.lo]||null;ob.step='mis'}
-function qzRender(){const q=ob.qz,m=q.ms[qzMid()];return `<h2 id="obt">Capítulo ${q.ch+1}</h2><p class="sub">Pregunta ${q.n+1} de ${q.max} como mucho. Solo te pregunto por misiones que ya habrías jugado o estás a punto de jugar.</p>
- <div class="qz"><div class="qzbar"><i style="width:${q.n/q.max*100}%"></i></div><small>¿Has completado esta misión?</small><div class="qzclue"><span>Misión ${qzMid()+1} de ${q.ms.length} del capítulo</span><p><b>Pista:</b> ${esc(QHINT[m.en]||'Sin pista para esta misión.')}</p></div><div class="qzfog${ob.qzShow?' clear':''}"><b>«${esc(m.es)}»</b><p>${esc(dsc(m))}</p><span class="mist" aria-hidden="true"></span>${ob.qzShow?'':`<button class="qzrev" data-qzs="1">Despejar la niebla</button>`}</div><p class="qzhint">${ob.qzShow?'':'Con la pista suele bastar. Si dudas, despeja la niebla para ver el nombre (puede ser una misión que aún no has jugado).'}</p>
- <div class="qzb"><button class="chip hot" data-qz="1">Sí, ya la hice</button><button class="chip" data-qz="0">Todavía no</button></div></div>
- <div class="obbar"><button class="chip" data-ob="back">Volver</button><button class="chip" data-qz="list">Prefiero marcarlo en la lista</button></div>`}
+function qzRender(){const q=ob.qz,pk=q.pick,rv=q.rv||new Set();
+ const card=(m,i)=>{const done=pk!=null&&i<=pk,clear=done||rv.has(i);return `<div class="qpc${done?' done':''}${pk===i?' last':''}${pk!=null&&i===pk+1?' nextm':''}"><button class="qpb" data-qp="${i}"><span class="qpn">${i+1}</span><span class="qpt"><small>${esc(QHINT[m.en]||'')}</small><span class="qzfog${clear?' clear':''}"><b>${esc(m.es)}</b><span class="mist" aria-hidden="true"></span></span></span>${done?'<i class="qpk">✓</i>':pk!=null&&i===pk+1?'<em>Siguiente</em>':''}</button>${clear?'':`<button class="qrv" data-qr="${i}" aria-label="Ver el nombre de la misión ${i+1}">Ver nombre</button>`}</div>`};
+ return `<h2 id="obt">Capítulo ${q.ch+1}</h2><p class="sub">Aquí tienes sus ${q.ms.length} misiones principales <b>en orden</b>, con el nombre bajo la niebla y una pista. Toca la <b>última que hayas completado</b>: las anteriores se despejan y se marcan.</p>
+ <div class="obbar" style="justify-content:flex-end;margin-top:-4px"><button class="chip" data-qz="list">Prefiero marcarlo en la lista completa</button></div><div class="qpl"><button class="qp0${pk===-1?' on':''}" data-qp="-1">Todavía no he hecho ninguna de este capítulo</button>${q.ms.map(card).join('')}</div>
+ <div class="obbar obsticky"><button class="chip" data-ob="back">Volver</button><span class="obn">${pk==null?'Toca tu última misión hecha':pk<0?'Empiezas por la misión 1':`Siguiente: misión ${pk+2>q.ms.length?'—':pk+2}`}</span><button class="chip hot" data-qz="ok" ${pk==null?'disabled':''}>Continuar</button></div>`}
 function remaining(){const rest=ALL.filter(e=>e.t==='m'&&!S.done[e.k]);const n=nextEntry();return{tot:rest.length,ch:n?rest.filter(e=>e.c===n.c).length:0,chs:n?new Set(rest.map(e=>e.c)).size:0}}
 
 function hola(){const h=new Date().getHours();return h<6?'Buenas noches':h<13?'Buenos días':h<21?'Buenas tardes':'Buenas noches'}

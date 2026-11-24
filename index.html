@@ -461,6 +461,16 @@ details.mw ol{margin:6px 0 4px;padding-left:22px;line-height:1.5}details.mw li{m
 .qpc.done,.qpc.last,.qpc.nextm{transition:background .5s,border-color .5s,box-shadow .5s}
 .qps:empty{display:none}.qrv[hidden]{display:none}
 .mst{display:flex;gap:6px;padding:0 4px 10px}.mst button{flex:1;font:inherit;font-weight:700;font-size:14px;border:2px solid var(--line);background:transparent;color:var(--ink);border-radius:12px;min-height:42px;cursor:pointer}.mst button.on{background:var(--ink);color:var(--card);border-color:var(--ink)}.mst.off{opacity:.4;pointer-events:none}
+.sp{position:relative}
+.row.sp::after,.spbox::after{content:"🌫 Spoiler · toca para verlo";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:12.5px;font-weight:800;letter-spacing:.02em;color:var(--ink);background:color-mix(in srgb,var(--card) 88%,transparent);border:1px solid var(--line);border-radius:99px;padding:6px 12px;pointer-events:none;white-space:nowrap;box-shadow:0 6px 16px -8px #0006}
+.spbox{cursor:pointer;min-height:70px}.spbox .nm,.spbox .ds{filter:blur(7px);user-select:none}
+.spok .nm,.spok .ds{transition:filter .9s ease}
+.spask{text-align:center}.spask .spico{font-size:42px;line-height:1;margin-bottom:6px}.spask .cfb{justify-content:center}
+.qpg{font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#ffd27a}
+.wvfog{display:block;filter:blur(7px);animation:wvfog 3s 1.2s ease-in-out infinite alternate}@keyframes wvfog{to{filter:blur(3px)}}
+.still,.still *{animation:none!important}
+.still .mist{animation:mist 6s ease-in-out infinite alternate!important}
+.still .mk button.cl.pop{animation:clpop .45s ease-out forwards!important}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -477,7 +487,7 @@ details.mw ol{margin:6px 0 4px;padding-left:22px;line-height:1.5}details.mw li{m
 </header>
 <div class="content">
  <main id="view"></main>
- <footer><button class="chip danger" data-reset="1" style="margin:0 0 10px">↺ Restablecer app</button><br>Versión 21 · 24/11/2026. Datos recopilados de guías publicadas tras el lanzamiento (19/11/2026): PowerPyx, Timesaver, Dexerto, GamerTweak y TechNerdiness. Algunas listas aún se están verificando; donde hay dudas lo indico. El % pesa igual los 35 requisitos; el juego puede ponderarlos distinto.</footer>
+ <footer><button class="chip danger" data-reset="1" style="margin:0 0 10px">↺ Restablecer app</button><br>Versión 22 · 24/11/2026. Datos recopilados de guías publicadas tras el lanzamiento (19/11/2026): PowerPyx, Timesaver, Dexerto, GamerTweak y TechNerdiness. Algunas listas aún se están verificando; donde hay dudas lo indico. El % pesa igual los 35 requisitos; el juego puede ponderarlos distinto.</footer>
 </div>
 <div class="save" id="save">Guardado</div>
 <div class="fx" id="fx" aria-hidden="true"></div>
@@ -1023,7 +1033,7 @@ function mapPoints(){const pts=[];
  for(const g of GUIDE){if(!MAPCAT[g.id])continue;g.l.forEach((it,i)=>{const txt=[it[0],it[1],it[2]].join(' · ');let pl=placeOf(txt);if(!pl&&g.id==='gang')pl=GANGPOS[it[1]]||null;if(!pl)return;
    const [x,y]=PLACES[pl];const a=(i*137.5)*Math.PI/180,r=pts.filter(p=>p.pl===pl).length?20+8*Math.sqrt(pts.filter(p=>p.pl===pl).length):0;
    pts.push({cat:g.id,k:gk(g,it[0]),n:it[0],z:it[1],w:it[2],note:it[3],pl,x:x+Math.cos(a)*r,y:y+Math.sin(a)*r})})}
- BASES.forEach(([n,pl,ch])=>{const [x,y]=PLACES[pl];pts.push({cat:'base',k:'',n,z:pl,w:ch,pl,x,y:y-28})});
+ BASES.forEach(([n,pl,ch])=>{const bc=+String(ch).replace(/\D/g,'')||1;if(S.spoil&&bc-1>curChapter())return;const [x,y]=PLACES[pl];pts.push({cat:'base',k:'',n,z:pl,w:ch,pl,x,y:y-28})});
  /* separa los iconos que se pisan (relajación simple) */
  const D=32;for(let it=0;it<40;it++){let mv=0;for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const a=pts[i],c=pts[j];let dx=c.x-a.x,dy=c.y-a.y,d=Math.hypot(dx,dy);if(d>=D)continue;if(d<.01){dx=Math.cos(j);dy=Math.sin(j);d=1}const f=(D-d)/2/d;a.x-=dx*f;a.y-=dy*f;c.x+=dx*f;c.y+=dy*f;mv++}if(!mv)break}
  return pts}
@@ -1120,7 +1130,7 @@ const tools=(ph,extra='')=>`<div class="tools"><input type="search" id="q" place
 const showF=d=>filt==='todo'||(filt==='hecho'?d:!d);
 const grp=(name,count,c)=>`<div class="grp"${c?` style="--c:${c}"`:''}><h3>${name}</h3><span>${count}</span></div>`;
 const head=(t,sub)=>`<div class="vhead"><h2>${t}</h2></div><p class="sub">${sub}</p>`;
-function ckRow(key,name,desc,tags,extra='',sub=''){const d=!!S.done[key];if(!showF(d)||!match(name+' '+desc+' '+sub))return '';
+function ckRow(key,name,desc,tags,extra='',sub=''){const d=!!S.done[key];if(!showF(d)||!match(name+' '+desc+' '+sub))return '';if(spSeen.has(key))extra=extra.replace(/\bsp\b/g,'');else if(!d&&!/\bsp\b/.test(extra)&&spoilTxt(name+' '+desc+' '+(tags||'')))extra+=' sp';
  return `<li class="row${d?' done':''}${extra}"><label class="lab"><input type="checkbox" class="ck" data-k="${key}" ${d?'checked':''}><div><span class="nm">${esc(name)}</span>${sub&&S.orig?`<small class="en">${esc(sub)}</small>`:''}${desc?`<div class="ds">${esc(desc)}</div>`:''}${tags||''}</div></label></li>`}
 const dsc=e=>(DESC[e.en]||[''])[0];
 const mg=e=>{const t=TIPS[e.en],g=MGUIDE[e.en],w=MW[e.en];if(!t&&!g&&!w)return '';return `<details class="mg"><summary>${w?'Guía y consejos':'Consejos'+(g?' y avisos':'')}</summary>${w?mwBlock(e,true):''}${t?`<p>${esc(t)}</p>`:''}${g?`<p class="mgw">${esc(g)}</p>`:''}</details>`};
@@ -1140,6 +1150,8 @@ function vChecklist(){let h=head('Checklist 100%','Los 35 requisitos de <b>A Lon
   if(cards)h+=grp(g,all.filter(x=>cur(x[1])>=x[3]).length+'/'+all.length,GC[g])+`<div class="cards">${cards}</div>`}
  return h}
 
+function futureNames(){const cc=curChapter();if(futureNames.c===cc&&futureNames.n===Object.keys(S.done).length)return futureNames.v;const v=new Set();for(const e of ALL)if(e.c>cc&&!S.done[e.k]){v.add(e.es);v.add(e.en)}for(let c=cc+1;c<CHT.length;c++){v.add(CHT[c][0]);v.add(CHT[c][1])}futureNames.c=cc;futureNames.n=Object.keys(S.done).length;futureNames.v=v;return v}
+function spoilTxt(t){if(!S.spoil||!t)return false;const f=futureNames();for(const m of String(t).matchAll(/«([^»]+)»/g))if(f.has(m[1]))return true;return false}
 function curChapter(){for(let c=0;c<ST.length;c++)if(ALL.some(e=>e.c===c&&e.t!=='o'&&!S.done[e.k]))return c;return 9}
 const WHO={J:'Jason',L:'Lucia',JL:'Jason y Lucia'};
 function stTags(e,inH){const hd=e.h?ALL.filter(x=>x.h===e.h):[];const pos=e.h?hd.indexOf(e)+1:0;
@@ -1163,6 +1175,8 @@ function vHistoria(){const cc=curChapter(),tt=ALL.filter(e=>e.t==='t'),td=tt.fil
    +(hide||q?'':`<details class="chg" style="--c:${col}" ${c===cc&&!S.chgClosed?'open':''} data-ch="${c}"><summary>Guía del capítulo ${c+1}</summary><p style="margin:0 0 8px">${esc(G.res)}</p><div class="chgrid"><div><h4>Antes de avanzar</h4><ul>${G.antes.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div><div><h4>Se desbloquea</h4><ul>${G.desb.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div><div><h4>Dinero</h4><ul>${G.dinero.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div><div><h4>Recomendado</h4><ul>${G.recs.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></div></details>`)
    +`<ul class="list">${rows}</ul></div></section>`});
  return h}
+let spCb=null;const spSeen=new Set();
+function spAsk(cb,all){spCb=cb;const o=$('#cf');o.innerHTML=`<div class="cfin spask"><div class="spico" aria-hidden="true">🌫</div><h3 id="cft">${all?'¿Quitar la niebla de todo?':'¿Ver este spoiler?'}</h3><p>${all?'Se mostrará <b>todo</b> lo que todavía no has jugado: misiones, capítulos, trofeos, perdibles y guías. Puede destriparte la historia.':'Esto puede contarte algo de la historia que <b>todavía no has jugado</b>.'}</p><label class="cfok"><input type="checkbox" class="ck" id="cfck"> Sí, quiero verlo aunque me destripe la historia</label><div class="cfb"><button class="chip" data-cf="no">Mejor no</button><button class="chip hot" data-cf="sp" data-c="s" disabled>${all?'Quitar la niebla':'Mostrar'}</button></div></div>`;o.hidden=false;SND.open()}
 function chCollapsed(c,cc){const v=(S.hc||{})[c];return v==null?c!==cc:!!v}
 function chConfirm(c){const es=ALL.filter(e=>e.c===c&&e.t!=='o'),full=es.every(e=>S.done[e.k]);
  const later=[...new Set(ALL.filter(e=>e.c>c&&S.done[e.k]).map(e=>e.c))],prev=[...new Set(ALL.filter(e=>e.c<c&&e.t!=='o'&&!S.done[e.k]).map(e=>e.c))];
@@ -1175,7 +1189,7 @@ function chApply(c,mark){if(mark){for(const e of ALL)if(e.c<=c&&e.t!=='o')S.done
  S.hc=S.hc||{};S.hc[c]=1;save();render();header();tabs();if(mark){celebrate(`[data-hk="${c}"]`,30)}else flash('Capítulo desmarcado')}
 $('#cf').addEventListener('change',e=>{if(e.target.id==='cfck'){if($('#cftx')){resetOk();return}const b=$('#cf').querySelector('[data-c]');b.disabled=!e.target.checked}});
 $('#cf').addEventListener('input',e=>{if(e.target.id==='cftx')resetOk()});
-$('#cf').addEventListener('click',e=>{const b=e.target.closest('[data-cf]');if(!b&&e.target.id==='cf'){$('#cf').hidden=true;return}if(!b)return;const a=b.dataset.cf;$('#cf').hidden=true;if(a==='do')chApply(+b.dataset.c,true);else if(a==='un')chApply(+b.dataset.c,false);else if(a==='reset')resetAll()});
+$('#cf').addEventListener('click',e=>{const b=e.target.closest('[data-cf]');if(!b&&e.target.id==='cf'){$('#cf').hidden=true;return}if(!b)return;const a=b.dataset.cf;$('#cf').hidden=true;if(a==='do')chApply(+b.dataset.c,true);else if(a==='un')chApply(+b.dataset.c,false);else if(a==='reset')resetAll();else if(a==='sp'&&spCb){const f=spCb;spCb=null;f()}});
 
 const sfk=id=>'sf:'+id;
 function vSec(){const cc=curChapter(),strands=SFX.filter(g=>g.y==='y'&&g.l.every(m=>S.done[sfk(m[0])])).length,tot=SF_ALL.length,dn=SF_ALL.filter(id=>S.done[sfk(id)]).length;
@@ -1237,7 +1251,8 @@ const V={inicio:vInicio,mapa:vMapa,perdibles:vPerdibles,guias:vGuias,checklist:v
 let entering=false;
 function render(keepFocus){const a=document.activeElement,id=a&&a.id,pos=a&&a.selectionStart;
  header();tabs();const v=$('#view');v.innerHTML=V[tab]();
- if(entering&&!RM){v.classList.add('enter');let i=0;for(const e of v.querySelectorAll('.vhead,.sub,.mini>div,.grp,.req,.list,.panel')){e.style.setProperty('--i',Math.min(i++,16))}clearTimeout(render.t);render.t=setTimeout(()=>v.classList.remove('enter'),1500)}
+ if(entering&&!RM){v.classList.add('enter');let i=0;for(const e of v.querySelectorAll('.vhead,.sub,.mini>div,.grp,.req,.list,.panel')){e.style.setProperty('--i',Math.min(i++,16))}clearTimeout(render.t);render.t=setTimeout(()=>v.classList.remove('enter'),1500)}else v.classList.remove('enter');
+ v.classList.toggle('still',!(entering&&!RM)&&!v.classList.contains('enter'));
  entering=false;
  if(tab==='mapa')mapAfter();if(tab==='inicio')countUp();
  if(keepFocus&&id){const e=document.getElementById(id);if(e){e.focus();try{e.setSelectionRange(pos,pos)}catch(x){}}}}
@@ -1281,8 +1296,8 @@ function obRender(){const o=$('#ob');let h='';
   h=`<h2 id="obt">${fin?'Historia completada':start?'Que empiece el viaje':'Listo'}${S.name?', '+esc(S.name):''}</h2>
   <p class="sub">${start?'No había nada que marcar todavía. ':`He marcado <b>${r.m}</b> misiones y tareas, y <b>${r.t}</b> trofeos de historia que ya tenías asegurados. `}${(()=>{const q=remaining();return q.tot?`Te quedan <b>${q.tot}</b> misiones principales (${q.ch} en este capítulo). `:''})()}Robos, coleccionables y actividades dependen de lo que hayas hecho tú: actualízalos en el checklist con las cifras de Progreso › Estadísticas.</p>
   <div class="obbar"><button class="chip hot" data-ob="go">Empezar</button><button class="chip" data-ob="back0">Corregir</button></div>`}
- const keep=o.querySelector('.oblist,.qpl')?o.scrollTop:0;o.innerHTML=`<div class="obin">${h}</div>`;if(ob.step==='mis'||ob.step==='quiz')o.scrollTop=keep}
-function openOb(){ob={step:'ch',ch:0,sel:new Set(),res:null,guess:null,cq:0,rev:null};obRender();$('#ob').hidden=false;$('#ob').scrollTop=0}
+ o.classList.toggle('still',ob._ls===ob.step);ob._ls=ob.step;const keep=o.querySelector('.oblist,.qpl')?o.scrollTop:0;o.innerHTML=`<div class="obin">${h}</div>`;if(ob.step==='mis'||ob.step==='quiz')o.scrollTop=keep}
+function openOb(){$('#ob').classList.remove('still');ob={step:'ch',ch:0,sel:new Set(),res:null,guess:null,cq:0,rev:null};obRender();$('#ob').hidden=false;$('#ob').scrollTop=0}
 function closeOb(){$('#ob').hidden=true}
 $('#ob').addEventListener('input',e=>{if(e.target.id==='obnm'){S.name=e.target.value.trim().slice(0,24);save()}});
 $('#ob').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
@@ -1410,7 +1425,9 @@ const WV=[
  {d:6500,t:'Bienvenido',s:'Tu compañero para completar GTA VI al 100%, sin destriparte la historia.',v:'Bienvenido a A Long Road. Tu compañero para completar GTA seis al cien por cien, sin destriparte la historia.',
   h:`<div class="wvlogo"><svg viewBox="0 0 120 120"><defs><linearGradient id="wvg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe37a"/><stop offset=".5" stop-color="#ff7a45"/><stop offset="1" stop-color="#ff3f7f"/></linearGradient><clipPath id="wvc"><circle cx="60" cy="60" r="44"/></clipPath></defs><circle cx="60" cy="60" r="44" fill="url(#wvg)"/><g clip-path="url(#wvc)" fill="#2a0e4c">${[66,76,86,96].map((y,i)=>`<rect x="0" y="${y}" width="120" height="${4+i}"/>`).join('')}</g></svg></div><div class="wvbig">A Long Road</div>`},
  {d:6500,t:'Te ubica en segundos',s:'Un cuestionario corto averigua por qué misión vas y marca lo que ya no puedes perderte.',v:'Primero, un cuestionario corto averigua por qué misión vas y marca solo lo que ya tienes hecho.',
-  h:`<div class="wvcard"><small>Cuestionario</small><b>¿Has completado «Comprobación de crédito»?</b><div class="wvbtns"><span class="on">Sí</span><span>No</span></div></div><div class="wvcard d2"><small>Resultado</small><b>Tu siguiente misión: «Costes explosivos»</b></div>`},
+  h:`<div class="wvcard"><small>Cuestionario</small><b>¿Has completado el capítulo 2?</b><div class="wvbtns"><span class="on">Sí</span><span>No, voy por aquí</span></div></div><div class="wvcard d2"><small>Capítulo 3 · misión 14 de 26</small><b>Tu siguiente misión, sin spoilers</b></div>`},
+ {d:6500,t:'Cero spoilers',s:'Todo lo que pueda destriparte la historia está bajo la niebla. Para verlo tendrás que confirmarlo dos veces.',
+  h:`<div class="wvcard wvsp"><small>Capítulo 4</small><b class="wvfog">████ ███ ██████</b><div class="wvbtns"><span class="on">¿Ver spoiler?</span><span>Mejor no</span></div></div>`},
  {d:7000,t:'Tu siguiente paso, siempre a mano',s:'Consejos, avisos y guía paso a paso de la misión que te toca.',v:'En Inicio verás siempre tu siguiente paso, con consejos, avisos y una guía paso a paso de esa misión.',
   h:`<div class="wvcard wide"><small>Tu siguiente paso · cap. 3</small><b class="wvt">El golpe del cártel</b><ol>${['Detona las antenas','Abre la cámara en tres pasos','Coge primero los fajos grandes','Desarma a los guardias'].map((x,i)=>`<li style="--i:${i}">${x}</li>`).join('')}</ol></div>`},
  {d:7000,t:'Mapa interactivo de Leonida',s:'Coleccionables, robos y actividades sobre el mapa oficial, con buscador y capas.',v:'El mapa interactivo de Leonida reúne coleccionables, robos y actividades, con buscador, capas y tu progreso.',
@@ -1423,7 +1440,7 @@ const WV=[
   h:`<div class="wvnews"><b>Nuevo descubrimiento</b><span>Nuevas guías paso a paso</span></div>`}];
 let wv=null;
 function wvOpen(auto){const o=$('#wv');wv={i:-1,t:0,auto,play:false,raf:0,last:0,pad:null,arp:0};
- o.innerHTML=`<div class="wvin"><div class="wvstage" id="wvs"><div class="wvstart"><div class="wvlogo sm"></div><h2>Vídeo de bienvenida</h2><p>45 segundos para ver todo lo que puede hacer la app. Con música: sube el volumen.</p><button class="chip hot wvplay" data-wv="play">▶ Reproducir</button></div></div>
+ o.innerHTML=`<div class="wvin"><div class="wvstage" id="wvs"><div class="wvstart"><div class="wvlogo sm"></div><h2>Vídeo de bienvenida</h2><p>50 segundos para ver todo lo que puede hacer la app. Con música: sube el volumen.</p><button class="chip hot wvplay" data-wv="play">▶ Reproducir</button></div></div>
   <div class="wvbar"><button class="wvb" data-wv="pp" aria-label="Pausa">❚❚</button><div class="wvprog">${WV.map(()=>'<i><b></b></i>').join('')}</div><button class="chip" data-wv="skip">Saltar</button></div></div>`;
  o.hidden=false}
 function wvScene(i){wv.i=i;wv.t=0;const sc=WV[i],st=$('#wvs');if(i===0&&S.name){sc._t=sc._t||sc.t;sc.t=`Bienvenido, ${S.name}`;sc._v=sc._v||sc.v;sc.v=`Hola, ${S.name}. `+sc._v}st.innerHTML=`<div class="wvsc"><div class="wvvis">${sc.h}</div><h3>${sc.t}</h3><p>${sc.s}</p></div>`;
@@ -1549,7 +1566,7 @@ function qpUpdate(){const q=ob.qz,pk=q.pick,o=$('#ob');o.querySelectorAll('.qpc'
   if(clear&&!f.classList.contains('clear')){requestAnimationFrame(()=>f.classList.add('clear'))}else if(!clear&&f.classList.contains('clear'))f.classList.remove('clear')});
  const z=o.querySelector('.qp0');if(z)z.classList.toggle('on',pk===-1);const n=$('#qpn');if(n)n.textContent=qpLabel();const ok=o.querySelector('[data-qz="ok"]');if(ok)ok.disabled=pk==null}
 function qzRender(){const q=ob.qz,pk=q.pick,rv=q.rv||new Set();
- const card=(m,i)=>{const done=pk!=null&&i<=pk,clear=done||rv.has(i);return `<div class="qpc${done?' done':''}${pk===i?' last':''}${pk!=null&&i===pk+1?' nextm':''}"><button class="qpb" data-qp="${i}"><span class="qpn">${i+1}</span><span class="qpt"><small>${esc(QHINT[m.en]||'')}</small><span class="qzfog${clear?' clear':''}"><b>${esc(m.es)}</b><span class="mist" aria-hidden="true"></span></span></span><span class="qps">${done?'<i class="qpk">✓</i>':pk!=null&&i===pk+1?'<em>Siguiente</em>':''}</span></button><button class="qrv" data-qr="${i}" aria-label="Ver el nombre de la misión ${i+1}"${clear?' hidden':''}>Ver nombre</button></div>`};
+ const card=(m,i)=>{const done=pk!=null&&i<=pk,clear=done||rv.has(i);return `<div class="qpc${done?' done':''}${pk===i?' last':''}${pk!=null&&i===pk+1?' nextm':''}"><button class="qpb" data-qp="${i}"><span class="qpn">${i+1}</span><span class="qpt"><span class="qpg">Misión ${ALL.filter(e=>e.t==='m').indexOf(m)+1} de ${misTot} en total</span><small>${esc(QHINT[m.en]||'')}</small><span class="qzfog${clear?' clear':''}"><b>${esc(m.es)}</b><span class="mist" aria-hidden="true"></span></span></span><span class="qps">${done?'<i class="qpk">✓</i>':pk!=null&&i===pk+1?'<em>Siguiente</em>':''}</span></button><button class="qrv" data-qr="${i}" aria-label="Ver el nombre de la misión ${i+1}"${clear?' hidden':''}>Ver nombre</button></div>`};
  return `<h2 id="obt">Capítulo ${q.ch+1}</h2><p class="sub">Aquí tienes sus ${q.ms.length} misiones principales <b>en orden</b>, con el nombre bajo la niebla y una pista. Toca la <b>última que hayas completado</b>: las anteriores se despejan y se marcan.</p>
  <div class="obbar" style="justify-content:flex-end;margin-top:-4px"><button class="chip" data-qz="list">Prefiero marcarlo en la lista completa</button></div><div class="qpl"><button class="qp0${pk===-1?' on':''}" data-qp="-1">Todavía no he hecho ninguna de este capítulo</button>${q.ms.map(card).join('')}</div>
  <div class="obbar obsticky"><button class="chip" data-ob="back">Volver</button><span class="obn" id="qpn">${qpLabel()}</span><button class="chip hot" data-qz="ok" ${pk==null?'disabled':''}>Continuar</button></div>`}
@@ -1649,8 +1666,8 @@ function mapZoom(f,cx,cy){const bx=mapBox();if(!bx)return;const W=bx.clientWidth
 function mapFly(x,y,k,cb){const bx=mapBox();if(!bx)return;const k2=Math.max(MV.k,k||1.1);mapAnim(k2,bx.clientWidth/2-x*k2,bx.clientHeight/2-y*k2,650,cb)}
 function mapPop(){const el=document.getElementById('minfo'),bx=mapBox();if(!el||!bx||el.hidden||mapSel<0)return;const p=MP[mapSel],W=bx.clientWidth,H=bx.clientHeight;
  let x=p.x*MV.k+MV.tx,y=p.y*MV.k+MV.ty;const w=el.offsetWidth,h=el.offsetHeight;let left=Math.max(8,Math.min(W-w-8,x-w/2)),top=y-h-26;if(top<8)top=Math.min(H-h-8,y+26);el.style.left=left+'px';el.style.top=top+'px'}
-function mapInfo(){const el=document.getElementById('minfo');if(!el)return;if(mapSel<0){el.hidden=true;return}const p=MP[mapSel],d=pDone(p);
- el.innerHTML=`<button class="x" aria-label="Cerrar">×</button><span class="tag" style="background:${MAPCAT[p.cat][1]};color:#1a0b2e">${MAPCAT[p.cat][2]} ${MAPCAT[p.cat][0]}</span><h4>${esc(p.n)}</h4><p><b>${esc(p.z||p.pl)}</b>${p.w?' · '+esc(p.w):''}</p>${p.note?`<p>${esc(p.note)}</p>`:''}<div class="acts">${p.k?`<label class="chip mdone${d?' on':''}"><input type="checkbox" class="ck" id="mck" ${d?'checked':''}> ${d?'Encontrado':'Marcar como encontrado'}</label>`:''}</div>`;el.hidden=false;mapPop()}
+function mapInfo(){const el=document.getElementById('minfo');if(!el)return;if(mapSel<0){el.hidden=true;return}const p=MP[mapSel],d=pDone(p),spo=!d&&spoilTxt(p.n+' '+(p.w||'')+' '+(p.note||''));
+ el.innerHTML=`<button class="x" aria-label="Cerrar">×</button><span class="tag" style="background:${MAPCAT[p.cat][1]};color:#1a0b2e">${MAPCAT[p.cat][2]} ${MAPCAT[p.cat][0]}</span><div class="${spo?'sp spbox':''}"><h4 class="nm">${esc(p.n)}</h4><p class="ds"><b>${esc(p.z||p.pl)}</b>${p.w?' · '+esc(p.w):''}</p>${p.note?`<p class="ds">${esc(p.note)}</p>`:''}</div><div class="acts">${p.k?`<label class="chip mdone${d?' on':''}"><input type="checkbox" class="ck" id="mck" ${d?'checked':''}> ${d?'Encontrado':'Marcar como encontrado'}</label>`:''}</div>`;el.hidden=false;mapPop()}
 function mapSelect(i,fly){mapSel=i;const p=MP[i];if(mapOff.has(p.cat)){mapOff.delete(p.cat);mapRefresh()}if(fly){document.getElementById('minfo').hidden=true;mapFly(p.x,p.y,1.1,mapInfo);return}for(const x of document.querySelectorAll('#mk button[data-i]'))x.classList.toggle('sel',+x.dataset.i===i);mapInfo()}
 function mapRefresh(){const c=document.getElementById('mcats');if(c)c.innerHTML=mapCats();const tot=MP.filter(p=>p.k).length,d=MP.filter(pDone).length;const t=document.getElementById('mtot');if(t)t.textContent=`${d}/${tot} encontrados`;const b=document.querySelector('.mpbar i');if(b)b.style.width=(tot?Math.round(d/tot*100):0)+'%';const h=document.getElementById('mhide');if(h)h.setAttribute('aria-pressed',mapHide);mapCluster()}
 function mapSearch(){const r=document.getElementById('mres');if(!r)return;const q=norm(mapQ.trim());if(q.length<2){r.innerHTML='';return}
@@ -1688,7 +1705,7 @@ V2.addEventListener('click',e=>{const mb=e.target.closest('[data-mp],[data-ma],[
   else if(d.fs){mapFs=!mapFs;const im=document.getElementById('imap');im.classList.toggle('fs',mapFs);mb.textContent=mapFs?'✕':'⛶';document.body.style.overflow=mapFs?'hidden':'';requestAnimationFrame(()=>{mapApply();clSoon()})}
   else if(d.go!=null){mapSelect(+d.go,true);if(innerWidth<900){mapPanel=false;document.getElementById('imap').classList.remove('po');requestAnimationFrame(mapApply)}}
   return}const sm=e.target.closest('summary');if(sm&&sm.parentElement.matches('details.mg,details.mw')){e.preventDefault();const d=sm.parentElement;d.open=!d.open;return}const b=e.target.closest('button,.sp');if(!b)return;
- if(b.classList.contains('sp')){e.preventDefault();b.classList.remove('sp');return}
+ if(b.classList.contains('sp')){e.preventDefault();spAsk(()=>{b.classList.remove('sp');b.classList.add('spok');b.querySelectorAll('[data-k]').forEach(x=>spSeen.add(x.dataset.k))});return}
  if(b.dataset.r){const r=REQ.find(x=>x[1]===b.dataset.r),was=cur(r[1])>=r[3];let v=b.dataset.set!=null?+b.dataset.set:(S.req[r[1]]||0)+ +b.dataset.d;S.req[r[1]]=Math.max(0,Math.min(v,r[4]));save();render();if(!was&&cur(r[1])>=r[3])celebrate(`[data-ri="${r[1]}"]`,30);checkAll()}
  else if(b.dataset.f){filt=b.dataset.f;render()}
  else if(b.id==='where'){openOb()}
@@ -1705,7 +1722,7 @@ V2.addEventListener('click',e=>{const mb=e.target.closest('[data-mp],[data-ma],[
  else if(b.classList.contains('x')&&b.closest('#minfo')){mapSel=-1;for(const x of document.querySelectorAll('#mk button.sel'))x.classList.remove('sel');mapInfo()}
  else if(b.dataset.gs){gsec=b.dataset.gs;render()}
  else if(b.id==='orig'){S.orig=!S.orig;save();render()}
- else if(b.id==='spoil'){S.spoil=!S.spoil;save();render()}
+ else if(b.id==='spoil'){if(S.spoil)spAsk(()=>{S.spoil=false;save();render()},true);else{S.spoil=true;save();render()}}
  else if(b.id==='reset'){$('#confirm').innerHTML='<p class="sub">¿Seguro? Se borra todo menos las notas.</p><button class="chip" id="reset2" aria-pressed="true">Sí, borrar</button> <button class="chip" id="cancel">Cancelar</button>'}
  else if(b.id==='reset2'){S.req={};S.done={};save();render()}
  else if(b.id==='cancel'){$('#confirm').innerHTML=''}

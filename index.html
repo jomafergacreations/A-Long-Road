@@ -460,6 +460,7 @@ details.mw ol{margin:6px 0 4px;padding-left:22px;line-height:1.5}details.mw li{m
 .qpc .qzfog b,.qpc .qzfog{transition:filter 1.1s ease,opacity 1.1s ease}
 .qpc.done,.qpc.last,.qpc.nextm{transition:background .5s,border-color .5s,box-shadow .5s}
 .qps:empty{display:none}.qrv[hidden]{display:none}
+.mst{display:flex;gap:6px;padding:0 4px 10px}.mst button{flex:1;font:inherit;font-weight:700;font-size:14px;border:2px solid var(--line);background:transparent;color:var(--ink);border-radius:12px;min-height:42px;cursor:pointer}.mst button.on{background:var(--ink);color:var(--card);border-color:var(--ink)}.mst.off{opacity:.4;pointer-events:none}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -476,7 +477,7 @@ details.mw ol{margin:6px 0 4px;padding-left:22px;line-height:1.5}details.mw li{m
 </header>
 <div class="content">
  <main id="view"></main>
- <footer><button class="chip danger" data-reset="1" style="margin:0 0 10px">↺ Restablecer app</button><br>Versión 20 · 24/11/2026. Datos recopilados de guías publicadas tras el lanzamiento (19/11/2026): PowerPyx, Timesaver, Dexerto, GamerTweak y TechNerdiness. Algunas listas aún se están verificando; donde hay dudas lo indico. El % pesa igual los 35 requisitos; el juego puede ponderarlos distinto.</footer>
+ <footer><button class="chip danger" data-reset="1" style="margin:0 0 10px">↺ Restablecer app</button><br>Versión 21 · 24/11/2026. Datos recopilados de guías publicadas tras el lanzamiento (19/11/2026): PowerPyx, Timesaver, Dexerto, GamerTweak y TechNerdiness. Algunas listas aún se están verificando; donde hay dudas lo indico. El % pesa igual los 35 requisitos; el juego puede ponderarlos distinto.</footer>
 </div>
 <div class="save" id="save">Guardado</div>
 <div class="fx" id="fx" aria-hidden="true"></div>
@@ -738,7 +739,7 @@ const ARM=[
 // Cada elemento: [nombre, zona, dónde (con mis palabras), nota, fecha en que se añadió]
 // La fecha sirve para la etiqueta «Nuevo» y el aviso de «Nuevo descubrimiento».
 const NEWS=[
- {d:'2026-11-24f',go:'inicio',h:'Novedades en la app',t:'Música de fondo, Ajustes y cuestionario sin spoilers',l:['Menú ⚙ Ajustes arriba: música de fondo con volumen y sonidos de la interfaz','Cuestionario capítulo a capítulo bajo la niebla, sin spoilers','Vídeo de bienvenida (lo vuelves a ver desde Ajustes)','Cuestionario de sí o no que encuentra tu misión exacta','Tu recorrido: cuánto te queda por capítulo','Música de fondo y sonidos, que se quitan desde ⚙ Ajustes','Zoom animado al tocar las burbujas del mapa','Capítulos plegables en Historia, con marcado del capítulo entero']},
+ {d:'2026-11-24g',go:'inicio',h:'Novedades en la app',t:'Música lo-fi, Ajustes y cuestionario sin spoilers',l:['Menú ⚙ Ajustes: música de fondo (lo-fi chill o synthwave), volumen y sonidos','Cuestionario capítulo a capítulo bajo la niebla, con las misiones en orden y una pista cada una','Tu recorrido en Inicio: cuánto te queda por capítulo','Zoom animado al tocar las burbujas del mapa','Capítulos plegables en Historia, con marcado del capítulo entero']},
  {d:'2026-11-24',t:'Primeras guías detalladas',l:['Robos: las 39 operaciones de bandas, los 22 bancos y las 7 tiendas de préstamos','Coleccionables: 10 zonas de meditación, 18 lotes de cartas, 26 revistas, 16 puntos WAiNK y 8 flamencos','Actividades: 40 carreras por sede, 13 desafíos de carreras y 7 rivales de billar','Historia: guía con decisiones, desbloqueos y avisos en muchas misiones']}
 ];
 const BASE='2026-11-24';
@@ -1335,25 +1336,25 @@ addEventListener('hashchange',()=>SND.nav());
 
 /* ---------- MÚSICA DE FONDO (synthwave generada en directo, original) ---------- */
 const SYN=(()=>{let c=null,out=null,rev=null,on=false,timer=0,next=0,step=0,bar=0;
- const BPM=72,SPB=60/BPM/4; // semicorchea
+ const BPM=70,SPB=60/BPM/4; // semicorchea
  const N=m=>440*Math.pow(2,(m-69)/12);
  // progresiones (acordes en MIDI): Am F C G  /  Dm Am F E
- const PR=[[[57,60,64],[53,57,60],[48,52,55],[55,59,62]],[[50,53,57],[57,60,64],[53,57,60],[52,56,59]]];
+ const PR=[[[53,57,60,64],[52,55,59,62],[50,53,57,60],[48,52,55,59]],[[57,60,64,67],[50,53,57,60],[55,59,62,65],[52,55,59,64]]]; // Fmaj7 Em7 Dm7 Cmaj7 / Am7 Dm7 G7 Em7
  function init(){c=SND.ctx();if(!c)return false;if(out)return true;out=c.createGain();out.gain.value=0;
   rev=c.createConvolver();const len=c.sampleRate*2.4,b=c.createBuffer(2,len,c.sampleRate);for(let ch=0;ch<2;ch++){const d=b.getChannelData(ch);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,2.6)}rev.buffer=b;
   const wet=c.createGain();wet.gain.value=.45;rev.connect(wet);wet.connect(out);const lp=c.createBiquadFilter();lp.type='lowpass';lp.frequency.value=1600;lp.Q.value=.3;out.connect(lp);lp.connect(SND.bus());LOFI.add(c);return true}
  function env(g,t,a,d,v){g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+a);g.gain.exponentialRampToValueAtTime(.0001,t+d)}
  function voice(type,f,t,d,v,lp,send=.4){const o=c.createOscillator(),g=c.createGain(),fl=c.createBiquadFilter();o.type=type;o.frequency.setValueAtTime(f,t);fl.type='lowpass';fl.frequency.value=lp;o.connect(fl);fl.connect(g);env(g,t,Math.min(.02,d/4),d,v);g.connect(out);if(send){const s=c.createGain();s.gain.value=send;g.connect(s);s.connect(rev)}o.start(t);o.stop(t+d+.05);return o}
+ function keys(ch,t,d){ch.forEach((m,i)=>{const tt=t+i*.018,dr=(Math.random()-.5)*14;[['sine',.05],['triangle',.012]].forEach(([ty,v],k)=>{const o=c.createOscillator(),g=c.createGain(),fl=c.createBiquadFilter(),tr=c.createOscillator(),tg=c.createGain();o.type=ty;o.frequency.value=N(m+(k?12:0));o.detune.value=dr;fl.type='lowpass';fl.frequency.value=1100;tr.frequency.value=4.2;tg.gain.value=v*.25;tr.connect(tg);tg.connect(g.gain);o.connect(fl);fl.connect(g);g.gain.setValueAtTime(0,tt);g.gain.linearRampToValueAtTime(v,tt+.03);g.gain.exponentialRampToValueAtTime(v*.35,tt+.6);g.gain.exponentialRampToValueAtTime(.0001,tt+d);g.connect(out);const sd=c.createGain();sd.gain.value=.5;g.connect(sd);sd.connect(rev);o.start(tt);tr.start(tt);o.stop(tt+d+.05);tr.stop(tt+d+.05)})})}
  function pad(ch,t,d){ch.forEach((m,i)=>{[-6,6].forEach(dt=>{const o=c.createOscillator(),g=c.createGain(),fl=c.createBiquadFilter();o.type='sawtooth';o.frequency.value=N(m);o.detune.value=dt;fl.type='lowpass';fl.frequency.setValueAtTime(450,t);fl.frequency.linearRampToValueAtTime(850,t+d/2);fl.frequency.linearRampToValueAtTime(450,t+d);
    o.connect(fl);fl.connect(g);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.022,t+.6);g.gain.setValueAtTime(.022,t+d-.4);g.gain.linearRampToValueAtTime(0,t+d);g.connect(out);const s=c.createGain();s.gain.value=.6;g.connect(s);s.connect(rev);o.start(t);o.stop(t+d+.1)})})}
  function noise(t,d,f,v,q=1){const len=Math.ceil(c.sampleRate*d),b=c.createBuffer(1,len,c.sampleRate),x=b.getChannelData(0);for(let i=0;i<len;i++)x[i]=Math.random()*2-1;const s=c.createBufferSource();s.buffer=b;const fl=c.createBiquadFilter();fl.type='bandpass';fl.frequency.value=f;fl.Q.value=q;const g=c.createGain();env(g,t,.002,d,v);s.connect(fl);fl.connect(g);g.connect(out);const r=c.createGain();r.gain.value=.25;g.connect(r);r.connect(rev);s.start(t)}
  function kick(t){const o=c.createOscillator(),g=c.createGain();o.frequency.setValueAtTime(90,t);o.frequency.exponentialRampToValueAtTime(40,t+.2);env(g,t,.004,.28,.18);o.connect(g);g.connect(out);o.start(t);o.stop(t+.35)}
- function sched(){while(next<c.currentTime+.15){const t=next,s=step%16,prog=PR[Math.floor(bar/8)%2],ch=prog[bar%4];
-   if(s===0)pad(ch,t,SPB*16);
-   if(s%4===0)voice('triangle',N(ch[0]-24),t,SPB*3.6,.08,260,0);            // bajo
-   const arpN=[0,1,2,1,2,0,1,2][Math.floor(s/2)%8];if(bar%8>1&&s%2===0)voice('sine',N(ch[arpN]+12),t,SPB*2.4,.03,1100,.6); // arpegio suave
-   if(bar%8>3){if(s===0||s===10)kick(t);if(s===4||s===12)noise(t,.18,900,.035,.7);}
-   if(bar%8>1&&s%4===2)noise(t,.04,5000,.006,.6);                           // charles muy suave
+ function sched(){while(next<c.currentTime+.15){const s=step%16,sw=(s%2===1)?SPB*.18:0,t=next+sw,prog=PR[Math.floor(bar/8)%2],ch=prog[bar%4];
+   if(s===0){pad(ch.slice(0,3),t,SPB*16);keys(ch,t,SPB*7)}if(s===8&&bar%2===1)keys(ch.slice(1),t,SPB*6);
+   if(s===0||s===7||s===10)voice('sine',N(ch[0]-24),t,SPB*(s===0?5:2.5),.11,220,0);            // bajo redondo
+   if(bar%8>1&&(s===6||s===14)&&Math.random()<.6)voice('sine',N(ch[(s/2)%4]+24),t,SPB*3,.018,1400,.7); // notas sueltas
+   if(bar%8>0){if(s===0||s===7||(s===10&&bar%2))kick(t);if(s===4||s===12)noise(t,.2,1100,.032,.6);if(s%2===0)noise(t,.03,6000,.0045,.5)}  // batería boom bap suave
    next+=SPB;step++;if(step%16===0)bar++}}
  const api={
   start(){if(S.mus===0)return;if(!init())return;if(on)return;on=true;if(c.state==='suspended')c.resume();next=c.currentTime+.1;step=0;out.gain.cancelScheduledValues(c.currentTime);out.gain.setValueAtTime(out.gain.value,c.currentTime);out.gain.linearRampToValueAtTime(api.vol(),c.currentTime+2.5);timer=setInterval(sched,30)},
@@ -1372,35 +1373,36 @@ const MUS=(()=>{const TR=[{u:'https://opengameart.org/sites/default/files/80s_so
  function teardown(){if(a){try{a.pause()}catch(e){}a.removeAttribute('src');try{a.load()}catch(e){}}a=null;g=null}
  function setup(cors){a=new Audio();a.preload='auto';a.loop=false;if(cors)a.crossOrigin='anonymous';a.src=TR[ti].u;
   a.addEventListener('ended',()=>{ti=(ti+1)%TR.length;a.src=TR[ti].u;a.play().catch(()=>{})});
-  a.addEventListener('error',()=>{if(mode==='syn')return;if(cors){teardown();setup(false);if(on)play()}else{teardown();mode='syn';if(on){SYN.start();setTimeout(()=>LOFI.set(true),300)}}});
+  a.addEventListener('error',()=>{if(mode==='syn')return;if(cors){teardown();setup(false);if(on)play()}else{teardown();mode='syn';api.failed=1;if(on){SYN.start();setTimeout(()=>LOFI.set(true),300)}}});
   if(cors){try{const c=SND.ctx();const src=c.createMediaElementSource(a);g=c.createGain();g.gain.value=0;const lp=c.createBiquadFilter();lp.type='lowpass';lp.frequency.value=1500;lp.Q.value=.4;const hs=c.createBiquadFilter();hs.type='highshelf';hs.frequency.value=3000;hs.gain.value=-8;src.connect(lp);lp.connect(hs);hs.connect(g);g.connect(SND.bus());LOFI.add(c);mode='wa'}catch(e){g=null;mode='el'}}else mode='el';
   if(mode==='el')a.volume=0}
  function fade(to,sec){if(mode==='wa'&&g){const c=SND.ctx();g.gain.cancelScheduledValues(c.currentTime);g.gain.setValueAtTime(g.gain.value,c.currentTime);g.gain.linearRampToValueAtTime(to,c.currentTime+sec)}
   else if(mode==='el'&&a){clearInterval(fadeT);const from=a.volume,t0=performance.now();fadeT=setInterval(()=>{const u=Math.min(1,(performance.now()-t0)/(sec*1000));a.volume=Math.max(0,Math.min(1,from+(to-from)*u));if(u>=1)clearInterval(fadeT)},50)}}
  function play(){if(!a)return;a.play().then(()=>{fade(api.vol(),2.5);LOFI.set(true)}).catch(()=>{})}
  const api={
-  start(){if(S.mus===0)return;SND.unlock();if(on)return;on=true;if(mode==='syn'){SYN.start();setTimeout(()=>LOFI.set(true),300);return}if(!a)setup(true);play()},
+  start(){if(S.mus===0)return;SND.unlock();if(on)return;on=true;if(S.mst!=='synth'&&mode!=='syn'){teardown();mode='syn'}if(S.mst==='synth'&&mode==='syn'&&!api.failed){mode=null}if(mode==='syn'){SYN.start();setTimeout(()=>LOFI.set(true),300);return}if(!a)setup(true);play()},
   stop(f=1){if(!on)return;on=false;LOFI.set(false);if(mode==='syn'){SYN.stop(f);return}fade(0,f);setTimeout(()=>{if(!on&&a)a.pause()},f*1000+80)},
   vol(){return Math.min(1,.75*Math.pow(S.mv==null?.35:S.mv,1.5))},
   setVol(){LOFI.set(on);if(mode==='syn'){SYN.setVol();return}if(on)fade(api.vol(),.15)},
-  get on(){return on},get src(){return mode==='syn'?'syn':TR[ti].t}};
+  get on(){return on},get src(){return mode==='syn'?'syn':TR[ti].t},failed:0,restart(){api.stop(.6);setTimeout(()=>api.start(),700)}};
  document.addEventListener('visibilitychange',()=>{if(document.hidden)api.stop(.3);else if(S.mus!==0&&a||mode==='syn')api.start()});
  document.addEventListener('pointerdown',()=>{if(S.mus!==0)api.start()},{capture:true});
  return api})();
 
 /* ---------- AJUSTES ---------- */
 function setRender(){const p=$('#setp');p.innerHTML=`<div class="setin"><div class="seth"><b>Ajustes</b><button class="setx" data-sp="close" aria-label="Cerrar">×</button></div>
- <label class="sw"><span><b>Música de fondo</b><small>Synthwave lo-fi, suave y de fondo</small></span><input type="checkbox" id="smus" ${S.mus!==0?'checked':''}><i></i></label>
+ <label class="sw"><span><b>Música de fondo</b><small>Suena bajita y de fondo</small></span><input type="checkbox" id="smus" ${S.mus!==0?'checked':''}><i></i></label>
+ <div class="mst${S.mus===0?' off':''}"><button data-mst="lofi" class="${S.mst!=='synth'?'on':''}">Lo-fi chill</button><button data-mst="synth" class="${S.mst==='synth'?'on':''}">Synthwave</button></div>
  <label class="vol${S.mus===0?' off':''}"><span>Volumen</span><input type="range" id="smv" min="0" max="1" step="0.05" value="${S.mv==null?.35:S.mv}"></label>
- <p class="setcr">${MUS.src==='syn'?'Sin conexión: suena la synthwave generada por la app.':'Música: «Synth Wave by Alex» y «Synth Wave», de Alex McCulloch (licencia CC0, OpenGameArt).'}</p>
+ <p class="setcr">${S.mst!=='synth'?'Lo-fi compuesto por la propia app: acordes de jazz suaves, bajo redondo y batería tranquila.':MUS.failed?'No se han podido cargar las pistas: suena la música de la app.':'Música: «Synth Wave by Alex» y «Synth Wave», de Alex McCulloch (licencia CC0, OpenGameArt).'}</p>
  <label class="sw"><span><b>Sonidos de la interfaz</b><small>Toques, desplegables y logros</small></span><input type="checkbox" id="ssnd" ${S.snd!==0?'checked':''}><i></i></label>
  <div class="setl"><button data-sp="intro">▶ Vídeo de bienvenida</button><button data-sp="quiz">Cuestionario: ¿por dónde voy?</button><button data-sp="reset" class="danger">↺ Restablecer app</button></div></div>`}
 function setOpen(v){const p=$('#setp');if(v){setRender();p.hidden=false;SND.open()}else{p.hidden=true}$('#setb').setAttribute('aria-expanded',!!v)}
 $('#setb').addEventListener('click',e=>{e.stopPropagation();setOpen($('#setp').hidden)});
-$('#setp').addEventListener('click',e=>{const b=e.target.closest('[data-sp]');if(!b)return;const a=b.dataset.sp;setOpen(false);if(a==='intro')wvOpen(false);else if(a==='quiz')openOb();else if(a==='reset')resetAsk()});
+$('#setp').addEventListener('click',e=>{const m=e.target.closest('[data-mst]');if(m){S.mst=m.dataset.mst;save();setRender();MUS.restart();return}const b=e.target.closest('[data-sp]');if(!b)return;const a=b.dataset.sp;setOpen(false);if(a==='intro')wvOpen(false);else if(a==='quiz')openOb();else if(a==='reset')resetAsk()});
 $('#setp').addEventListener('change',e=>{const t=e.target;if(t.id==='smus'){S.mus=t.checked?1:0;save();t.checked?MUS.start():MUS.stop();setRender()}else if(t.id==='ssnd'){S.snd=t.checked?1:0;save();if(t.checked)SND.check()}});
 $('#setp').addEventListener('input',e=>{if(e.target.id==='smv'){S.mv=+e.target.value;MUS.setVol();clearTimeout(setOpen.t);setOpen.t=setTimeout(save,400)}});
-document.addEventListener('click',e=>{const p=$('#setp');if(!p.hidden&&!e.target.closest('#setp,#setb'))setOpen(false)});
+document.addEventListener('click',e=>{const p=$('#setp');if(!p.hidden&&e.target.isConnected&&!e.target.closest('#setp,#setb'))setOpen(false)});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#setp').hidden)setOpen(false)});
 
 /* ---------- VÍDEO DE BIENVENIDA (animación con narración) ---------- */

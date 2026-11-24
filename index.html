@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#170b33">
+<meta name="description" content="Checklist personal para completar GTA VI al 100%.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="A Long Road">
+<title>GTA VI al 100%</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+/* VOICE: compañero de partida, cálido, con brillo de neón pero ordenado
+   IDEA: atardecer de Vice City: panel nocturno violeta con un sol retro que se llena con tu %; fichas claras como postales
+   PICTURE: el sol con franjas del logo, que sube al abrir y se rellena al progresar, sobre palmeras que se mecen
+   COLOUR and TYPE: noche violeta, magenta, rosa flamenco, naranja y oro de atardecer, turquesa para lo hecho; Anton + Archivo
+   LAYOUT: tablet primero: panel lateral fijo + fichas en rejilla; en vertical/móvil el panel pasa arriba y las pestañas se pegan */
+:root{color-scheme:light dark;
+--bg:light-dark(#fff2ea,#110725);--card:light-dark(#fffaf6,#1c0f36);--ink:light-dark(#24103f,#fbeef8);
+--mut:light-dark(#6f6386,#b5a7cf);--line:light-dark(#f4d8d3,#32204f);--pink:light-dark(#df1f68,#ff5d97);
+--sun:#ff8a3d;--gold:#ffc94a;--mag:#c42a78;--sea:light-dark(#0b9c99,#39d6cf);--night:#170b33;--nightink:#fbeefa;
+--grad:linear-gradient(90deg,#ff3f7f,#ff8a3d 60%,#ffc94a);
+--sh:0 1px 0 var(--line),0 16px 32px -24px light-dark(#5a1a5e99,#000)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html{-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Archivo,system-ui,sans-serif;overflow-x:clip}
+h1,h2,.big,.num{font-family:Anton,Impact,sans-serif;font-weight:400;letter-spacing:.01em;line-height:1.05}
+.app{display:grid;grid-template-columns:clamp(260px,28vw,320px) minmax(0,1fr);min-height:100vh}
+.side{position:sticky;top:0;height:100vh;overflow-y:auto;color:var(--nightink);padding:calc(24px + env(safe-area-inset-top)) 20px calc(16px + env(safe-area-inset-bottom)) calc(20px + env(safe-area-inset-left));display:flex;flex-direction:column;gap:16px;scrollbar-width:thin;
+ background:radial-gradient(120% 50% at 50% 100%,#ff3f7f55,transparent 70%),linear-gradient(180deg,#170b33 0%,#2a0e4c 55%,#4d1860 100%);background-size:100% 140%;animation:dusk 14s ease-in-out infinite alternate}
+@keyframes dusk{to{background-position:0 100%}}
+.hero{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+.sun{position:relative;width:min(210px,100%);aspect-ratio:1;animation:rise 1.1s cubic-bezier(.2,.8,.2,1) both}
+@keyframes rise{from{transform:translateY(40px);opacity:0}}
+.sun svg{width:100%;height:100%;display:block;filter:drop-shadow(0 0 26px #ff6a4d66);animation:glow 4s ease-in-out infinite alternate}
+@keyframes glow{to{filter:drop-shadow(0 0 40px #ff3f7f99)}}
+.pct{position:absolute;inset:0;display:grid;place-content:center;font-family:Anton,Impact,sans-serif;font-size:56px;color:#fff;text-shadow:0 2px 0 #9e1444,0 0 24px #0009}
+.hero h1{margin:4px 0 0;font-size:34px;color:#fff}
+.hero h1 span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{margin:0;font-size:14px;color:#cbbbe3}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.stats div{background:#ffffff0d;border:1px solid #ffffff1f;border-radius:14px;padding:8px 10px;backdrop-filter:blur(4px)}
+.stats b{display:block;font-family:Anton,Impact,sans-serif;font-weight:400;font-size:24px;color:#fff}
+.stats small{font-size:12.5px;color:#cbbbe3}
+.tabs{display:flex;flex-direction:column;gap:4px}
+.tabs a{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:0 14px;min-height:50px;border-radius:14px;color:var(--nightink);text-decoration:none;font-weight:600;font-size:16px;transition:background .2s,transform .2s}
+.tabs a small{font-size:13px;color:#b6a5d4;font-weight:600}
+.tabs a:hover{background:#ffffff12}
+.tabs a:active{transform:scale(.97)}
+.tabs a[aria-current]{background:var(--grad);color:#2a0b2a;box-shadow:0 8px 24px -10px #ff3f7f}
+.tabs a[aria-current] small{color:#2a0b2a}
+.palms{margin-top:auto;opacity:.95;overflow:visible}
+.palms use{transform-box:fill-box;transform-origin:50% 100%;animation:sway 5s ease-in-out infinite alternate}
+.palms use:nth-of-type(2){animation-duration:6.5s;animation-delay:-2s}
+@keyframes sway{from{transform:rotate(-2deg)}to{transform:rotate(2.5deg)}}
+.content{padding:calc(clamp(18px,3.5vw,44px) + env(safe-area-inset-top)) calc(clamp(16px,3.5vw,48px) + env(safe-area-inset-right)) calc(30px + env(safe-area-inset-bottom)) clamp(16px,3.5vw,48px);max-width:1180px;width:100%}
+.vhead{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:12px 24px;margin-bottom:6px}
+h2{font-size:clamp(34px,4.6vw,50px);margin:0;background:linear-gradient(90deg,var(--ink) 55%,var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--mut);margin:6px 0 16px;font-size:16px;max-width:70ch}
+.tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 18px;position:sticky;top:0;z-index:3;background:var(--bg);padding:10px 0}
+.tools input{flex:1 1 240px}
+input[type=search],textarea{font:inherit;font-size:16px;color:var(--ink);background:var(--card);border:2px solid var(--line);border-radius:14px;padding:11px 14px;width:100%;transition:border-color .2s}
+input[type=search]:focus,textarea:focus{border-color:var(--pink);outline:none}
+.chip{font:inherit;font-size:15px;font-weight:600;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:8px 16px;min-height:46px;cursor:pointer;transition:transform .15s,background .2s}
+.chip:active{transform:scale(.95)}
+.chip[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.chip.hot{background:var(--grad);border:0;color:#2a0b2a}
+:focus-visible{outline:3px solid var(--sea);outline-offset:2px}
+.grp{margin:26px 0 12px;display:flex;justify-content:space-between;gap:12px;align-items:center}
+.grp h3{margin:0;font-size:20px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.grp h3::before{content:"";width:12px;height:12px;border-radius:50%;background:var(--c,var(--pink));box-shadow:0 0 0 4px color-mix(in srgb,var(--c,var(--pink)) 22%,transparent)}
+.grp>span{color:var(--mut);font-size:14px;font-weight:700;white-space:nowrap;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:3px 12px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,330px),1fr));gap:14px}
+.req{background:var(--card);border-radius:20px;box-shadow:var(--sh);padding:16px 18px 12px;position:relative;display:flex;flex-direction:column;overflow:hidden;transition:transform .2s,box-shadow .2s}
+.req::before{content:"";position:absolute;inset:0 0 auto;height:5px;background:var(--c,var(--pink))}
+.req.done::before{background:var(--sea)}
+.req.done{box-shadow:var(--sh),inset 0 0 0 2px color-mix(in srgb,var(--sea) 40%,transparent)}
+.reqtop{display:flex;justify-content:space-between;gap:12px;align-items:start}
+.req .nm{font-weight:700;font-size:17px;line-height:1.3}
+.num{font-size:26px;white-space:nowrap;text-align:right}
+.num small{display:block;font-family:Archivo,sans-serif;font-size:12.5px;color:var(--mut);font-weight:600}
+.req.done .num{color:var(--sea)}
+.bar{height:10px;border-radius:9px;background:var(--line);overflow:hidden;margin:12px 0}
+.bar i{display:block;height:100%;background:var(--grad);border-radius:9px;transition:width .6s cubic-bezier(.2,.8,.2,1);position:relative;overflow:hidden}
+.bar i::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,#fff8 50%,transparent 70%);transform:translateX(-100%);animation:shine 3.2s ease-in-out infinite}
+@keyframes shine{60%,100%{transform:translateX(100%)}}
+.req.done .bar i{background:var(--sea)}
+.step{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:auto}
+.step button{font:inherit;font-weight:800;font-size:20px;min-width:48px;height:48px;border-radius:14px;border:2px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer;padding:0 10px;transition:transform .12s,border-color .2s}
+.step button.sm{font-size:14px}
+.step button:hover{border-color:var(--pink)}
+.step button:active{transform:scale(.92)}
+.step input:not(.ck){font:inherit;font-size:17px;font-weight:700;width:0;flex:1 1 90px;height:48px;text-align:center;border:2px solid var(--line);border-radius:14px;background:var(--bg);color:var(--ink)}
+.auto{font-size:14px;color:var(--mut);margin-top:auto}
+details.tip{margin-top:10px;font-size:14.5px;color:var(--mut);border-top:1px dashed var(--line);padding-top:4px}
+details.tip summary{cursor:pointer;color:var(--pink);font-weight:700;min-height:40px;display:flex;align-items:center}
+details.tip[open] summary~*{animation:up .3s both}
+.list{list-style:none;margin:0;padding:6px 18px;background:var(--card);border-radius:20px;box-shadow:var(--sh);columns:2 330px;column-gap:36px}
+.row{break-inside:avoid;border-bottom:1px solid var(--line);padding:12px 0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:start}
+.row:last-child{border-bottom:0}
+.row .nm{display:inline;font-weight:600;background:linear-gradient(var(--sea),var(--sea)) 0 58%/0 2px no-repeat;transition:background-size .35s,color .35s}
+.row.done .nm{color:var(--mut);background-size:100% 2px}
+.ds{color:var(--mut);font-size:14px;margin-top:2px}
+.tag{display:inline-block;font-size:12px;font-weight:700;border-radius:7px;padding:1px 8px;margin:4px 4px 0 0;background:var(--line);color:var(--ink);white-space:nowrap}
+.tag.p{background:var(--gold);color:#3a2400}.tag.s{background:#d6dbe6;color:#22283a}.tag.b{background:#eab08a;color:#3a1d06}.tag.pl{background:#9ff0ea;color:#063a38}
+.ck{appearance:none;width:32px;height:32px;border:2.5px solid var(--mut);border-radius:10px;margin:0;cursor:pointer;display:grid;place-content:center;background:var(--bg);transition:background .2s,border-color .2s}
+.ck:checked{background:var(--sea);border-color:var(--sea);animation:pop .35s cubic-bezier(.3,1.6,.5,1)}
+.ck:checked::after{content:"";width:13px;height:7px;border:3px solid #fff;border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}
+@keyframes pop{40%{transform:scale(1.25)}}
+.lab{display:contents;cursor:pointer}
+.sp .nm,.sp .ds{filter:blur(6px);cursor:pointer;user-select:none}
+.note{background:color-mix(in srgb,var(--gold) 14%,var(--card));border:1px solid color-mix(in srgb,var(--gold) 50%,var(--line));border-radius:16px;padding:14px 16px;font-size:14.5px;margin:14px 0}
+.mini{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:12px 0 4px}
+.mini div{background:var(--card);border-radius:18px;box-shadow:var(--sh);padding:12px 16px}
+.mini b{display:block;font-family:Anton,Impact,sans-serif;font-weight:400;font-size:32px}
+.mini small{color:var(--mut);font-size:13.5px}
+.mini .ok b{color:var(--sea)}
+.panel{background:var(--card);border-radius:20px;box-shadow:var(--sh);padding:16px 18px;margin:16px 0}
+.panel h3{margin:0 0 6px;font-size:19px}
+.panel .tools{position:static;padding:4px 0;margin:8px 0 0}
+.save{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));background:var(--ink);color:var(--bg);font-size:14px;font-weight:600;padding:8px 14px;border-radius:999px;opacity:0;transform:translateY(8px);transition:opacity .3s,transform .3s;pointer-events:none;z-index:9}
+.save.on{opacity:.94;transform:none}
+.fx{position:fixed;inset:0;pointer-events:none;z-index:20;overflow:hidden}
+.fx i{position:absolute;width:9px;height:14px;border-radius:2px}
+@keyframes up{from{opacity:0;transform:translateY(16px)}}
+.ob{position:fixed;inset:0;z-index:15;display:grid;place-items:center;padding:calc(20px + env(safe-area-inset-top)) 18px calc(20px + env(safe-area-inset-bottom));overflow-y:auto;color:var(--nightink);
+ background:radial-gradient(90% 45% at 50% 100%,#ff3f7f66,transparent 70%),linear-gradient(180deg,#170b33,#2a0e4c 60%,#4d1860);animation:fade .4s both}
+.ob[hidden]{display:none}
+@keyframes fade{from{opacity:0}}
+.obin{width:min(760px,100%);animation:up .5s cubic-bezier(.2,.8,.2,1) both}
+.ob h2{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;font-size:clamp(38px,6vw,60px)}
+.ob .sub{color:#cbbbe3;font-size:17px}
+.obgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,200px),1fr));gap:12px;margin:18px 0}
+.obgrid button{font:inherit;text-align:start;color:var(--nightink);background:#ffffff10;border:1.5px solid #ffffff26;border-radius:18px;padding:16px 18px;min-height:64px;cursor:pointer;transition:transform .15s,background .2s,border-color .2s;animation:up .45s both;animation-delay:calc(var(--i,0)*40ms)}
+.obgrid button:hover{background:#ffffff1c;border-color:#ff8a3d}
+.obgrid button:active{transform:scale(.97)}
+.obgrid button b{display:block;font-family:Anton,Impact,sans-serif;font-weight:400;font-size:30px;color:#fff}
+.obgrid button small{color:#cbbbe3;font-size:14px}
+.obgrid.ms{grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr))}
+.obgrid.ms button{display:flex;gap:12px;align-items:center;min-height:56px;padding:10px 14px}
+.obgrid.ms button span{font-family:Anton,Impact,sans-serif;font-size:20px;color:var(--gold);min-width:42px}
+.obbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+.ob .chip{background:#ffffff10;color:var(--nightink);border-color:#ffffff30}
+.ob .chip.hot{background:var(--grad);color:#2a0b2a;border:0}
+.enter .req,.enter .list,.enter .grp,.enter .mini>div,.enter .vhead,.enter .sub,.enter .panel{animation:up .55s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i,0)*45ms)}
+footer{color:var(--mut);font-size:13px;margin-top:40px;max-width:80ch}
+@media(max-width:899px){
+ .app{display:block}
+ .side{display:contents}
+ .hero{background:linear-gradient(180deg,#170b33,#2a0e4c);color:var(--nightink);flex-direction:row;text-align:start;gap:16px;padding:calc(18px + env(safe-area-inset-top)) max(4vw,14px) 18px}
+ .sun{width:118px;flex:none}.pct{font-size:34px}
+ .hero h1{font-size:30px}
+ .stats{background:#2a0e4c;padding:0 max(4vw,14px) 14px;grid-template-columns:repeat(4,minmax(0,1fr))}
+ .tabs{position:sticky;top:0;z-index:5;background:#2a0e4c;flex-direction:row;overflow-x:auto;padding:8px max(3vw,10px);scrollbar-width:none;box-shadow:0 8px 20px -14px #000}
+ .tabs a{flex:none;min-height:44px}
+ .tabs a small{display:none}
+ .palms{display:none}
+ .tools{top:60px}
+}
+@media(max-width:520px){.stats{grid-template-columns:1fr 1fr}.sun{width:96px}.pct{font-size:28px}.hero h1{font-size:26px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+ <aside class="side">
+  <div class="hero">
+   <div class="sun" aria-hidden="true">
+    <svg viewBox="0 0 200 200">
+     <defs>
+      <linearGradient id="sg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff0a8"/><stop offset=".35" stop-color="#ffc94a"/><stop offset=".75" stop-color="#ff6a4d"/><stop offset="1" stop-color="#ff3f7f"/></linearGradient>
+      <clipPath id="sc"><circle cx="100" cy="100" r="92"/></clipPath>
+     </defs>
+     <circle cx="100" cy="100" r="92" fill="url(#sg)" opacity=".16"/>
+     <rect id="sunfill" x="0" y="192" width="200" height="0" fill="url(#sg)" clip-path="url(#sc)"/>
+     <g fill="#c42a78" clip-path="url(#sc)"><rect y="118" width="200" height="4"/><rect y="134" width="200" height="6"/><rect y="152" width="200" height="8"/><rect y="172" width="200" height="10"/></g>
+     <circle cx="100" cy="100" r="92" fill="none" stroke="#ffffff38" stroke-width="2"/>
+    </svg>
+    <div class="pct" id="pct">0%</div>
+   </div>
+   <div>
+    <h1>GTA VI <span>al 100%</span></h1>
+    <p>Rumbo a <b>A Long Road</b></p>
+   </div>
+  </div>
+  <div class="stats" id="stats"></div>
+  <nav class="tabs" id="tabs" aria-label="Secciones"></nav>
+  <svg class="palms" viewBox="0 0 280 90" aria-hidden="true"><defs><g id="palm"><path d="M0 0c2-26 6-44 3-60" stroke="#14072a" stroke-width="5" fill="none"/><path fill="#14072a" d="M3-60c-14-8-30-6-40 4 14-4 26-4 40-4Zm0 0c12-10 30-10 40-2-14-2-26-2-40 2Zm0 0c-4-14-16-22-30-22 12 6 22 12 30 22Zm0 0c6-12 18-18 32-16-14 4-24 8-32 16Z"/></g></defs><path d="M0 90V74c60-8 120 6 180-2s70 4 100-2V90Z" fill="#14072a"/><use href="#palm" x="40" y="82"/><use href="#palm" x="78" y="86"/><use href="#palm" x="226" y="84"/></svg>
+ </aside>
+ <div class="content">
+  <main id="view"></main>
+  <footer>Datos recopilados de guías publicadas tras el lanzamiento (19/11/2026): PowerPyx, Timesaver, Dexerto, GamerTweak y TechNerdiness. Algunas listas aún se están verificando; donde hay dudas lo indico. El % pesa igual los 35 requisitos; el juego puede ponderarlos distinto.</footer>
+ </div>
+</div>
+<div class="save" id="save">Guardado</div>
+<div class="fx" id="fx" aria-hidden="true"></div>
+<div class="ob" id="ob" hidden role="dialog" aria-modal="true" aria-labelledby="obt"></div>
+
+<script>
+{
+/* ---------- DATOS ---------- */
+const REQ=[
+ // g, id, nombre, need, total, money?, consejo
+ ['Historia y tareas','story','Completar la historia',1,1,0,'Termina la misión final del Capítulo 5. La lista del 100% se ve en Progreso › Estadísticas › 100% al acabar la historia, pero lo hecho antes ya cuenta. Nada es perdible.'],
+ ['Historia y tareas','opt','Tareas opcionales completadas',100,100,0,'Iconos negros con letras rosas o iconos morados en el mapa. Cuentan cada entrega de Moses y Randy, los laboratorios de Tyrone, cada una de las 18 meditaciones, los retos de pesca de Cal y las Strangers & Freaks. Sale sola mientras haces lo demás.'],
+ ['Historia y tareas','gang','Gang Operations despejadas',39,39,0,'Iconos amarillos. Saquea todos los objetos de valor clave de cada una. 19 se marcan con la historia. Reaparecen despacio, no se pierden.'],
+ ['Historia y tareas','bank','Bank Jobs completos',22,22,0,'Se desbloquean tras "Credit Check" (Cap. 3), que te da el Dye Pack Jammer. Bancos pequeños: caja registradora + caja fuerte. Bancos grandes: además la cámara acorazada.'],
+ ['Historia y tareas','payday','Payday Loan Jobs completos',7,7,0,'Tras "Credit Check". Amenaza al cajero, coge el dinero y entra al cuarto trasero a por la caja fuerte.'],
+ ['Historia y tareas','smash',"Smash 'N' Grabs completos",34,35,0,'Casas de empeño (a mitad del Cap. 2) y joyerías (a mitad del Cap. 3). Cada una robada al menos una vez, incluida la caja fuerte del fondo.'],
+ ['Historia y tareas','stick','Stick Ups completos',50,91,0,'Atracos a tiendas, comida rápida y licorerías. El mapa marca 91; bastan 50.'],
+ ['Historia y tareas','narc','Narcóticos vendidos a peristas',100000,100000,1,'Salen de Gang Operations y de los Cocaine Flamingos. Véndelos a cualquier perista. Sale solo.'],
+ ['Historia y tareas','jew','Joyas vendidas a peristas',100000,100000,1,'Rompe vitrinas y la caja fuerte de las joyerías y vende a un perista.'],
+ ['Historia y tareas','bills','Billetes marcados vendidos',250000,250000,1,'Salen de bancos y payday loans (con el Dye Pack Jammer). Coincide con el trofeo Dime on the Dollar.'],
+ ['Historia y tareas','vault','Cámaras acorazadas',8,8,0,'Las 8 de los bancos grandes. Se abren casi al final, tras la misión opcional "That\'s Where The Money Is". Sigue un furgón blindado hasta que un guardia entre con el maletín y cuélate en esa ventana. Dan 4 estrellas. Yasmani vende chivatazos de furgones por $10.000. Pasa bolsas a tu compañero si no puedes cargar más.'],
+ ['Historia y tareas','veh','Vehículos vendidos a peristas',200000,200000,1,'Tras "Moses" (Cap. 2). La Wish List de Randy (Cap. 3) paga bien por deportivos y casi te lo completa sola.'],
+ ['Exploración y actividades','kenton','Sets de Kenton completados',5,7,0,'Búsqueda de tesoros en pecios de Kenton (Cap. 1 y otra vez entre el 2 y el 3). Aquí bastan 5, pero los 7 hacen falta para Underwater Discoveries.'],
+ ['Exploración y actividades','cards','Sets de cartas coleccionables',15,18,0,'Completa 15 de los 18 sets (de 18 a 36 cartas cada uno). Algunas cartas repetidas están en varios sitios.'],
+ ['Exploración y actividades','waink','Ubicaciones escaneadas con WAiNK',100,100,0,'Monumentos, esculturas y curiosidades con la app WAiNK del móvil. Sale un aviso cuando estás cerca a pie.'],
+ ['Exploración y actividades','under','Underwater Discoveries',33,33,0,'Todos los pecios de la línea de Kenton. Usa el detector de metales para el tesoro.'],
+ ['Exploración y actividades','mags','Revistas, libros y cómics',30,34,0,'Solo cuentan los únicos: 27 revistas/libros/cómics + 7 intercambios de libros. Cualquier combinación de 30.'],
+ ['Exploración y actividades','medit','Puntos de meditación',15,18,0,'18 puntos en 10 ubicaciones: medita con Lucia y con Jason en cada una (cuentan doble). Llama a tu pareja y id juntos.'],
+ ['Exploración y actividades','flam','Cocaine Flamingos destruidos',100,125,0,'Dispara a los flamencos rosas de pico blanco y negro (no los decorativos amarillos y negros). No hace falta recoger la coca.'],
+ ['Exploración y actividades','play','Playlists únicas',2,2,0,'Escanea los dos pósters que desbloquean playlists. Los dos obligatorios.'],
+ ['Exploración y actividades','style','Estilos descubiertos',70,79,0,'13 tatuajes de revista de Jason, 15 de Lucia, 17 tatuajes de revista y 34 relojes de lujo. Las revistas se escanean con WAiNK; los relojes se recogen, sobre todo en Gang Operations.'],
+ ['Exploración y actividades','races','Carreras únicas ganadas',30,40,0,'Iconos azules en el mapa. Gana 30 cualesquiera.'],
+ ['Exploración y actividades','rgold','Oros en Race Challenges',10,13,0,'Cada uno de los 13 retos tiene oro. Elige los 10 más fáciles.'],
+ ['Exploración y actividades','range','Oros en el campo de tiro',42,42,0,'Compra la exención de $5 en Griffin Shooting Range o Rodgers Ranch. Hacen falta todos los oros (también da el trofeo The Shootist).'],
+ ['Exploración y actividades','vg','Videojuegos jugados',4,4,0,'Tres en la tele de casa (no disponible en el Cap. 2). El cuarto, "Bang For Your Buck", solo en máquinas arcade. Basta con iniciar y salir.'],
+ ['Exploración y actividades','pool','Rivales de billar derrotados',5,7,0,'7 rivales fijos en bares, tabernas y cafés. Vence a 5.'],
+ ['Exploración y actividades','golf','Minigolf jugados',2,3,0,'2 de los 3 minigolfs. Los dos campos de golf grandes no cuentan.'],
+ ['Exploración y actividades','hoops','Canastas de baloncesto',90,100,0,'Encesta en 90 canastas distintas. Varias en la misma no cuentan.'],
+ ['Exploración y actividades','drone','Time Trials de dron',42,42,0,'14 ubicaciones × 3 pruebas. En las dos primeras de cada sitio hay que batir el par; la tercera solo terminarla.'],
+ ['Exploración y actividades','stunt','Stunts completados',300,397,0,'Mezcla libre: 130 saltos, 202 bajo puentes, 40 knife flights y 25 saltos base. Los de bajo puente son los más rápidos. Con 250 sale el trofeo Cunning Stunts.'],
+ ['Exploración y actividades','chal','Desafíos completados',70,80,0,'Ve a la pestaña Desafíos: se marca solo desde allí. Déjalo para el final, muchos salen solos.'],
+ ['Exploración y actividades','bret','Target Decks de Bret',15,15,0,'Línea de caza de Bret Vogel, solo Jason, tras "Coffee Break" (Cap. 2). Disparos limpios a cabeza o corazón; usa el rifle Killtelligence SM-69 de las taquillas de Ammu-Nation.'],
+ ['Descubrimiento','scanv','Modelos base de vehículo escaneados',200,277,0,'Escanéalos con WAiNK en carreteras con tráfico; cada región tiene vehículos distintos. Los 280 "Standout" no cuentan.'],
+ ['Descubrimiento','weap','Armas estándar encontradas',50,66,0,'53 armas de fuego, 9 cuerpo a cuerpo y 4 explosivos. Basta con tenerlas una vez. Las "Expanded" de Ammu-Nation venden armas pesadas. Mira la pestaña Armas.'],
+ ['Descubrimiento','anim','Animales estudiados',100,255,0,'Con prismáticos; no hay que cazar. Cada raza de perro y gato cuenta aparte, y peces y aves también.']
+];
+const CH=[
+ ['Capítulo 1 · Just Like Paradise',[['Prologue','L'],['Gone Fishing','J'],['Gear Up','J'],['Just A Scratch','J'],['Lab Fees','J'],['Unwanted Attention','J'],['Pipework','J'],['Hey Arnold!','J'],['Island Dreams','J'],['Feng Shui','J'],['Coming Home','J'],['Buck Me','J'],['Clean Up After Donnie','J'],['Down to Earth','J'],['Clear Skies','J'],['Day Release','JL'],['Swamped','J'],['Don Gone','J'],['Recalibration','J'],['Tourist Trap','JL'],['Home Sweet Home','L'],['Discharge Time','JL']]],
+ ['Capítulo 2 · Paradise Lost',[["What's in the Bag?",'L'],['Ambulance Chaser','L'],['Just Moved In','L'],["Girls' Trip",'L'],['Moses','L'],['Daily Driver','L'],['Slam Dunk','L'],['Breakfast Run','L'],['Coffee Break','JL'],['Afternoon Delight','JL'],['Checking Out','JL']]],
+ ['Capítulo 3 · Tits Ass Drug Money',[['Welcome to Vice City','JL'],["Dealer's Choice",'J'],['Meet the Heders','JL'],['Dubious Provenance','JL'],['Mami Knows Best','L'],['South Leonida Real Estate','L'],['Tyrone','J'],['Here, Kitty Kitty','J'],['Car Services','L'],['Top Billing','JL'],['Boobie Time','J'],['First Impressions','JL'],['Caught Slipping','JL'],['Crosstown Traffic','JL'],['Credit Check','JL'],['Steal the Zorruso for Randy','JL'],['Sinfrontera National Bank','JL'],['Security Expert','JL'],['Ride or Die','J'],['Company Property','JL'],['The Missing Link','L'],['Safe Word','JL'],['Cooties','L'],['Bricked Up','JL'],['Hidden Charges','JL'],['The Cartel Heist','JL']]],
+ ['Capítulo 4 · Vice City, Baby',[['Ocean Beach','JL'],['Another Life','L'],['Company Cars','JL'],['Lawyer Up','JL'],['Party Hard','JL'],['Heavy Lifting','JL'],['Photo/Shoot','JL'],['Making Gainz','L'],['Watch It','J'],['Cash Injections','L'],['Amateur Hour','L'],['Dirty Work','JL'],['Too Much Baggage','J'],['Adventures in Babysitting','J'],['Fresh Evidence','J'],['Power Play',''],["Child's Play",'JL'],['Headliners','JL'],['Close Surveillance','J'],['Delivery Method','J'],['Team Building','L'],['Fully Catered','JL'],['VCIA Takedown','JL'],['Sunset','JL'],['Starting From Zero','']]],
+ ['Capítulo 5 · Top of the World, Ma',[['Bird in the Hand','JL'],['Taking Liberties',''],['VC Baby',''],['Doggie Bag',''],['Operation Savage Glory',''],['Protective Custody','JL'],['The End of the Road','']]]
+];
+// giver, capítulo, cuenta trofeo (y/n/?), misiones [nombre, nota]
+const SF=[
+ ['Dr. Merle (No Flushers)','Cualquiera','y',[['The Final Flush','']]],
+ ['Freddie','Cualquiera','y',[["Retest Freddie's Defenses",'']]],
+ ['Shirley','Cap. 1','n',[["Get Shirley's Rum",'perdible: solo Cap. 1'],['Steal the Scooter','perdible: solo Cap. 1']]],
+ ['Kenton','Cap. 1','?',[['Search the Dive Sites','sets de Kenton y pecios']]],
+ ['Cal','Cap. 1','n',[['Catch a Bigger Fish','retos de pesca; trofeo Baited My Tackle']]],
+ ['Kirk (Skunk Ape)','Cap. 1','y',[['Search for the Skunk Ape','de noche'],['Search for Tree Effigies',''],['Help Kirk Find Mr. Mangrove','solo Lucia, de noche']]],
+ ['Kyle','Cap. 2','y',[['Check Out McKittrick Farm',''],['Collect Chemicals for Kyle',''],['Buddy? (Check on Kyle)','']]],
+ ['Alvan','Cap. 2','y',[["Gellhorn's Missing Tourists",''],['Missing Person (Return to the Trophy Room)','']]],
+ ['Moses','Cap. 2','n',[['Steal Vehicles for Moses',''],["Collect Moses' Gift",'']]],
+ ['Bret Vogel','Cap. 2','?',[['Veteran Hunted (Meet Bret)','solo Jason'],["Bret's Hunting Decks",'15 decks, requisito del 100%']]],
+ ['Billy','Cap. 2','n',[['Thrillbillies',''],['Twist Wrist, Smash, Grab',''],['Mall Rats',''],['The Impaler',''],['Hometown Heroes','trofeo The Lone Rider']]],
+ ['Yago','Cap. 3','y',[['Join a Street Race',''],['Bumper to Bumper (Mentor Yago)','solo Jason'],['Race Against Yago','con tiempo límite, perdible'],['Brother to Brother (Back Up Yago)','solo Jason']]],
+ ['Andy','Cap. 3','n',[['Climbing the Cellerichain (1–3)','solo Lucia'],['Pay the Cellerica Fee','solo Lucia'],['Peach! (Cellerica Initiation)','solo Lucia'],['Read the Label','solo Lucia'],['Puff Puff Pass','solo Lucia; trofeo Road to Rehabilitation']]],
+ ['Yasmani','Cap. 3','n',[["Yasmani's Jewelry Jobs",''],["Yasmani's ATM Jobs",''],["Yasmani's Payday Loans Jobs",''],['Tail the Security Van','']]],
+ ['Randy','Cap. 3','?',[["Randy's Wish List",'trofeo Supply & Demand']]],
+ ['Tyrone','Cap. 3','n',[['Take Out Kitty Litter',''],['Spin On This (Shut Down the Labs)','trofeo Spin On This!']]],
+ ['Dunk','Cap. 3','?',[["Dunk's Robbery Tips",'']]],
+ ['Papa Audacity','Cap. 3','?',[['The Unknown Stuntman',''],['Trial by Tire',''],['Quit Your Job, Sell Your House','']]],
+ ['Eddie Acosta','Cap. 4','n',[["Attend Eddie Acosta's Party",'']]],
+ ['Pilot Pete','Cap. 4','y',[['The Last Mile: Passing the Torch','solo Jason'],['The Last Mile: Backseat Pilot','solo Jason'],["Pete's Deliveries: Southpoint Airfield",'solo Jason'],["Pete's Deliveries: Avery Allen & Co.",'solo Jason'],['Deliver Packages','solo Jason']]],
+ ['Shayna','Cap. 4','n',[['This is a Free Call From…','solo Lucia, con tiempo límite, perdible']]]
+];
+const DES=[
+ ['Combate',[['Speed Kills','3 bajas en 30 s'],['Melee Combat','5 bajas o KO cuerpo a cuerpo seguidos sin morir'],['Explosive Combat','Matar o herir a 3 enemigos con un solo explosivo'],['Headshots','4 tiros a la cabeza en un uso de Combat Focus'],['Drive-Bys','5 bajas desde el vehículo en 1 min sin bajarte'],['Stealth Sniping','7 bajas con francotirador a enemigos sin alertar, sin morir ni ser arrestado'],['Incendiary','Matar o herir a 5 enemigos con fuego en 15 s'],['Revolver Headshots','6 tiros a la cabeza con revólver sin recargar ni cambiar de arma'],['Long-Range Sniping','3 bajas con mira desde 300 pies en 10 s'],['High Explosive','Matar o herir a 8 enemigos con explosivos en 20 s sin recibir daño']]],
+ ['Criminal',[['Mugging','Atracar a 5 peatones'],['Stick Ups','Robar 3 tiendas en un día sin morir ni ser arrestado'],['Carjacking','Robar 3 coches y llevarlos a un Pay \'n\' Spray en un día'],['Mugging Spree','Quitar $500 a peatones en un día'],['Cop Car Theft','Aguantar 5 min buscado en un coche patrulla robado'],['Cop Weapon Theft','Sacar armas del maletero de 5 coches patrulla distintos'],['Stick Up Spree','Robar 2 tiendas en cada uno de los 5 condados en 20 min'],['Cop Tow','Remolcar un coche patrulla ocupado 1 milla sin parar'],['Carjacking Spree','Registrar o repintar coches robados de 10 marcas en 30 min'],['Carjacking Pro','Ganar $100.000 vendiendo coches robados en un día']]],
+ ['Exploración',[['WAiNK Locations','Escanear 4 ubicaciones con WAiNK'],['Skyscrapers','Subir a lo alto de los 5 rascacielos más altos de Vice-Dale County'],['Collectible Cards','3 cartas coleccionables en cada uno de los 5 condados'],['Encyclopedia','Descubrir 100 animales, vehículos y armas'],['Underwater Discoveries','Explorar 25 cosas raras del fondo marino'],['Rail Tour','En un día, 1 milla en tren en cada condado sin saltar el viaje'],['Underwater Treasures','Encontrar 85 tesoros submarinos'],['Black Hole Wrecks','Encontrar los 11 pecios "black hole"'],['Road Trip','En un día, conducir a todas las ciudades y pueblos (solo bajarte a repostar)'],['Helipad Flyovers','Sobrevolar los 41 helipuertos de Vice City y Vice Beach a ≤100 pies en 10 min']]],
+ ['Forma física',[['Gym Member','Hacerte socio de un gimnasio'],['Foot Travel','Recorrer 5 millas a pie en un día'],['Pro Cyclist','Pedalear 15 millas en un día'],['Pro Swimmer','Nadar 3 millas en un día'],['Balanced Workout','Usar todos los tipos de máquina del gimnasio en un día'],['Strength Regime','Fuerza nivel 4 con Jason y Lucia 5 días seguidos'],['Cardio Regime','Cardio nivel 4 con Jason y Lucia 5 días seguidos'],['Waning Sands Run','Correr de la puerta del muelle de The Tip a Waning Sands en <13 min sin daño'],['Tequesta Swim','Nadar de Tequesta Retreat a Starfish Island en <15 min'],['Southwind Cycle','Bici de Williams Guest House (Graysn) a Chicky\'s Tiki Bar (Southwind) en <22 min sin caerte']]],
+ ['Compras',[['Vehicle Modder','5 modificaciones en un taller'],['Grocery Shopper','Gastar >$250 en tiendas o licorerías en un día'],['Well Armed','Comprar 3 armas cortas y 3 largas en Ammu-Nation'],['Well Groomed','Gastar >$1.000 en barberías, peluquerías o salones'],['Stylishly Armed','Mejoras estéticas para 5 armas cortas y 5 largas'],['Well Dressed','Gastar >$5.000 en ropa'],['Custom Ride','Gastar >$20.000 en una sola visita al taller'],['Heavily Armed','Gastar >$50.000 en Ammu-Nation'],['Serious Modder','Gastar >$125.000 en talleres'],['Nest Egg','Tener $1.500.000 en la cuenta BuckMe']]],
+ ['Deportes',[['Basketball Rookie','Encestar en 3 canastas distintas en un día'],['Golf Rookie','18 hoyos en King Gator o Frontier Adventure Golf en <30 min con -3 o mejor'],['Basketball Streak','10 canastas seguidas en 2 min'],['Pool Streak','Ganar al billar en 3 sitios en un día sin perder ni abandonar'],['Basketball Tour','Encestar en todos los condados'],['Golf Pro','18 hoyos en King Gator y en Frontier en un día al par o mejor'],['Triple Bank','Tocar 3 bandas con la blanca antes de meter'],['Basketball Pro','Encestar en las 100 canastas de Leonida'],['8-Ball Break','Ganar metiendo la 8 en el saque'],['Double Hole In One','Dos hoyos en uno seguidos en minigolf']]],
+ ['Supervivencia',[['Alligator Kills','Matar 3 caimanes salvajes'],['Big Fish','Pescar un pez de 20 libras o más'],['Marksman','Medalla en los dos campos de tiro en un día'],['Catch of the Day','3 peces con cada tipo de señuelo en un día'],['Zoologist','Estudiar 20 especies'],['Angler','4 especies de pez en 6 min'],['Pro Marksman','Oro en 3 pruebas seguidas del campo de tiro sin fallar ni salir'],['Hunting Spree','Jabalí, serpiente de cascabel y pantera en 15 min sin recibir daño'],['Pro Angler','Pescar todas las especies'],['Legendary Hunter','Matar los 8 animales únicos']]],
+ ['Vehículos',[['Vehicle Discovery','Examinar o descubrir 6 vehículos'],['Wheelie','Caballito durante 0,25 millas'],['Winning Streak','Ganar 3 carreras con muscle car, deportivo y superdeportivo'],['Throttled','Más de 100 mph durante 2 min'],['Drawbridge Jump','Saltar un puente levadizo >100 pies 3 veces sin bajarte'],['Top Speed','175 mph en coche, camión o moto'],['Train Landing','Aterrizar un avión sobre un tren en marcha sin destruirlo'],['Oceanarium Jump','Paracaídas desde ≥0,5 millas al tanque de orcas o delfines del Oceanarium'],['Rally Winner','Ganar 3 carreras seguidas en un día en Thrillbilly Mud Club, Gellhorn y Boone Speedway'],['Train Jump','Saltar ≥75 pies en moto y caer en un tren en marcha dos veces en 20 min']]]
+];
+// nombre, grado (P/G/S/B), cómo, oculto-spoiler
+const TRO=[
+ ['Historia','Vice Got a Price!','P','Consigue todos los demás trofeos',0],
+ ['Historia','Just Like Paradise','B','Completa Gone Fishing',1],['Historia','Paradise Lost','B','Termina el Capítulo 1',1],['Historia','Tits Ass Drug Money','B','Termina el Capítulo 2',1],['Historia','Vice City, Baby!','B','Termina el Capítulo 3',1],['Historia','Top of the World, Ma','B','Termina el Capítulo 4',1],['Historia','You Gotta Know When to Get Off','G','Termina la misión final',1],['Historia','Trust','B','Completa Breakfast Run',1],['Historia','Break the Bank','B','Completa The Cartel Heist',1],['Historia','Family Matters','B',"Completa Child's Play",1],['Historia','DWNFALL','B','Completa Headliners',1],['Historia','Hi-Jacked','B','Completa VCIA Takedown',1],['Historia','Snow Storm','B','Completa Operation Savage Glory',1],
+ ['Secundarias','Strangers & Freaks','S','Completa 8 líneas de Strangers & Freaks',0],['Secundarias','Road to Rehabilitation','B','Última misión de Andy',0],['Secundarias','This Was No Boat Accident','B','Última misión de Kenton',0],['Secundarias','The Lone Rider','B','Última misión de Billy',0],['Secundarias','Supply & Demand','B','Última misión de Randy',0],['Secundarias','Spin On This!','B','Última misión de Tyrone',0],['Secundarias','Fair Game','B','Caza un animal único para Bret',0],
+ ['Actividades','Cunning Stunts','S','Completa 250 stunts',0],['Actividades','The Shootist','S','Oro en todas las pruebas del campo de tiro',0],['Actividades','Master of None','B','Prueba cada tipo de actividad una vez',0],['Actividades','Top Fun','B','Gana una carrera de dron en cada ubicación',0],['Actividades','Earn Cash, Not Kudos','B','Gana 20 carreras distintas',0],['Actividades','Baited My Tackle','B','Gana a Cal en un reto de pesca',0],['Actividades','Stick Fiddler','B','Completa un juego arcade',0],['Actividades','Positive Mental Attitude','B','Medita en todos los puntos de Leonida',0],['Actividades',"Let's Go Bowling",'B','Bolera: follow-through en Kolt & Associates',0],
+ ['Exploración','A Long Road','G','Alcanza el 100%',0],["Exploración","Don't Touch My Deck",'S','Completa 3 sets de cartas',0],['Exploración','You WAiNKer!','S','100 ubicaciones WAiNK',0],['Exploración','One Last Thing','B','Completa 50 desafíos',0],['Exploración','Whip it Good','B','Descubre 100 vehículos',0],['Exploración','The Goodtime State','B','Explora todo Leonida',0],['Exploración','In The Beginning','B','Disfruta de un cóctel con vistas en una playa',0],
+ ['Robos','Maximum Withdrawal','S','Roba 5 cámaras acorazadas y escapa',0],['Robos','Hot Together','B','Pierde 4 estrellas junto a tu pareja',0],['Robos','Retail Therapy','B','Roba 3 tiendas seguidas con tu pareja sin perder el nivel de búsqueda',0],['Robos','Sneakthief','B','Roba una joyería sin ser detectado',0],['Robos','A Classic Blitz Play','B','Roba un furgón blindado y escapa',0],['Robos','Pest Control','B','Roba una operación ilegal de cada banda',0],['Robos','Capital Offense','B','Sal a lo bruto de un concesionario',0],['Robos','Dime on the Dollar','B','Blanquea $250.000 en billetes marcados',0],
+ ['Combate y secretos','Gunslinger','B','Abate 5 enemigos en un uso de Combat Focus',0],['Combate y secretos','Ten Pin','B','Atropella enemigos con un drive-by cuerpo a cuerpo',0],['Combate y secretos','Catch Me If You Can','B','Una salida "no programada" en VCIA',1],['Combate y secretos','Actions Speak Louder Than Words','B','Toma decisiones con consecuencias',1],['Combate y secretos','Challenging Tank','B','Sin confirmar. Pista: "Kinda hot in these Rhinos"',0],['Combate y secretos','Personal Best','B','Sin confirmar. Pista: "A partnership with mass appeal"',0],['Combate y secretos','Bad Luck, I Guess','B','Sin confirmar. Pista: "Second time\'s the charm"',0],['Combate y secretos','The Truth Is Out There','B','Momento de la historia ("What the hell just happened?")',1],
+ ['Dinero y propiedades','Treat Yo Self','B','Gasta $100.000 en tiendas',0],['Dinero y propiedades','Little Boxes','B','Compra todos los garajes',0],['Dinero y propiedades','On the Spot','B','Registra 10 vehículos en la app Scooter Bros',0]
+];
+const ARM=[
+ ['Pistolas',['Scorpio Nipper .38','Girardi ES9','Klose K17','Duke 1922','Girardi ES18','Klose K17 MCD','Schlamm DRX','Fairview Kalinga .50']],
+ ['Revólveres',['Wortham WCR1','Hawk & Little .38','Duke Mustang .357','Scorpio Akulus']],
+ ['Subfusiles',['Wortham W-10','Zhang Wu Type 9','Deever Tech DSG','BZI Vatra','Schlamm DW-9','Vom Feuer VF5','Vom Feuer VF5C','ADB PD-90']],
+ ['Escopetas',['Fortune & Son Moreland 850','Fortune & Son Gorse 425','Shrewsbury Drifter','Shrewsbury Hobo','Mason & Keen Longshot','Mason & Keen Shortstraw','Girardi AZ1200','Girardi Verro','Girardi Super400','Kozlov KVGA-12','Goodwin Comshot 12']],
+ ['Fusiles de asalto',['Duke 556','Hillinger Heathen','Vom Feuer VF-G1','Kozlov KZ-59','Kozlov Hind','ADB FRA']],
+ ['Fusiles tácticos y de caza menor',['Hawk & Little Mediator','Wortham W-14','Hillinger M306','Hillinger M306 TMR','Rifle W-22 (modelo base)']],
+ ['Francotiradores',['Fortune & Son Laird 350','Shrewsbury SM-69','Shrewsbury SMS-01','Fairview FF-SR','Fairview FF-50']],
+ ['Ametralladoras y lanzadores',['ADB M350','Goodwin LMG 6','Hillinger Boomer','Deever Tech GLR40','Hauners H-AT']],
+ ['Cuerpo a cuerpo',['Hunting Knife','Bushcraft Knife','EDC Knife','Survival Knife','Diving Knife','Switchblade','Combat Knife','Brass Knuckles','Baton']]
+];
+const TABS=[['checklist','Checklist 100%'],['historia','Historia'],['secundarias','Secundarias'],['desafios','Desafíos'],['trofeos','Trofeos'],['armas','Armas'],['notas','Notas']];
+
+/* ---------- ESTADO ---------- */
+let S={v:1,ts:0,req:{},done:{},notes:'',spoil:true};
+const LS='gta6-100';
+try{const l=JSON.parse(localStorage.getItem(LS));if(l&&l.v)S=Object.assign(S,l)}catch(e){}
+let db=null,docRef=null,timer=null;
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt=(n,m)=>m?'$'+Number(n).toLocaleString('es-ES'):Number(n).toLocaleString('es-ES');
+function flash(t){const e=$('#save');e.textContent=t;e.classList.add('on');clearTimeout(flash.t);flash.t=setTimeout(()=>e.classList.remove('on'),1400)}
+function save(){S.ts=Date.now();try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}
+ clearTimeout(timer);timer=setTimeout(async()=>{if(!docRef)return;try{await docRef.set(JSON.parse(JSON.stringify(S)));flash('Guardado en tu cuenta')}catch(e){flash('Guardado solo en este dispositivo')}},900)}
+
+/* ---------- CÁLCULOS ---------- */
+const chalDone=()=>DES.reduce((a,[c,l])=>a+l.filter((x,i)=>S.done['d'+c+i]).length,0);
+const misDone=()=>CH.reduce((a,[c,l],ci)=>a+l.filter((x,i)=>S.done['m'+ci+'_'+i]).length,0);
+const misTot=CH.reduce((a,c)=>a+c[1].length,0);
+function cur(id){if(id==='chal')return chalDone();if(id==='story')return S.done['m4_6']?1:(S.req.story||0);return S.req[id]||0}
+function overall(){let s=0,d=0;for(const r of REQ){const f=Math.min(cur(r[1])/r[3],1);s+=f;if(f>=1)d++}return{p:s/REQ.length,d}}
+
+/* ---------- VISTAS ---------- */
+let tab='checklist',q='',filt='todo';
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;let shown=0,tw=0;
+function setSun(v){const h=184*v,sf=$('#sunfill');sf.setAttribute('y',192-h);sf.setAttribute('height',h);$('#pct').textContent=Math.floor(v*100+1e-9)+'%'}
+function header(){const o=overall(),p=o.p;
+ if(RM){setSun(p);shown=p}else{cancelAnimationFrame(tw);const from=shown,t0=performance.now(),dur=from===0?1400:700;
+  const f=t=>{const k=Math.min((t-t0)/dur,1),e=1-Math.pow(1-k,3);shown=from+(p-from)*e;setSun(shown);if(k<1)tw=requestAnimationFrame(f)};tw=requestAnimationFrame(f)}
+ const tro=TRO.filter((t,i)=>S.done['t'+i]).length;
+ $('#stats').innerHTML=[[o.d+'/35','requisitos'],[misDone()+'/'+misTot,'misiones'],[chalDone()+'/80','desafíos'],[tro+'/55','trofeos']].map(([b,s])=>`<div><b>${b}</b><small>${s}</small></div>`).join('')}
+function tabCount(k){switch(k){case 'checklist':return overall().d+'/35';case 'historia':return misDone()+'/'+misTot;case 'secundarias':{let d=0,t=0;SF.forEach(([g,c,y,l],si)=>l.forEach((x,i)=>{t++;if(S.done['s'+si+'_'+i])d++}));return d+'/'+t}
+ case 'desafios':return chalDone()+'/80';case 'trofeos':return TRO.filter((t,i)=>S.done['t'+i]).length+'/55';case 'armas':return ARM.reduce((a,[c,l])=>a+l.filter((x,i)=>S.done['a'+c+i]).length,0)+'/'+ARM.reduce((a,c)=>a+c[1].length,0);default:return ''}}
+function tabs(){$('#tabs').innerHTML=TABS.map(([k,n])=>`<a href="#${k}" ${k===tab?'aria-current="page"':''}>${n}<small>${tabCount(k)}</small></a>`).join('')}
+const match=t=>!q||t.toLowerCase().includes(q);
+const tools=(ph,extra='')=>`<div class="tools"><input type="search" id="q" placeholder="${ph}" value="${esc(q)}">${['todo','pendiente','hecho'].map(f=>`<button class="chip" data-f="${f}" aria-pressed="${filt===f}">${f[0].toUpperCase()+f.slice(1)}</button>`).join('')}${extra}</div>`;
+const showF=d=>filt==='todo'||(filt==='hecho'?d:!d);
+const grp=(name,count,c)=>`<div class="grp"${c?` style="--c:${c}"`:''}><h3>${name}</h3><span>${count}</span></div>`;
+const head=(t,sub)=>`<div class="vhead"><h2>${t}</h2></div><p class="sub">${sub}</p>`;
+function ckRow(key,name,desc,tags,extra=''){const d=!!S.done[key];if(!showF(d)||!match(name+' '+desc))return '';
+ return `<li class="row${d?' done':''}${extra}"><label class="lab"><input type="checkbox" class="ck" data-k="${key}" ${d?'checked':''}><div><span class="nm">${esc(name)}</span>${desc?`<div class="ds">${esc(desc)}</div>`:''}${tags||''}</div></label></li>`}
+const GC={'Historia y tareas':'var(--pink)','Exploración y actividades':'var(--sea)','Descubrimiento':'var(--sun)'};
+
+function vChecklist(){let h=head('Checklist 100%','Los 35 requisitos de <b>A Long Road</b>. Nada es perdible: todo se puede terminar en juego libre tras la historia. Los trucos desactivan el guardado, no los uses.')+tools('Buscar requisito…');
+ for(const g of Object.keys(GC)){const all=REQ.filter(x=>x[0]===g);let cards='';
+  for(const [grp,id,nm,need,tot,m,tip] of all){const c=cur(id),ok=c>=need;if(!showF(ok)||!match(nm+' '+tip))continue;const step=m?5000:1;
+   cards+=`<article class="req${ok?' done':''}" style="--c:${GC[g]}"><div class="reqtop"><div class="nm">${esc(nm)}</div><div class="num">${fmt(c,m)}<small>de ${fmt(need,m)}${tot!==need?' · hay '+fmt(tot,m):''}</small></div></div>
+   <div class="bar"><i style="width:${Math.min(c/need,1)*100}%"></i></div>
+   ${id==='story'?`<label class="step" style="gap:12px"><input type="checkbox" class="ck" data-story ${c>=1?'checked':''}><span class="auto" style="margin:0">Historia terminada. Se marca sola al tachar "The End of the Road".</span></label>`:id==='chal'?`<div class="auto">Se calcula desde la pestaña <a href="#desafios" style="color:var(--pink)">Desafíos</a>.</div>`:
+   `<div class="step"><button data-r="${id}" data-d="-${step}" aria-label="Restar">−</button><input inputmode="numeric" data-ri="${id}" value="${c}" aria-label="${esc(nm)}"><button data-r="${id}" data-d="${step}" aria-label="Sumar">+</button>${m?`<button class="sm" data-r="${id}" data-d="25000">+25k</button>`:''}<button class="sm" data-r="${id}" data-set="${need}">Hecho</button></div>`}
+   <details class="tip"><summary>Cómo conseguirlo</summary>${esc(tip)}</details></article>`}
+  if(cards)h+=grp(g,all.filter(x=>cur(x[1])>=x[3]).length+'/'+all.length,GC[g])+`<div class="cards">${cards}</div>`}
+ return h}
+
+function curChapter(){for(let ci=0;ci<CH.length;ci++)if(CH[ci][1].some((x,i)=>!S.done['m'+ci+'_'+i]))return ci;return 9}
+function vHistoria(){const cc=curChapter();let h=head('Historia',`${misTot} misiones principales en 5 capítulos. Algunas webs cuentan 93 porque separan dos del Cap. 2; si te salen de más, apúntalas en Notas.`)+`<div class="tools" style="position:static;padding:0"><button class="chip hot" id="where">Actualizar por dónde voy</button></div>`+tools('Buscar misión…',`<button class="chip" id="spoil" aria-pressed="${S.spoil}">Sin spoilers</button>`);
+ const who={J:'Jason',L:'Lucia',JL:'Jason y Lucia'};
+ CH.forEach(([c,l],ci)=>{const d=l.filter((x,i)=>S.done['m'+ci+'_'+i]).length,hide=S.spoil&&ci>cc;
+  const rows=l.map(([n,w],i)=>ckRow('m'+ci+'_'+i,n,'',`<span class="tag">${ci+1}.${i+1}</span>${w?`<span class="tag">${who[w]}</span>`:''}`,hide?' sp':'')).join('');
+  if(rows)h+=grp(hide?'Capítulo '+(ci+1):esc(c),d+'/'+l.length,['var(--sea)','var(--pink)','var(--sun)','var(--gold)','var(--pink)'][ci])+`<ul class="list">${rows}</ul>`});
+ return h}
+
+function vSec(){const strands=SF.filter(([g,c,y,l],si)=>y==='y'&&l.every((x,i)=>S.done['s'+si+'_'+i])).length;
+ let h=head('Strangers &amp; Freaks','El trofeo pide 8 líneas completas. Las guías confirman 7 que cuentan; la octava aún no está identificada. También suman a las 100 tareas opcionales.')
+ +`<div class="mini"><div class="${strands>=7?'ok':''}"><b>${strands}/7</b><small>líneas confirmadas para el trofeo</small></div></div>`+tools('Buscar personaje o misión…');
+ SF.forEach(([g,c,y,l],si)=>{const rows=l.map(([n,nt],i)=>ckRow('s'+si+'_'+i,n,nt,'')).join('');if(!rows)return;
+  h+=grp(esc(g)+` <span class="tag ${y==='y'?'pl':''}" style="margin:0">${y==='y'?'cuenta':y==='n'?'no cuenta':'¿cuenta?'}</span>`,c+' · '+l.filter((x,i)=>S.done['s'+si+'_'+i]).length+'/'+l.length,y==='y'?'var(--sea)':'var(--mut)')+`<ul class="list">${rows}</ul>`});
+ return h}
+
+function vDes(){const n=chalDone();let h=head('Desafíos','80 en 8 categorías, abiertos desde el principio (Progreso › Desafíos). Cada categoría desbloquea trucos de vehículos.')
+ +`<div class="mini">${[[50,'trofeo One Last Thing'],[70,'requisito del 100%'],[80,'truco del Hauners P-996 Lazer']].map(([t,s])=>`<div class="${n>=t?'ok':''}"><b>${Math.min(n,t)}/${t}</b><small>${s}</small></div>`).join('')}</div>`+tools('Buscar desafío…');
+ DES.forEach(([c,l],k)=>{const rows=l.map(([nm,ds],i)=>ckRow('d'+c+i,nm,ds,'')).join('');if(rows)h+=grp(c,l.filter((x,i)=>S.done['d'+c+i]).length+'/10',['var(--pink)','var(--sun)','var(--sea)','var(--gold)'][k%4])+`<ul class="list">${rows}</ul>`});
+ return h}
+
+function vTro(){const G={P:['Platino','pl'],G:['Oro','p'],S:['Plata','s'],B:['Bronce','b']};let h=head('Trofeos','55 en total (1 platino, 2 oro, 6 plata, 46 bronce), todos en un jugador. Platino estimado: unas 200 horas.')+tools('Buscar trofeo…',`<button class="chip" id="spoil" aria-pressed="${S.spoil}">Sin spoilers</button>`);
+ const groups=[...new Set(TRO.map(t=>t[0]))];
+ groups.forEach((g,k)=>{const rows=TRO.map((t,i)=>t[0]!==g?'':ckRow('t'+i,t[1],t[3],`<span class="tag ${G[t[2]][1]}">${G[t[2]][0]}</span>`,t[4]&&S.spoil&&!S.done['t'+i]?' sp':'')).join('');
+  if(rows)h+=grp(g,TRO.filter((x,j)=>x[0]===g&&S.done['t'+j]).length+'/'+TRO.filter(x=>x[0]===g).length,['var(--gold)','var(--pink)','var(--sea)','var(--sun)'][k%4])+`<ul class="list">${rows}</ul>`});
+ return h}
+
+function vArm(){const tot=ARM.reduce((a,c)=>a+c[1].length,0),d=ARM.reduce((a,[c,l])=>a+l.filter((x,i)=>S.done['a'+c+i]).length,0);
+ let h=head('Armas','El 100% pide 50 de las 66 armas estándar (53 de fuego, 9 cuerpo a cuerpo, 4 explosivos). Basta con tenerlas una vez.')
+ +`<div class="mini"><div class="${d>=50?'ok':''}"><b>${d}/50</b><small>objetivo (de ${tot} en esta lista)</small></div></div>
+ <div class="note">Rockstar no ha publicado la lista oficial de las 66. Esta está reconstruida con los modelos base de las wikis, sin las variantes con nombre propio (Duval Signature ES9, etc.), que no cuentan. Salen 52 de las 53 de fuego y las 9 cuerpo a cuerpo; los 4 explosivos aún no están nombrados en las guías. Fíate del contador del juego.</div>`+tools('Buscar arma…');
+ ARM.forEach(([c,l],k)=>{const rows=l.map((n,i)=>ckRow('a'+c+i,n,'','')).join('');if(rows)h+=grp(c,l.filter((x,i)=>S.done['a'+c+i]).length+'/'+l.length,['var(--pink)','var(--sun)','var(--sea)','var(--gold)'][k%4])+`<ul class="list">${rows}</ul>`});
+ return h+`<div class="note">Dónde comprar: Chuck's Tackle &amp; Shot (Key Lento, stock limitado), Big Shots (Hamlet, Expanded), Woodhatch (Capri, Expanded) y Phil's Ammu-Nation. Las armas compradas nunca se pierden: recupéralas en cualquier taquilla de Ammu-Nation o en tu vehículo.</div>`}
+
+function vNotas(){return head('Notas','Apunta lo que quieras: misiones que te falten en la lista, sitios pendientes, ideas.')+`<textarea id="notes" rows="14" placeholder="Ej.: flamenco detrás del faro de Key Lento…">${esc(S.notes)}</textarea>
+ <section class="panel"><h3>Copia de seguridad</h3><p class="sub" style="margin:0">Sirve para pasar tu progreso entre la versión de Claude y la app de la tablet, o para guardarlo por si acaso.</p>
+ <div class="tools"><button class="chip hot" id="exp">Copiar código</button><button class="chip" id="dl">Descargar archivo</button><label class="chip" style="display:flex;align-items:center">Cargar archivo<input type="file" id="file" accept=".json,application/json" hidden></label></div>
+ <textarea id="code" rows="3" placeholder="Pega aquí un código de progreso y pulsa Importar" style="margin-top:10px"></textarea>
+ <div class="tools"><button class="chip" id="imp">Importar</button><span id="impmsg" class="sub" style="margin:0"></span></div></section>
+ <div class="tools" style="position:static;margin-top:14px"><button class="chip" id="reset">Borrar todo el progreso</button></div><div id="confirm"></div>`}
+function encode(){return btoa(unescape(encodeURIComponent(JSON.stringify(S))))}
+function load(txt){txt=String(txt).trim();let o;try{o=JSON.parse(txt)}catch(e){try{o=JSON.parse(decodeURIComponent(escape(atob(txt))))}catch(x){}}
+ if(!o||!o.v||typeof o.done!=='object'||typeof o.req!=='object')return false;
+ S={v:1,ts:0,req:{},done:{},notes:'',spoil:true,...o};save();render();burst($('#pct'),40);return true}
+
+const V={checklist:vChecklist,historia:vHistoria,secundarias:vSec,desafios:vDes,trofeos:vTro,armas:vArm,notas:vNotas};
+let entering=false;
+function render(keepFocus){const a=document.activeElement,id=a&&a.id,pos=a&&a.selectionStart;
+ header();tabs();const v=$('#view');v.innerHTML=V[tab]();
+ if(entering&&!RM){v.classList.add('enter');let i=0;for(const e of v.querySelectorAll('.vhead,.sub,.mini>div,.grp,.req,.list,.panel')){e.style.setProperty('--i',Math.min(i++,16))}clearTimeout(render.t);render.t=setTimeout(()=>v.classList.remove('enter'),1500)}
+ entering=false;
+ if(keepFocus&&id){const e=document.getElementById(id);if(e){e.focus();try{e.setSelectionRange(pos,pos)}catch(x){}}}}
+
+/* ---------- CONFETI ---------- */
+const COL=['#ff3f7f','#ff8a3d','#ffc94a','#39d6cf','#c42a78','#fff0a8'];
+function burst(el,n=26){if(RM||!el)return;const r=el.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+Math.min(r.height/2,40),fx=$('#fx');
+ for(let i=0;i<n;i++){const p=document.createElement('i');p.style.left=x+'px';p.style.top=y+'px';p.style.background=COL[i%COL.length];fx.appendChild(p);
+  const a=Math.random()*Math.PI*2,d=60+Math.random()*(n>30?260:120),dx=Math.cos(a)*d,dy=Math.sin(a)*d-80;
+  p.animate([{transform:'translate(-50%,-50%) rotate(0)',opacity:1},{transform:`translate(${dx}px,${dy+160}px) rotate(${Math.random()*720}deg)`,opacity:0}],{duration:900+Math.random()*600,easing:'cubic-bezier(.2,.7,.4,1)'}).onfinish=()=>p.remove()}}
+function celebrate(sel,n){requestAnimationFrame(()=>burst(document.querySelector(sel),n))}
+let wasAll=overall().d===35;
+function checkAll(){const all=overall().d===35;if(all&&!wasAll){for(let k=0;k<4;k++)setTimeout(()=>burst($('#pct'),60),k*250);flash('¡A Long Road desbloqueado!')}wasAll=all}
+
+/* ---------- ¿POR DÓNDE VAS? ---------- */
+// trofeo de historia -> misión que lo da [capítulo, índice]
+const STORY_TRO={1:[0,1],2:[0,21],3:[1,10],4:[2,25],5:[3,24],6:[4,6],7:[1,7],8:[2,25],9:[3,16],10:[3,17],11:[3,22],12:[4,4]};
+let ob={step:'ch',ch:0,res:null};
+function applyPoint(ci,mi){const isDone=(c,i)=>c<ci||(c===ci&&i<mi);let m=0,t=0;
+ CH.forEach(([n,l],c)=>l.forEach((x,i)=>{if(isDone(c,i)&&!S.done['m'+c+'_'+i]){S.done['m'+c+'_'+i]=true;m++}}));
+ for(const [ti,[c,i]] of Object.entries(STORY_TRO))if(isDone(c,i)&&!S.done['t'+ti]){S.done['t'+ti]=true;t++}
+ S.setup=1;save();return{m,t,ci,mi}}
+function obRender(){const o=$('#ob');let h='';
+ if(ob.step==='ch'){h=`<h2 id="obt">¿Por dónde vas?</h2><p class="sub">Dime el capítulo y tu próxima misión. Marco lo que ya has hecho y la app te esconde lo que viene después.</p>
+  <div class="obgrid"><button data-oc="-1" style="--i:0"><b>Empezando</b><small>Aún no he jugado ninguna misión</small></button>${CH.map((c,i)=>`<button data-oc="${i}" style="--i:${i+1}"><b>Capítulo ${i+1}</b><small>${c[1].length} misiones</small></button>`).join('')}<button data-oc="5" style="--i:6"><b>Terminada</b><small>Ya vi los créditos</small></button></div>
+  <div class="obbar"><button class="chip" data-ob="skip">Ahora no</button></div>`}
+ else if(ob.step==='mis'){const l=CH[ob.ch][1];h=`<h2 id="obt">Capítulo ${ob.ch+1}</h2><p class="sub">¿Cuál es tu <b>próxima</b> misión, la que aún no has hecho? Solo te enseño las de este capítulo.</p>
+  <div class="obgrid ms">${l.map(([n],i)=>`<button data-om="${i}" style="--i:${Math.min(i,14)}"><span>${ob.ch+1}.${i+1}</span>${esc(n)}</button>`).join('')}</div>
+  <div class="obbar"><button class="chip" data-ob="back">Volver</button></div>`}
+ else{const r=ob.res,fin=r.ci>=5,start=r.ci===0&&r.mi===0;
+  h=`<h2 id="obt">${fin?'Historia completada':start?'Que empiece el viaje':'Listo'}</h2>
+  <p class="sub">${start?'No había nada que marcar todavía. ':`He marcado <b>${r.m}</b> misiones y <b>${r.t}</b> trofeos de historia que ya tenías asegurados. `}Robos, coleccionables y actividades dependen de lo que hayas hecho tú: actualízalos en el checklist con las cifras de Progreso › Estadísticas.</p>
+  <div class="obbar"><button class="chip hot" data-ob="go">Ver mi checklist</button><button class="chip" data-ob="back0">Corregir</button></div>`}
+ o.innerHTML=`<div class="obin">${h}</div>`}
+function openOb(){ob={step:'ch',ch:0,res:null};obRender();$('#ob').hidden=false}
+function closeOb(){$('#ob').hidden=true}
+$('#ob').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+ if(b.dataset.oc!=null){const c=+b.dataset.oc;if(c===-1||c===5){ob.res=applyPoint(c===-1?0:5,0);ob.step='ok';obRender();render();if(c===5)burst(b,40)}else{ob.ch=c;ob.step='mis';obRender()}}
+ else if(b.dataset.om!=null){ob.res=applyPoint(ob.ch,+b.dataset.om);ob.step='ok';obRender();render();burst(b,30)}
+ else if(b.dataset.ob==='back'||b.dataset.ob==='back0'){ob.step='ch';obRender()}
+ else if(b.dataset.ob==='skip'){S.setup=1;save();closeOb()}
+ else if(b.dataset.ob==='go'){closeOb();location.hash='#checklist';checkAll()}});
+
+/* ---------- EVENTOS ---------- */
+function route(){const h=location.hash.slice(1);const nt=V[h]?h:'checklist';if(nt!==tab){tab=nt;q='';filt='todo'}entering=true;render();scrollTo(0,0)}
+addEventListener('hashchange',route);
+const V2=$('#view');
+V2.addEventListener('change',e=>{const t=e.target;
+ if(t.dataset.k){const k=t.dataset.k;S.done[k]=t.checked;if(!t.checked)delete S.done[k];save();render();if(t.checked)celebrate(`[data-k="${k}"]`,14);checkAll()}
+ else if(t.hasAttribute('data-story')){S.req.story=t.checked?1:0;save();render();if(t.checked)celebrate('[data-story]',30);checkAll()}
+ else if(t.dataset.ri){const id=t.dataset.ri,r=REQ.find(x=>x[1]===id),was=cur(id)>=r[3];const v=Math.max(0,Math.min(parseInt(String(t.value).replace(/\D/g,''))||0,r[4]));S.req[id]=v;save();render();if(!was&&v>=r[3])celebrate(`[data-ri="${id}"]`,30);checkAll()}});
+V2.addEventListener('click',e=>{const b=e.target.closest('button,.sp');if(!b)return;
+ if(b.classList.contains('sp')){e.preventDefault();b.classList.remove('sp');return}
+ if(b.dataset.r){const r=REQ.find(x=>x[1]===b.dataset.r),was=cur(r[1])>=r[3];let v=b.dataset.set!=null?+b.dataset.set:(S.req[r[1]]||0)+ +b.dataset.d;S.req[r[1]]=Math.max(0,Math.min(v,r[4]));save();render();if(!was&&cur(r[1])>=r[3])celebrate(`[data-ri="${r[1]}"]`,30);checkAll()}
+ else if(b.dataset.f){filt=b.dataset.f;render()}
+ else if(b.id==='where'){openOb()}
+ else if(b.id==='spoil'){S.spoil=!S.spoil;save();render()}
+ else if(b.id==='reset'){$('#confirm').innerHTML='<p class="sub">¿Seguro? Se borra todo menos las notas.</p><button class="chip" id="reset2" aria-pressed="true">Sí, borrar</button> <button class="chip" id="cancel">Cancelar</button>'}
+ else if(b.id==='reset2'){S.req={};S.done={};save();render()}
+ else if(b.id==='cancel'){$('#confirm').innerHTML=''}
+ else if(b.id==='exp'){const c=encode();$('#code').value=c;$('#code').select();(navigator.clipboard?navigator.clipboard.writeText(c):Promise.reject()).then(()=>flash('Código copiado'),()=>flash('Cópialo del recuadro'))}
+ else if(b.id==='dl'){try{const u=URL.createObjectURL(new Blob([JSON.stringify(S,null,1)],{type:'application/json'})),a=document.createElement('a');a.href=u;a.download='gta6-progreso-'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),2000)}catch(e){flash('Aquí no se puede descargar: usa Copiar código')}}
+ else if(b.id==='imp'){$('#impmsg').textContent=load($('#code').value)?'Progreso importado':'Ese código no es válido'}});
+V2.addEventListener('change',async e=>{if(e.target.id==='file'&&e.target.files[0]){const ok=load(await e.target.files[0].text());flash(ok?'Progreso importado':'Archivo no válido')}});
+V2.addEventListener('input',e=>{const t=e.target;if(t.id==='q'){q=t.value.trim().toLowerCase();render(true)}else if(t.id==='notes'){S.notes=t.value;save()}});
+
+route();
+if(!S.setup)openOb();
+
+/* ---------- GUARDADO EN LA CUENTA ---------- */
+if('serviceWorker' in navigator&&location.protocol==='https:'&&!/claude/.test(location.hostname)){navigator.serviceWorker.register('sw.js').catch(()=>{})}
+(async()=>{try{
+ if(typeof claude==='undefined'||!claude.use)return;
+ const [d,u]=await Promise.all([claude.use('db'),claude.use('user')]);if(!d||!u)return;
+ const id=await u.id();if(!id)return;db=d;docRef=db.collection('data/users/'+id).doc('progreso');
+ let r=await docRef.get();const v=r&&(typeof r.data==='function'?r.data():(r.data!==undefined?r.data:r));
+ if(v&&v.v&&(v.ts||0)>(S.ts||0)){S=Object.assign({v:1,ts:0,req:{},done:{},notes:'',spoil:true},v);try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}render();if(S.setup&&ob.step==='ch')closeOb()}
+ else if(S.ts)save();
+}catch(e){}})();
+}
+</script>
+</body>
+</html>

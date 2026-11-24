@@ -141,6 +141,21 @@ details.help ul{margin:6px 0 2px;padding-left:20px}details.help li{margin:4px 0}
 .fx{position:fixed;inset:0;pointer-events:none;z-index:20;overflow:hidden}
 .fx i{position:absolute;width:9px;height:14px;border-radius:2px}
 @keyframes up{from{opacity:0;transform:translateY(16px)}}
+.ginfo{margin:-4px 0 12px;color:var(--mut);font-size:14.5px;max-width:90ch}
+.gsrc{display:block;margin-top:4px;font-size:13px}.gsrc a{color:var(--pink);font-weight:600}
+details.mg{margin-top:6px;font-size:14px}
+details.mg summary{cursor:pointer;color:var(--pink);font-weight:700;display:inline-flex;align-items:center;min-height:32px;list-style:none}
+details.mg summary::before{content:"▸";margin-right:6px;transition:transform .2s}details.mg[open] summary::before{transform:rotate(90deg)}
+details.mg p{margin:2px 0 4px;padding:10px 12px;border-radius:12px;background:color-mix(in srgb,var(--gold) 14%,var(--card));color:var(--ink);line-height:1.45}
+.sp details.mg{filter:blur(6px)}
+.news{position:fixed;z-index:14;right:18px;bottom:calc(18px + env(safe-area-inset-bottom));width:min(420px,calc(100% - 36px));animation:newsin .6s cubic-bezier(.2,1.2,.4,1) both}
+.news[hidden]{display:none}
+@keyframes newsin{from{opacity:0;transform:translateY(40px) scale(.95)}}
+.nin{border-radius:22px;padding:18px 20px;color:#fbeefa;background:linear-gradient(135deg,#2a0e4c,#6a1f7a 55%,#c42a78);box-shadow:0 24px 60px -20px #000,0 0 0 2px #ffc94a66}
+.nt{display:block;font-family:Anton,Impact,sans-serif;font-weight:400;font-size:30px;line-height:1;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.nd{display:block;font-weight:700;margin:6px 0 4px}
+.nin ul{margin:4px 0 12px;padding-left:18px;font-size:14px;color:#e6dbf5}.nin li{margin:3px 0}
+.nb{display:flex;gap:8px;flex-wrap:wrap}.nin .chip{background:#ffffff14;color:#fbeefa;border-color:#ffffff30}.nin .chip.hot{background:var(--grad);color:#2a0b2a;border:0}
 .list>.heist{column-span:all;break-inside:avoid;margin:10px 0 12px;padding:0;border:0}
 .heist details{border-radius:18px;overflow:hidden;background:linear-gradient(120deg,#1f0d42,#4a1760 55%,#8a2363);color:#fbeefa;box-shadow:0 14px 30px -18px #4a1760}
 .heist.hdone details{background:linear-gradient(120deg,#0d3a3f,#13605f)}
@@ -246,6 +261,7 @@ footer{color:var(--mut);font-size:13px;margin-top:40px;max-width:80ch}
 </div>
 <div class="save" id="save">Guardado</div>
 <div class="fx" id="fx" aria-hidden="true"></div>
+<div class="news" id="news" hidden role="status"></div>
 <div class="ob" id="ob" hidden role="dialog" aria-modal="true" aria-labelledby="obt"></div>
 
 <script>
@@ -496,7 +512,97 @@ const ARM=[
  ['Ametralladoras y lanzadores',['ADB M350','Goodwin LMG 6','Hillinger Boomer','Deever Tech GLR40','Hauners H-AT']],
  ['Cuerpo a cuerpo',['Hunting Knife','Bushcraft Knife','EDC Knife','Survival Knife','Diving Knife','Switchblade','Combat Knife','Brass Knuckles','Baton']]
 ];
-const TABS=[['checklist','Checklist 100%'],['historia','Historia'],['secundarias','Secundarias'],['desafios','Desafíos'],['trofeos','Trofeos'],['armas','Armas'],['notas','Notas']];
+// ---------- GUÍAS DETALLADAS ----------
+// Cada elemento: [nombre, zona, dónde (con mis palabras), nota, fecha en que se añadió]
+// La fecha sirve para la etiqueta «Nuevo» y el aviso de «Nuevo descubrimiento».
+const NEWS=[
+ {d:'2026-11-24',t:'Primeras guías detalladas',l:['Robos: las 39 operaciones de bandas, los 22 bancos y las 7 tiendas de préstamos','Coleccionables: 10 zonas de meditación, 18 lotes de cartas, 26 revistas, 16 puntos WAiNK y 8 flamencos','Actividades: 40 carreras por sede, 13 desafíos de carreras y 7 rivales de billar','Historia: guía con decisiones, desbloqueos y avisos en muchas misiones']}
+];
+const BASE='2026-11-24';
+const GUIDE=[
+ {sec:'Coleccionables',id:'medit',t:'Meditaciones',req:'medit',tot:'10 lugares · 18 meditaciones',src:[['PowerPyx','https://www.powerpyx.com/?p=370569'],['gmtreks','https://gmtreks.com/gta6/page/01M7QVDV9V6SV9W03RH60W1P4B']],
+  info:'Cada lugar cuenta una vez con Jason y otra con Lucia (la meditación doble se desbloquea tras «Pausa para el café»). Con 15 vale para el 100%; las 18 dan el trofeo «Actitud mental positiva».',
+  l:[['Casa de Jason','Key Lento · Mariana','En el balcón, cuando Lucia te invita tras «Con los pies en la tierra». No sale en el mapa.','Solo en el cap. 1 · 1 meditación'],
+     ['Arena lisa','Mariana','En el banco de arena al oeste de Capri.','Jason y Lucia'],
+     ['Pantano','Kelly','En Buckskin Swamp.','Jason y Lucia'],
+     ['Piedra gastada','Kelly','En Camp Moonflower.','Jason y Lucia'],
+     ['Rocas rojas','Kelly','En Manifest Canyon.','Jason y Lucia'],
+     ['Noria','Lummox','Junto a la fábrica de papel.','Jason y Lucia'],
+     ['Saliente del acantilado','Lummox','En el monte Kalaga, en un acantilado sobre una torre cerca de una mina.','Jason y Lucia'],
+     ['Cascada','Lummox','Al noroeste de Tallaloko.','Jason y Lucia'],
+     ['Junto al mar','Leonard','En una playa de rocas (Waning Sands).','Jason y Lucia'],
+     ['Cima de la Ascensión','Lummox','Círculo de piedras en lo alto del monte Kalaga.','Se abre al completar las demás · 1 meditación']]},
+ {sec:'Coleccionables',id:'cards',t:'Lotes de cartas',req:'cards',tot:'18 lotes · 480 cartas',src:[['PowerPyx','https://www.powerpyx.com/?p=372970'],['gmtreks','https://gmtreks.com/gta6/page/01M7R0QZ7X2YFSP9GFEPQ5ADDV']],
+  info:'Marca aquí cada lote completo. Aparecen tras «Me fui a pescar». Están en sitios fijos: estanterías, mesas y mostradores de tiendas, bares y casas, cabinas amarillas y cajas de herramientas. Cada carta tiene versión de bronce, plata y oro, y cada una cuenta. Venderlas en una casa de empeño no te quita el progreso. Los lotes pequeños son el camino rápido al trofeo «No toques mi baraja» (3 lotes).',
+  l:[['Vice City Flamingos','Béisbol · Vice City','24 cartas. Completo da un filtro de pantalla.',''],['Vice City Narcos','Fútbol americano · Vice City','24 cartas',''],['Vice City Manatees','Baloncesto · Vice City','24 cartas',''],['Vice City Club De Futbol','Fútbol · Vice City','30 cartas',''],['Liberty City Swingers','Béisbol · Liberty City','24 cartas',''],['Liberty City Penetrators','Fútbol americano · Liberty City','24 cartas',''],['Liberty City Wrath','Baloncesto · Liberty City','24 cartas',''],['Los Santos Corkers','Béisbol · Los Santos','24 cartas',''],['Los Santos Panic','Fútbol americano · Los Santos','24 cartas',''],['Los Santos Pounders','Baloncesto · Los Santos','24 cartas',''],['Backyard Wrestling','Lucha libre','12 cartas. El más pequeño.',''],["America's Next Top Hooker",'Telerrealidad','24 cartas',''],['Delights Dancers','Bailarinas','18 cartas. El segundo más pequeño.',''],['Jack of Hearts Dancers','Bailarinas','36 cartas',''],['Nine1Nine Dancers','Bailarinas','36 cartas',''],['The Legends of Ratface','Dibujos animados','36 cartas',''],["Right Wing: America's Hero",'Sátira política','36 cartas',''],['Ed Comics Universe','Cómics','36 cartas','']]},
+ {sec:'Coleccionables',id:'mags',t:'Revistas, libros y cómics',req:'mags',tot:'27 + 7 intercambios de libros',src:[['ScreenHype','https://www.screenhype.co.uk/?p=33204'],['PowerPyx','https://www.powerpyx.com/?p=374112']],
+  info:'Basta con leerlas una vez (Examinar). El menú del juego no dice cuáles has leído, así que márcalas aquí. Las de casas de la historia solo se pueden coger en su capítulo; como el 100% pide 30 de 34, no pasa nada si se te escapa alguna.',
+  l:[['Ashes of Glory','Key Lento · Mariana','Casa de Jason: en la mesilla del dormitorio.','Solo en el cap. 1'],['Body Copy','Key Lento · Mariana','Casa de Jason: detrás, junto a las pesas, en la mesa bajo la sombrilla.','Solo en el cap. 1'],['Lethal By Design','Key Lento · Mariana','Casa de Jason: mesa de cristal del salón, junto a la escalera de mano.','Solo en el cap. 1'],['Orca: A Whole Different Animal','Key Lento · Mariana','Casa de Jason: mesa de madera bajo la ventana del salón, cerca de la cocina.','Solo en el cap. 1'],['Off the Hook: Reel Talk','Key Lento · Mariana','Casa de Jason: en el banco de trabajo del cobertizo. Hay otra en el revistero de la tienda 247 de Key Lento, que no se pierde.',''],
+     ['Help Me, Help You, Help Me','Port Gellhorn · Kelly','Motel Starlet: mesa junto a la puerta de recepción.','Solo en el cap. 2'],['Children of Wizard Wang','Port Gellhorn · Kelly','Motel Starlet: mesa junto a la puerta de la cafetería.','Solo en el cap. 2'],
+     ['Passion B.C.','Bayside · Vice City','Piso de Jason (Catalan Blvd, 201): junto a la bañera.','Solo en el cap. 3'],['Two Pricks in the Bush','Bayside · Vice City','Piso de Jason: mesa de cristal frente a la tele.','Solo en el cap. 3'],
+     ['Remote Strike','Oldby Island · Vice Beach','Gimnasio Ajax (planta Trauma): mesa de billar de arriba, junto a las taquillas.','Solo Lucia durante «Sangre, sudor y equipo»'],
+     ['Lights, Camera, Affirmative Action','Tequesta Retreat · Vice Beach','Pegassi Residences, ático nivel 3: mesa del salón.','Solo en el cap. 5'],
+     ['RX Men','Key Lento · Mariana','Revistero de la tienda 247 del norte de Key Lento.',''],['Trigger Happy','Key Lento · Mariana','Casa blanca sobre pilotes de Sunset Drive (al norte del Mini Mart): mesa de comedor. Hay que forzar la entrada.',''],['Foiled','Pelican Valley · Mariana','Isla pequeña entre dos brazos de río, al sur del puente de Watson Bay: en el embarcadero junto a una silla. Otra copia en un garaje de Grace Street, Belville.',''],
+     ['11:59 Survivalist Culture','Peacock Bay · Vice City','Mansión de Palladia Lane: garaje del extremo izquierdo, en el banco de trabajo. Otra copia en una pasarela-mirador al este del embalse Kalaga (allí también hay un Laird 350).',''],['Drive Shaft','Crosstown · Vice City','Dolos Exotic Car Rental: entra por el garaje lateral, despeja a los matones y ve a la oficina del fondo (caja fuerte 5399). Otra copia en Alpha Gas de Belville.',''],['Pêche','Peacock Bay · Vice City','Mansión de Palladia Lane: garaje abierto del extremo derecho, junto a las cajas azules.',''],['High Rollerz Magazine','Crosstown · Vice City','Club Jack of Hearts: en el estudio de grabación, sobre una caja a la izquierda del teclado.',''],['Endowed','Vespucci Island · Vice City','Casa de cristal con un deportivo dorado (Neptune Circular): mesa blanca de la última planta (caja fuerte abajo: 6552). Otra en Mamey Circle, Waning Sands.',''],['Ratface','La Perle · Vice City','Revistero del Xero Food Mart.',''],['Special Friends Force','La Perle · Vice City','Revistero del Xero Food Mart.',''],['¡BOMBAZO!','Belville / Washington Beach','Revisteros de Alpha Gas (Belville) y Ron Stop\'n\'Snack (Washington Beach).',''],
+     ['D*cked Down Deep in Space','Port Gellhorn · Kelly','Caravana de Lost Vista, en la mesa junto a la radio. Cógela en la misión de Dunk.',''],['The Johnsons','Port Gellhorn · Kelly','Revistero de Alpha Gas, cerca del motel Starlet.',''],['Manly Gaze','Manifest Canyon · Lummox','Huerto Farmer Scrumpy: sobre un barril del cuarto trasero de la granja roja.',''],["The Cowboy's Prayer Is to Die Young",'Moreau · Lummox','Motel Grayson (Rockledge Road): mesa junto al sofá de recepción.','']]},
+ {sec:'Coleccionables',id:'waink',t:'Puntos WAiNK',req:'waink',tot:'112 en el juego (31 monumentos, 35 curiosidades, 23 esculturas y 23 grafitis No Flushers)',src:[['Bloxodes','https://bloxodes.com/wiki/gta-6/waink-locations'],['Mobalytics','https://mobalytics.gg/gamebase/guides/grand-theft-auto-6-all-collectibles']],
+  info:'Ve a pie: el aviso para escanear solo sale andando, no en coche. Por ahora solo hay 16 puntos con nombre en las guías; iré añadiendo los demás.',
+  l:[['Fábrica de papel Lawton Co.','Moreau','Monumento',''],["Huerto Farmer Scrumpy's",'Manifest Canyon','Monumento',''],['Feria de Gellhorn','Port Gellhorn','Monumento',''],['Faro de Belpoint','Belpoint','Monumento',''],['Mirador de Kalaga','Parque nacional del monte Kalaga','Monumento',''],['Dock Ring','Downtown','Monumento',''],['Grayson Assembly','Grayson','Monumento',''],['Ruinas españolas imperiales','Moreau','Curiosidad',''],['Big Entrance','Dalton Island','Curiosidad',''],['Escultura Triangler','Corsair Key','Escultura',''],['Pixel Fountain','Tequesta','Escultura',''],['Neptune Rises','Washington Beach','Escultura',''],['Escultura del Vice Museum of Art','Washington Beach','Escultura',''],['Estatua del robot Bubblegum','Washington Beach','Escultura',''],['Monumento a la Supremacía Leonidana','Manifest Canyon','Escultura',''],['Al este de la barra del Banana Hole','Ocean Beach','Grafiti No Flushers','']]},
+ {sec:'Coleccionables',id:'flam',t:'Flamencos de cocaína',req:'flam',tot:'125 en el juego',src:[['Bloxodes','https://bloxodes.com/wiki/gta-6/cocaine-flamingos'],['PowerPyx','https://www.powerpyx.com/?p=373486']],
+  info:'Son los rosas con pico blanco y negro; los de pico amarillo y negro son decorativos. Dispárales; no hace falta coger la droga. Con 50 se desbloquea el truco del flamenco hinchable. De momento las guías solo tienen 8 localizados.',
+  l:[['Muelles de Belpoint','Belpoint · Mariana','En los muelles del sureste de la isla.',''],['Casa blanca grande','Belpoint · Mariana','En las casas del sureste donde queman flamencos, delante de la casa blanca grande.',''],['Casa blanca pequeña','Belpoint · Mariana','En las mismas casas, en la esquina de la casa blanca pequeña.',''],['Contenedor en llamas','Belpoint · Mariana','En la playa, dentro del contenedor donde arden los flamencos.',''],['Hoguera','Belpoint · Mariana','Junto al contenedor en llamas, en el suelo al lado de la hoguera y una silla volcada.',''],['Contenedor amarillo','Belpoint · Mariana','Sobre el contenedor amarillo metido en el agua, en esa misma playa.',''],['Motel de Watson Bay','Watson Bay · Mariana','Extremo este de Watson Bay: esquina suroeste del motel, entre basura.',''],['Edificio en forma de C','La Perle · Vice City','Al noroeste del piso de Tyrone, en el centro del edificio en C, a ras de suelo.','']]},
+ {sec:'Robos',id:'gang',t:'Operaciones de bandas',req:'gang',tot:'39 (todas obligatorias)',src:[['PowerPyx','https://www.powerpyx.com/?p=372652'],['KeenGamer','https://www.keengamer.com/articles/guides/how-to-rob-illegal-operations-in-gta-6-all-9-gangs-and-the-pest-control-trophy/']],
+  info:'Iconos amarillos (Mapa › Robos › Operaciones ilegales). Solo cuenta si te llevas todos los objetos de valor clave: mira el contador de botín del icono antes de irte. Robar una de cada banda da el trofeo «Control de plagas». La de la Ultimate Edition (Illegal Goods Store) no cuenta.',
+  l:[['Fishing Shacks','Kingfishers','Cabañas de pesca de los Grassrivers.',''],['Sunrise RV Park','Kingfishers','El campamento de «Me fui a pescar».',''],['Manatee Motel','Kingfishers','',''],['Kingpin Bowling','Kolts & Associates','Port Gellhorn. También es la secundaria «Atraca Kingpin Bowling» (trofeo «Vamos a la bolera»).',''],['June Warehouse','Kolts & Associates','Port Gellhorn o justo al norte.',''],['La Cascara Motel','Kolts & Associates','Port Gellhorn o justo al norte.',''],['Brooks Boatworks','Kolts & Associates','Port Gellhorn o justo al norte.',''],['Stash House','Kolts & Associates','Port Gellhorn o justo al norte.',''],['M7 Compound','M7','',''],['Weed Grow','M7','',''],['Palmer Fishing Warehouse','La Polilla Negra','',''],['Watson Bay Safehouse','La Polilla Negra','Watson Bay.',''],['Farm Fix Meth Lab','Final Chapter','Ambrosia.',''],['Biker Hideout','Final Chapter','',''],['Hog Stars Garage','Final Chapter','',''],['Irons Building Supply','Final Chapter','Ambrosia.',''],['Sound4Sond Studio','San4San','',''],['La Perle Trap House','San4San','La Perle.',''],['Illegal Sneaker Trade','San4San','',''],["JanJak's Garage",'San4San','',''],['Parlor Apartments','San4San','',''],['Southside Trap House','PTT Youngin$','Southside.',''],['Kamar Devon Community Center','PTT Youngin$','',''],['Saber Shipping Yard','Guardia Brothers','',''],['Casa Guardia','Guardia Brothers','',''],['Saber Shipping Facility','Guardia Brothers','',''],['Exotic Animals Front','Otros criminales','',''],['Mill Station Radar Base','Otros criminales','',''],['Industrial Weed Grow','Otros criminales','',''],['Slator Towing Inc','Otros criminales','',''],['Leonida Carrier Warehouse','Otros criminales','',''],['Cigar Import Front','Otros criminales','',''],['Chatfield Storage & Logistics','Otros criminales','',''],['Ocean Beach Lab','Otros criminales','Ocean Beach.',''],['Vespucci Mansion','Otros criminales','',''],['Gas Station Meth Front','Otros criminales','',''],['Walker Farm','Otros criminales','',''],['Backroom Weed Front','Otros criminales','',''],['Carter Mining Boathouse','Otros criminales','','']]},
+ {sec:'Robos',id:'bank',t:'Bancos',req:'bank',tot:'22 (14 pequeños y 8 con cámara)',src:[['PowerPyx','https://www.powerpyx.com/?p=372653'],['Bloxodes','https://bloxodes.com/articles/gta-6-how-heists-work']],
+  info:'Pequeños: tras «Comprobación de crédito»; hay que vaciar la caja registradora y la caja fuerte. Con cámara: tras «Ahí está el dinero…»; sigue un furgón blindado y entra cuando el guardia abre la cámara. Dan 4 estrellas: huye en una moto rápida y cambia de vehículo. Robar 5 cámaras da «Retirada máxima». El atraco de la historia («El golpe al cártel») no es uno de estos 22.',
+  l:[['Fleeca · Key Lento','Mariana','Pequeño · 5.000–20.000 $',''],['Shorefront · Watson Bay','Mariana','Pequeño · 5.000–20.000 $',''],['Gibson Brothers Bank','Mariana','Pequeño · 10.000–30.000 $',''],['Lombank · Peacock Bay','Vice City','Pequeño · 5.000–20.000 $',''],['Fleeca · Peacock Bay','Vice City','Pequeño · 5.000–20.000 $',''],['Shorefront · Downtown','Vice City','Pequeño · 5.000–15.000 $',''],['Shorefront · Rockridge','Vice City','Pequeño · 5.000–20.000 $',''],['Lombank · Bayside','Vice City','Pequeño · 15.000–45.000 $',''],['Fleeca · Washington Beach','Vice City','Pequeño · 10.000–30.000 $',''],['Lombank · Ocean Beach (pequeño)','Vice City','Pequeño · 15.000–45.000 $',''],['Fleeca · Ocean Beach (pequeño)','Vice City','Pequeño · 5.000–15.000 $',''],['Shorefront · Ocean Beach (pequeño)','Vice City','Pequeño · 5.000–15.000 $',''],['Druthers State Bank','Leonard','Pequeño · 15.000–45.000 $',''],['Shorefront · Ambrosia','Kelly','Pequeño · 5.000–15.000 $',''],
+     ['Fleeca · VCIA','Vice City','Cámara · 100.000–150.000 $','Cap. 4 en adelante'],['Fleeca · Tequesta','Vice Beach','Cámara · 65.000–110.000 $','Cap. 4 en adelante'],['Lombank · Downtown','Vice City','Cámara · 135.000–205.000 $','Cap. 4 en adelante'],['Fleeca · Downtown','Vice City','Cámara · 100.000–150.000 $','Cap. 4 en adelante'],['Lombank · Ocean Beach (cámara A)','Vice City','Cámara · 135.000–205.000 $','Cap. 4 en adelante'],['Fleeca · Ocean Beach (cámara)','Vice City','Cámara · 75.000–135.000 $','Cap. 4 en adelante'],['Lombank · Ocean Beach (cámara B)','Vice City','Cámara · 75.000–135.000 $','Cap. 4 en adelante'],['Shorefront · Ocean Beach (cámara)','Vice City','Cámara · 95.000–140.000 $','Cap. 4 en adelante']]},
+ {sec:'Robos',id:'payday',t:'Tiendas de préstamos',req:'payday',tot:'7 (todas obligatorias)',src:[['PowerPyx','https://www.powerpyx.com/?p=372654']],
+  info:'Tras «Comprobación de crédito». Icono de mano verde (verde claro si ya la has hecho). Apunta al cajero, coge el dinero del mostrador, entra al cuarto trasero a por la caja fuerte y escapa. Tras robar 2, Yasmani te vende chivatazos de furgones blindados por 10.000 $.',
+  l:[['Quick Buck · Hamlet','Vice-Dale','5.000–15.000 $',''],['Payline Loans 247','Vice-Dale','5.000–15.000 $',''],['Payday Loans · Southside','Vice-Dale','5.000–15.000 $',''],['Payday Loans · Little Cuba','Vice-Dale','15.000–25.000 $',''],['Payday Loans · Rockridge','Vice-Dale','5.000–15.000 $',''],['Quick Buck · La Perle','Vice-Dale','5.000–15.000 $',''],['Cash Flow','Kelly','2.000–10.000 $','']]},
+ {sec:'Actividades',id:'races',t:'Carreras (por sede)',req:'',tot:'40 carreras en 12 sedes · 30 para el 100%',src:[['PowerPyx','https://www.powerpyx.com/?p=372656']],
+  info:'Marca cada sede cuando hayas ganado todas sus carreras. Cada sede tiene 2 o más: gana una para abrir la siguiente. Hay cuota de inscripción y de alquiler, pero ganar sale rentable. Con 20 victorias: trofeo «Gana pasta, no aplausos». Mapa › Actividades › Carreras.',
+  l:[["Hit 'N Run VC: Salton",'Vice City','3 carreras. Se abren tras «A elección del que reparte» (misión «Participa en una carrera callejera» de Yago).',''],["Hit 'N Run VC: La Perle",'Vice City','2 carreras',''],["Hit 'N Run VC: Ocean Beach",'Vice City','2 carreras',''],["Hit 'N Run VC: Gloriana Key",'Vice City','2 carreras',''],['Animal Crackers: Grayson','Lummox / Mariana','2 carreras todoterreno',''],["Animal Crackers: Redshaw's",'Lummox / Mariana','2 carreras todoterreno',''],['Animal Crackers: Ranchers','Lummox / Mariana','2 carreras todoterreno',''],['Animal Crackers: Big Pine','Lummox / Mariana','2 carreras todoterreno',''],['Gellhorn International Raceway','Kelly · al sur de Port Gellhorn','11 carreras. Empieza por la introducción y la serie amateur «Keep it PG» (5); ganarlas abre el resto.',''],['Boone Speedway: eliminación','Hamlet · Vice-Dale','2 carreras',''],['Ambrosia Raceway: demolición','Kelly · al norte de Ambrosia','2 carreras. Sale en el mapa al acercarte.',''],['Thrillbilly Mud Club','Norte de Kelly','6 de tierra + 2 en óvalo. Se abre con «Thrillbillies» de Billy (cap. 2).','']]},
+ {sec:'Actividades',id:'rchal',t:'Desafíos de carreras',req:'rgold',tot:'13 · 10 oros para el 100%',src:[['PowerPyx','https://www.powerpyx.com/?p=372657'],['games.gg','https://games.gg/grand-theft-auto-vi/guides/all-race-challenge-locations-in-gta-6/']],
+  info:'Marca los que tengas en oro. Cada uno tiene bronce, plata y oro por tiempo o puntuación. Icono azul a menos de 100 m. Puedes saltarte los 3 más difíciles.',
+  l:[['Ambrosia Raceway','Kelly','Contrarreloj',''],['Hamlet','Vice-Dale','Recorrido acrobático en BMX',''],['Boone Speedway','Hamlet','Contrarreloj',''],['Gellhorn Raceway','Kelly','Contrarreloj',''],['Gellhorn Dragway','Kelly','Aceleración',''],['Kalaga','Lummox','Contrarreloj en bici',''],['Mud Club: Air Time','Kelly','Recorrido acrobático',''],['Mud Club: Drag','Kelly','Aceleración',''],['Mud Club: Hill Climb','Kelly','Subida',''],['Mud Club: Dirt Track','Kelly','Contrarreloj',''],['Mud Club: Oval','Kelly','Contrarreloj',''],['Mud Club: Swamp Run','Kelly','Contrarreloj por el pantano',''],['Waning Sands Motocross','Leonard','Recorrido acrobático en moto','']]},
+ {sec:'Actividades',id:'pool',t:'Rivales de billar',req:'pool',tot:'7 rivales · 5 para el 100%',src:[['PowerPyx','https://www.powerpyx.com/?p=373986']],
+  info:'Hay 17 mesas, pero solo estas 7 tienen rival. Si no está, vuelve más tarde. Progreso › Actividades › Deportes › Billar.',
+  l:[['The Rusty Anchor','Key Lento · Mariana','El bar del billar del cap. 1. El rival no siempre está.',''],["Skeeter's",'Hamlet (borde sur) · Vice-Dale','Mesa en el lado sur del edificio.',''],["Zotico's",'Balsero (oeste de Vice City)','Mesa en el lado este del bar.',''],['The Thirsty Wolf','Belville (noroeste) · Leonard','Mesa en el lado norte.',''],["Jacob's Tavern",'Milport · Lummox','Junto al Pay \'n\' Spray; mesa en el lado norte.',''],['Delights','Port Gellhorn · Kelly','Mesa en el centro. Si no le ganas en el cap. 2, el local vuelve a abrir más adelante.',''],['Kowaachobee Cafe & Bar','Buckskin Swamp · Kelly','Junto a la carretera; mesa en el lado oeste.','']]},
+ {sec:'Actividades',id:'misc',t:'Otras actividades del 100%',req:'',tot:'Galerías de tiro, minigolf y videojuegos',src:[['PowerPyx','https://www.powerpyx.com/gta-6-100-completion-checklist/'],['PowerPyx · golf','https://www.powerpyx.com/?p=374021']],
+  info:'Lo que ya está localizado de estas actividades.',
+  l:[['Griffin Shooting Range','Galería de tiro','Paga la exención de 5 $ al dependiente. Hacen falta todos los oros entre las dos galerías.',''],['Rodgers Ranch','Galería de tiro','Igual que Griffin.',''],['King Gator','Minigolf','Sale en los desafíos de golf.',''],['Frontier Adventure Golf','Minigolf','Sale en los desafíos de golf.',''],['Videojuegos de la tele de casa (3)','Casa','No disponibles en el cap. 2. Basta con empezar y salir.',''],['Bang For Your Buck','Máquinas recreativas','El cuarto videojuego; solo en recreativas.','']]}
+];
+// Guía breve por misión (clave: nombre original)
+const MGUIDE={
+ 'Gone Fishing':'Al terminarla aparecen las cartas coleccionables y el trofeo «Como en el paraíso».',
+ 'Pipework':'Decisión con Mandy (interrumpir, provocar o calmar): solo cambia el diálogo.',
+ 'Hey Arnold!':'Decisión: matar a Arnold o dejarlo ir. Matarlo empuja a Jason hacia un perfil criminal más duro; si lo perdonas, puede volver a aparecer.',
+ 'Island Dreams':'Abre el buceo con Kenton (sus tesoros cuentan para el 100%). Lleva el arpón Arras Bullhead por los tiburones.',
+ 'Coming Home':'Después salen 5 recados opcionales de casa que se pierden al acabar el capítulo.',
+ 'Buck Me':'Decisión sin consecuencias: el banco te rechaza digas lo que digas.',
+ 'Down to Earth':'Después, Lucia te invita a meditar en el balcón: es la única meditación perdible (falta para el trofeo). Hazla antes de «Trampa para turistas».',
+ 'Recalibration':'Guarda en una ranura aparte: la siguiente es el punto de no retorno del capítulo 1.',
+ 'Tourist Trap':'PUNTO DE NO RETORNO: encadena tres misiones hasta el final del capítulo. Pierdes la casa de Jason, las armas únicas, el dinero de la cartera y del alijo y los vehículos personales; se conservan hasta 5.000 $ de los ahorros de BuckMe. Termina antes las secundarias del cap. 1 y las revistas de la casa.',
+ 'Moses':'Abre la venta de vehículos robados (requisito de 200.000 $).',
+ 'Coffee Break':'Abre la meditación con los dos personajes y la trama de caza de Bret (solo Jason).',
+ 'Prepare for Vice City':'Necesitas al menos 15.000 $ para la mudanza.',
+ 'Checking Out':'PUNTO DE NO RETORNO: necesita todas las demás misiones principales del capítulo y 15.000 $. Pierdes el motel como casa; el billar de Delights vuelve a abrir más adelante.',
+ "Dealer's Choice":'Decisión: entregar la mercancía cortada o pura. Después se abren las carreras callejeras de Vice City.',
+ 'Dubious Provenance':'Le das la estatua a Halifax y luego decides si le disparas o lo dejas vivir.',
+ 'Credit Check':'Desbloquea el inhibidor de tinta, los atracos a bancos pequeños y las tiendas de préstamos.',
+ 'Making Gainz':'Primer paso del golpe en el VCIA.',
+ 'Blood Sweat and Gear':'Durante esta misión, Lucia puede coger la revista «Remote Strike» en el gimnasio Ajax; después ya no está.',
+ "Child's Play":'Después llega una llamada a Lucia (Shayna) con tiempo límite: si no la atiendes, se pierde.',
+ 'VCIA Takedown':'Al terminar el capítulo aparece la misión opcional «Ahí está el dinero…», que abre las cámaras acorazadas de los bancos.',
+ 'The End of the Road':'Al acabar la historia aparece la lista del 100% en Progreso › Estadísticas.'
+};
+const gk=(g,n)=>'g:'+g.id+':'+slug(n);
+function guideCount(g){if(g.id==='medit')return g.l.reduce((a,it,i)=>a+(S.done[gk(g,it[0])]?(i===0||i===g.l.length-1?1:2):0),0);return guideDone(g)}
+function guideDone(g){return g.l.filter(it=>S.done[gk(g,it[0])]).length}
+function newItem(it){return it[4]&&it[4]>(S.newsSeen||BASE)}
+const TABS=[['checklist','Checklist 100%'],['historia','Historia'],['secundarias','Secundarias'],['guias','Guías'],['desafios','Desafíos'],['trofeos','Trofeos'],['armas','Armas'],['notas','Notas']];
 
 /* ---------- ESTADO ---------- */
 let S={v:1,ts:0,req:{},done:{},notes:'',spoil:true};
@@ -514,7 +620,7 @@ function save(){S.ts=Date.now();try{localStorage.setItem(LS,JSON.stringify(S))}c
 const chalDone=()=>DES.reduce((a,[c,l])=>a+l.filter((x,i)=>S.done['d'+c+i]).length,0);
 const misDone=()=>ALL.filter(e=>e.t==='m'&&S.done[e.k]).length;
 const misTot=ALL.filter(e=>e.t==='m').length;
-function cur(id){if(id==='chal')return chalDone();if(id==='story')return (S.done[KEY('The End of the Road')]||S.req.story)?1:misDone()/misTot;return S.req[id]||0}
+function cur(id){if(id==='chal')return chalDone();if(id==='story')return (S.done[KEY('The End of the Road')]||S.req.story)?1:misDone()/misTot;const gl=GUIDE.find(g=>g.req===id);return Math.max(S.req[id]||0,gl?guideCount(gl):0)}
 // Peso de cada bloque en el 100% (según GTABase): 45% historia y tareas, 45% exploración y actividades, 10% descubrimiento
 const W={'Historia y tareas':.45,'Exploración y actividades':.45,'Descubrimiento':.10};
 function overall(){let p=0,d=0;for(const g in W){const l=REQ.filter(r=>r[0]===g);let s=0;for(const r of l){const f=Math.min(cur(r[1])/r[3],1);s+=f;if(f>=1)d++}p+=W[g]*s/l.length}return{p,d}}
@@ -530,6 +636,7 @@ function header(){const o=overall(),p=o.p;
  const tro=TRO.filter((t,i)=>S.done['t'+i]).length;
  $('#stats').innerHTML=[[o.d+'/35','requisitos'],[misDone()+'/'+misTot,'misiones'],[chalDone()+'/80','desafíos'],[tro+'/55','trofeos']].map(([b,s])=>`<div><b>${b}</b><small>${s}</small></div>`).join('')}
 function tabCount(k){switch(k){case 'checklist':return overall().d+'/35';case 'historia':return misDone()+'/'+misTot;case 'secundarias':return SF_ALL.filter(id=>S.done['sf:'+id]).length+'/'+SF_ALL.length;
+ case 'guias':return GUIDE.reduce((a,g)=>a+guideDone(g),0)+'/'+GUIDE.reduce((a,g)=>a+g.l.length,0);
  case 'desafios':return chalDone()+'/80';case 'trofeos':return TRO.filter((t,i)=>S.done['t'+i]).length+'/55';case 'armas':return ARM.reduce((a,[c,l])=>a+l.filter((x,i)=>S.done['a'+c+i]).length,0)+'/'+ARM.reduce((a,c)=>a+c[1].length,0);default:return ''}}
 function tabs(){$('#tabs').innerHTML=TABS.map(([k,n])=>`<a href="#${k}" ${k===tab?'aria-current="page"':''}>${n}<small>${tabCount(k)}</small></a>`).join('')}
 const match=t=>!q||t.toLowerCase().includes(q);
@@ -540,6 +647,7 @@ const head=(t,sub)=>`<div class="vhead"><h2>${t}</h2></div><p class="sub">${sub}
 function ckRow(key,name,desc,tags,extra='',sub=''){const d=!!S.done[key];if(!showF(d)||!match(name+' '+desc+' '+sub))return '';
  return `<li class="row${d?' done':''}${extra}"><label class="lab"><input type="checkbox" class="ck" data-k="${key}" ${d?'checked':''}><div><span class="nm">${esc(name)}</span>${sub&&S.orig?`<small class="en">${esc(sub)}</small>`:''}${desc?`<div class="ds">${esc(desc)}</div>`:''}${tags||''}</div></label></li>`}
 const dsc=e=>(DESC[e.en]||[''])[0];
+const mg=e=>MGUIDE[e.en]?`<details class="mg"><summary>Guía y avisos</summary><p>${esc(MGUIDE[e.en])}</p></details>`:'';
 const mk=e=>(DESC[e.en]||[])[1];
 const mtag=e=>mk(e)&&S.orig?`<span class="tag mk" title="Objetivo que verás en el mapa o el menú">◆ ${esc(mk(e))}</span>`:'';
 const GC={'Historia y tareas':'var(--pink)','Exploración y actividades':'var(--sea)','Descubrimiento':'var(--sun)'};
@@ -561,7 +669,7 @@ function stTags(e,inH){const hd=e.h?ALL.filter(x=>x.h===e.h):[];const pos=e.h?hd
  const ht=e.h?(pos===hd.length?'Golpe final':'Paso '+pos+' de '+(hd.length-1)):'';
  return `${inH?`<span class="tag ${pos===hd.length?'p':''}">${ht}</span>`:`<span class="tag">${e.c+1}.${e.i+1}</span>`}${e.who?`<span class="tag">${WHO[e.who]}</span>`:''}${e.t==='t'?'<span class="tag">Tarea</span>':''}${e.t==='o'?'<span class="tag">Opcional</span>':''}${e.h&&!inH?`<span class="tag ${e.h==='c'?'p':'pl'}">${HEISTS[e.h][0]} · ${ht.toLowerCase()}</span>`:''}`}
 const openH=new Set();
-function heistBlock(hk,hide){const l=ALL.filter(e=>e.h===hk),d=l.filter(e=>S.done[e.k]).length,rows=l.map(e=>ckRow(e.k,e.es,dsc(e),stTags(e,true)+mtag(e),hide?' sp':'',e.en)).join('');if(!rows)return '';
+function heistBlock(hk,hide){const l=ALL.filter(e=>e.h===hk),d=l.filter(e=>S.done[e.k]).length,rows=l.map(e=>ckRow(e.k,e.es,dsc(e),stTags(e,true)+mtag(e)+mg(e),hide?' sp':'',e.en)).join('');if(!rows)return '';
  const open=openH.has(hk)||(!openH.has('x'+hk)&&d>0&&d<l.length)||!!q;
  return `<li class="heist${d>=l.length?' hdone':''}"><details data-h="${hk}" ${open?'open':''}><summary class="hs${hide?' sp':''}"><span class="hring" style="--p:${d/l.length*100}%"><b>${d}/${l.length}</b></span><span class="nm"><b>${HEISTS[hk][0]}</b><small>${S.orig?HEISTS[hk][1]+' · ':''}${l.length-1} preparativos y el golpe final</small><span class="hbar"><i style="width:${d/l.length*100}%"></i></span></span><span class="chev" aria-hidden="true"></span></summary><ul>${rows}</ul></details></li>`}
 function vHistoria(){const cc=curChapter(),tt=ALL.filter(e=>e.t==='t'),td=tt.filter(e=>S.done[e.k]).length;
@@ -571,7 +679,7 @@ function vHistoria(){const cc=curChapter(),tt=ALL.filter(e=>e.t==='t'),td=tt.fil
  +`<details class="note help"><summary>¿Cómo sé en el juego si ya la he hecho?</summary><ul><li><b>Pendientes:</b> abre el mapa y pulsa el icono del <b>libro rosa</b>: despliega todas las misiones de historia que tienes disponibles. Si una no sale ahí y ya la conoces, está hecha.</li><li><b>Hechas:</b> en el menú de pausa, <b>Progreso › Resumen de la historia</b> muestra lo que ya has completado, aunque no deja repetirlo.</li><li><b>No se pueden rejugar:</b> GTA VI no tiene "repetir misión". Si quieres volver a una, guarda a mano antes (hay 15 ranuras).</li><li>Con «Nombres originales» activado verás también, con un <b>◆</b>, el objetivo con el que aparece cada misión en el mapa.</li></ul></details>`
  +tools('Buscar misión…',`<button class="chip" id="spoil" aria-pressed="${S.spoil}">Sin spoilers</button>`+`<button class="chip" id="orig" aria-pressed="${!!S.orig}">Nombres originales</button>`);
  ST.forEach((l,c)=>{const es=ALL.filter(e=>e.c===c),main=es.filter(e=>e.t==='m'),d=main.filter(e=>S.done[e.k]).length,hide=S.spoil&&c>cc;
-  const seen=new Set();const rows=es.map(e=>{if(e.h){if(seen.has(e.h))return '';seen.add(e.h);return heistBlock(e.h,hide)}return ckRow(e.k,e.es,dsc(e),stTags(e)+mtag(e),hide?' sp':'',e.en)}).join('');
+  const seen=new Set();const rows=es.map(e=>{if(e.h){if(seen.has(e.h))return '';seen.add(e.h);return heistBlock(e.h,hide)}return ckRow(e.k,e.es,dsc(e),stTags(e)+mtag(e)+mg(e),hide?' sp':'',e.en)}).join('');
   if(rows)h+=grp(hide?'Capítulo '+(c+1):`Capítulo ${c+1} · ${CHT[c][0]}`,d+'/'+main.length,['var(--sea)','var(--pink)','var(--sun)','var(--gold)','var(--pink)'][c])+`<ul class="list">${rows}</ul>`});
  return h}
 
@@ -588,6 +696,18 @@ function vSec(){const cc=curChapter(),strands=SFX.filter(g=>g.y==='y'&&g.l.every
  h+=sec('Cuando quieras · no dependen del capítulo',free.reduce((a,g)=>a+g.l.filter(m=>S.done[sfk(m[0])]).length,0)+'/'+free.reduce((a,g)=>a+g.l.length,0),'var(--sea)',free.map(g=>giver(g,false)).join(''));
  for(let c=1;c<=4;c++){const gs=SFX.filter(g=>g.c===c),hide=S.spoil&&c-1>cc;
   h+=sec(hide?'Capítulo '+c:`Capítulo ${c} · ${CHT[c-1][0]}`,gs.reduce((a,g)=>a+g.l.filter(m=>S.done[sfk(m[0])]).length,0)+'/'+gs.reduce((a,g)=>a+g.l.length,0),['var(--pink)','var(--sun)','var(--gold)','var(--pink)'][c-1],gs.map(g=>giver(g,hide)).join(''))}
+ return h}
+
+let gsec='Coleccionables';
+function vGuias(){const secs=['Coleccionables','Robos','Actividades'];
+ let h=head('Guías','Ubicaciones y consejos reunidos de varias guías y contrastados, escritos con mis palabras. Lo que marques aquí suma solo en el checklist. Las guías aún se están completando: la revisión semanal irá añadiendo lo que se descubra y te avisará con «Nuevo descubrimiento».')
+ +`<div class="tools" style="position:static;padding:0">${secs.map(x=>`<button class="chip" data-gs="${x}" aria-pressed="${gsec===x}">${x}</button>`).join('')}</div>`
+ +tools('Buscar sitio, banda, zona…');
+ GUIDE.filter(g=>g.sec===gsec).forEach((g,k)=>{const rows=g.l.map(it=>ckRow(gk(g,it[0]),it[0],it[2],`${it[1]?`<span class="tag">${esc(it[1])}</span>`:''}${it[3]?`<span class="tag ${/Solo|perd/i.test(it[3])?'p':''}">${esc(it[3])}</span>`:''}${newItem(it)?'<span class="tag pl">Nuevo</span>':''}`)).join('');
+  if(!rows&&q)return;
+  h+=grp(g.t,guideDone(g)+'/'+g.l.length+(g.tot?' · '+g.tot:''),['var(--pink)','var(--sun)','var(--sea)','var(--gold)'][k%4])
+   +`<p class="ginfo">${esc(g.info)} <span class="gsrc">Fuentes: ${g.src.map(([n,u])=>`<a href="${u}" target="_blank" rel="noopener">${esc(n)}</a>`).join(' · ')}</span></p>`
+   +(rows?`<ul class="list">${rows}</ul>`:'')});
  return h}
 
 function vDes(){const n=chalDone();let h=head('Desafíos','80 en 8 categorías, abiertos desde el principio (Progreso › Desafíos). Cada categoría desbloquea trucos de vehículos.')
@@ -619,7 +739,7 @@ function load(txt){txt=String(txt).trim();let o;try{o=JSON.parse(txt)}catch(e){t
  if(!o||!o.v||typeof o.done!=='object'||typeof o.req!=='object')return false;
  S=migrate({v:1,ts:0,req:{},done:{},notes:'',spoil:true,...o});save();render();burst($('#pct'),40);return true}
 
-const V={checklist:vChecklist,historia:vHistoria,secundarias:vSec,desafios:vDes,trofeos:vTro,armas:vArm,notas:vNotas};
+const V={guias:vGuias,checklist:vChecklist,historia:vHistoria,secundarias:vSec,desafios:vDes,trofeos:vTro,armas:vArm,notas:vNotas};
 let entering=false;
 function render(keepFocus){const a=document.activeElement,id=a&&a.id,pos=a&&a.selectionStart;
  header();tabs();const v=$('#view');v.innerHTML=V[tab]();
@@ -672,8 +792,8 @@ $('#ob').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)r
   if(ob.sel.has(k))ob.sel.delete(k);else{ob.sel.add(k);for(let j=0;j<i;j++)if(es[j].t!=='o')ob.sel.add(es[j].k)}obRender()}
  else if(b.dataset.ob==='ok'){ob.res=applyPoint(ob.ch,ob.sel);ob.step='ok';obRender();render();$('#ob').scrollTop=0;burst(b,30)}
  else if(b.dataset.ob==='back'||b.dataset.ob==='back0'){ob.step='ch';obRender();$('#ob').scrollTop=0}
- else if(b.dataset.ob==='skip'){S.setup=1;save();closeOb()}
- else if(b.dataset.ob==='go'){closeOb();location.hash='#checklist';checkAll()}});
+ else if(b.dataset.ob==='skip'){S.setup=1;save();closeOb();setTimeout(showNews,600)}
+ else if(b.dataset.ob==='go'){closeOb();location.hash='#checklist';checkAll();setTimeout(showNews,800)}});
 
 /* ---------- EVENTOS ---------- */
 function route(){const h=location.hash.slice(1);const nt=V[h]?h:'checklist';if(nt!==tab){tab=nt;q='';filt='todo'}entering=true;render();scrollTo(0,0)}
@@ -683,11 +803,12 @@ V2.addEventListener('change',e=>{const t=e.target;
  if(t.dataset.k){const k=t.dataset.k;S.done[k]=t.checked;if(!t.checked)delete S.done[k];if(t.checked&&k[0]==='q'&&syncTro())flash('Trofeo de historia marcado');save();render();if(t.checked)celebrate(`[data-k="${k}"]`,14);checkAll()}
  else if(t.hasAttribute('data-story')){S.req.story=t.checked?1:0;save();render();if(t.checked)celebrate('[data-story]',30);checkAll()}
  else if(t.dataset.ri){const id=t.dataset.ri,r=REQ.find(x=>x[1]===id),was=cur(id)>=r[3];const v=Math.max(0,Math.min(parseInt(String(t.value).replace(/\D/g,''))||0,r[4]));S.req[id]=v;save();render();if(!was&&v>=r[3])celebrate(`[data-ri="${id}"]`,30);checkAll()}});
-V2.addEventListener('click',e=>{const b=e.target.closest('button,.sp');if(!b)return;
+V2.addEventListener('click',e=>{const sm=e.target.closest('.mg summary');if(sm){e.preventDefault();const d=sm.parentElement;d.open=!d.open;return}const b=e.target.closest('button,.sp');if(!b)return;
  if(b.classList.contains('sp')){e.preventDefault();b.classList.remove('sp');return}
  if(b.dataset.r){const r=REQ.find(x=>x[1]===b.dataset.r),was=cur(r[1])>=r[3];let v=b.dataset.set!=null?+b.dataset.set:(S.req[r[1]]||0)+ +b.dataset.d;S.req[r[1]]=Math.max(0,Math.min(v,r[4]));save();render();if(!was&&cur(r[1])>=r[3])celebrate(`[data-ri="${r[1]}"]`,30);checkAll()}
  else if(b.dataset.f){filt=b.dataset.f;render()}
  else if(b.id==='where'){openOb()}
+ else if(b.dataset.gs){gsec=b.dataset.gs;render()}
  else if(b.id==='orig'){S.orig=!S.orig;save();render()}
  else if(b.id==='spoil'){S.spoil=!S.spoil;save();render()}
  else if(b.id==='reset'){$('#confirm').innerHTML='<p class="sub">¿Seguro? Se borra todo menos las notas.</p><button class="chip" id="reset2" aria-pressed="true">Sí, borrar</button> <button class="chip" id="cancel">Cancelar</button>'}
@@ -702,6 +823,10 @@ V2.addEventListener('input',e=>{const t=e.target;if(t.id==='q'){q=t.value.trim()
 
 route();
 if(!S.setup)openOb();
+function showNews(){const n=NEWS[0];if(!n||(S.newsSeen||'')>=n.d)return;const el=$('#news');
+ el.innerHTML=`<div class="nin"><b class="nt">Nuevo descubrimiento</b><span class="nd">${esc(n.t)}</span><ul>${n.l.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><div class="nb"><button class="chip hot" id="nsee">Ver guías</button><button class="chip" id="nclose">Entendido</button></div></div>`;el.hidden=false;if(!RM)setTimeout(()=>burst(el.querySelector('.nt'),24),400)}
+$('#news').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;S.newsSeen=NEWS[0].d;save();$('#news').hidden=true;if(b.id==='nsee')location.hash='#guias'});
+setTimeout(showNews,S.setup?900:0);
 
 /* ---------- GUARDADO EN LA CUENTA ---------- */
 if('serviceWorker' in navigator&&location.protocol==='https:'&&!/claude/.test(location.hostname)){navigator.serviceWorker.register('sw.js').catch(()=>{})}

@@ -130,11 +130,11 @@ details.tip[open] summary~*{animation:up .3s both}
 .fx{position:fixed;inset:0;pointer-events:none;z-index:20;overflow:hidden}
 .fx i{position:absolute;width:9px;height:14px;border-radius:2px}
 @keyframes up{from{opacity:0;transform:translateY(16px)}}
-.ob{position:fixed;inset:0;z-index:15;display:grid;place-items:center;padding:calc(20px + env(safe-area-inset-top)) 18px calc(20px + env(safe-area-inset-bottom));overflow-y:auto;color:var(--nightink);
+.ob{position:fixed;inset:0;z-index:15;display:grid;place-items:start center;padding:calc(20px + env(safe-area-inset-top)) 18px calc(20px + env(safe-area-inset-bottom));overflow-y:auto;color:var(--nightink);
  background:radial-gradient(90% 45% at 50% 100%,#ff3f7f66,transparent 70%),linear-gradient(180deg,#170b33,#2a0e4c 60%,#4d1860);animation:fade .4s both}
 .ob[hidden]{display:none}
 @keyframes fade{from{opacity:0}}
-.obin{width:min(760px,100%);animation:up .5s cubic-bezier(.2,.8,.2,1) both}
+.obin{width:min(980px,100%);margin:auto 0;animation:up .5s cubic-bezier(.2,.8,.2,1) backwards}
 .ob h2{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;font-size:clamp(38px,6vw,60px)}
 .ob .sub{color:#cbbbe3;font-size:17px}
 .obgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,200px),1fr));gap:12px;margin:18px 0}
@@ -147,6 +147,18 @@ details.tip[open] summary~*{animation:up .3s both}
 .obgrid.ms button{display:flex;gap:12px;align-items:center;min-height:56px;padding:10px 14px}
 .obgrid.ms button span{font-family:Anton,Impact,sans-serif;font-size:20px;color:var(--gold);min-width:42px}
 .obbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+.oblist{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:10px;margin:16px 0 90px}
+.oblist button{font:inherit;text-align:start;color:var(--nightink);background:#ffffff0d;border:1.5px solid #ffffff22;border-radius:16px;padding:12px 14px;min-height:60px;cursor:pointer;display:flex;gap:12px;align-items:flex-start;transition:background .2s,border-color .2s,transform .12s}
+.oblist button:active{transform:scale(.98)}
+.oblist button.on{background:#39d6cf22;border-color:#39d6cf}
+.obck{flex:none;width:28px;height:28px;border-radius:9px;border:2.5px solid #ffffff66;display:grid;place-content:center;margin-top:2px}
+.on .obck{background:#39d6cf;border-color:#39d6cf}
+.on .obck::after{content:"";width:12px;height:6px;border:3px solid #10233a;border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}
+.obtx b{display:block;font-weight:700;font-size:16px}
+.obtx small{display:block;color:#b9a8d6;font-size:13px}
+.obtx .tag{background:#ffffff1c;color:#fbeefa}.obtx .tag.p{background:var(--gold);color:#3a2400}.obtx .tag.pl{background:#9ff0ea;color:#063a38}
+.obsticky{position:fixed;left:0;right:0;bottom:0;padding:12px max(18px,env(safe-area-inset-left)) calc(12px + env(safe-area-inset-bottom));background:linear-gradient(transparent,#170b33 35%);justify-content:center;gap:12px}
+.obn{color:#cbbbe3;font-weight:600}
 .ob .chip{background:#ffffff10;color:var(--nightink);border-color:#ffffff30}
 .ob .chip.hot{background:var(--grad);color:#2a0b2a;border:0}
 .enter .req,.enter .list,.enter .grp,.enter .mini>div,.enter .vhead,.enter .sub,.enter .panel{animation:up .55s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i,0)*45ms)}
@@ -244,13 +256,26 @@ const REQ=[
  ['Descubrimiento','weap','Armas estándar encontradas',50,66,0,'53 armas de fuego, 9 cuerpo a cuerpo y 4 explosivos. Basta con tenerlas una vez. Las "Expanded" de Ammu-Nation venden armas pesadas. Mira la pestaña Armas.'],
  ['Descubrimiento','anim','Animales estudiados',100,255,0,'Con prismáticos; no hay que cazar. Cada raza de perro y gato cuenta aparte, y peces y aves también.']
 ];
-const CH=[
- ['Capítulo 1 · Just Like Paradise',[['Prologue','L'],['Gone Fishing','J'],['Gear Up','J'],['Just A Scratch','J'],['Lab Fees','J'],['Unwanted Attention','J'],['Pipework','J'],['Hey Arnold!','J'],['Island Dreams','J'],['Feng Shui','J'],['Coming Home','J'],['Buck Me','J'],['Clean Up After Donnie','J'],['Down to Earth','J'],['Clear Skies','J'],['Day Release','JL'],['Swamped','J'],['Don Gone','J'],['Recalibration','J'],['Tourist Trap','JL'],['Home Sweet Home','L'],['Discharge Time','JL']]],
- ['Capítulo 2 · Paradise Lost',[["What's in the Bag?",'L'],['Ambulance Chaser','L'],['Just Moved In','L'],["Girls' Trip",'L'],['Moses','L'],['Daily Driver','L'],['Slam Dunk','L'],['Breakfast Run','L'],['Coffee Break','JL'],['Afternoon Delight','JL'],['Checking Out','JL']]],
- ['Capítulo 3 · Tits Ass Drug Money',[['Welcome to Vice City','JL'],["Dealer's Choice",'J'],['Meet the Heders','JL'],['Dubious Provenance','JL'],['Mami Knows Best','L'],['South Leonida Real Estate','L'],['Tyrone','J'],['Here, Kitty Kitty','J'],['Car Services','L'],['Top Billing','JL'],['Boobie Time','J'],['First Impressions','JL'],['Caught Slipping','JL'],['Crosstown Traffic','JL'],['Credit Check','JL'],['Steal the Zorruso for Randy','JL'],['Sinfrontera National Bank','JL'],['Security Expert','JL'],['Ride or Die','J'],['Company Property','JL'],['The Missing Link','L'],['Safe Word','JL'],['Cooties','L'],['Bricked Up','JL'],['Hidden Charges','JL'],['The Cartel Heist','JL']]],
- ['Capítulo 4 · Vice City, Baby',[['Ocean Beach','JL'],['Another Life','L'],['Company Cars','JL'],['Lawyer Up','JL'],['Party Hard','JL'],['Heavy Lifting','JL'],['Photo/Shoot','JL'],['Making Gainz','L'],['Watch It','J'],['Cash Injections','L'],['Amateur Hour','L'],['Dirty Work','JL'],['Too Much Baggage','J'],['Adventures in Babysitting','J'],['Fresh Evidence','J'],['Power Play',''],["Child's Play",'JL'],['Headliners','JL'],['Close Surveillance','J'],['Delivery Method','J'],['Team Building','L'],['Fully Catered','JL'],['VCIA Takedown','JL'],['Sunset','JL'],['Starting From Zero','']]],
- ['Capítulo 5 · Top of the World, Ma',[['Bird in the Hand','JL'],['Taking Liberties',''],['VC Baby',''],['Doggie Bag',''],['Operation Savage Glory',''],['Protective Custody','JL'],['The End of the Road','']]]
+// Historia detallada: [inglés (nombre en el juego), castellano, personaje, tipo m=misión t=tarea de historia o=opcional, golpe c/v]
+const CHT=[['Como en el paraíso','Just Like Paradise'],['Paraíso perdido','Paradise Lost'],['Tetas, culos y pasta de la droga','Tits Ass Drug Money'],['Vice City, nena','Vice City, Baby'],['En la cima del mundo, mamá','Top of the World, Ma']];
+const HEISTS={c:['Golpe al cártel','The Cartel Heist'],v:['Golpe en el VCIA','VCIA Takedown']};
+const ST=[
+ [['Prologue','Prólogo','L','m'],['Gone Fishing','Me fui a pescar','J','m'],['Gear Up','Equípate','J','m'],['Unwanted Attention','Atención no deseada','J','m'],['Pipework','Fontanería','J','m'],['Lab Fees','Tasas de laboratorio','J','m'],['Just a Scratch','Solo es un rasguño','J','m'],['Hey Arnold!','¡Eh, Arnold!','J','m'],['Island Dreams','Sueños isleños','J','m'],['Feng Shui','Feng shui','J','m'],['Coming Home','De vuelta a casa','J','m'],['Clean Up After Donnie','Limpiar lo de Donnie','J','m'],['Buck Me','BuckMe','J','m'],['Down to Earth','Con los pies en la tierra','J','m'],['Deposit Cash Into BuckMe','Ingresa dinero en BuckMe','','t'],['Save for the Future','Ahorra para el futuro','','t'],['Day Release','Permiso de salida','JL','m'],['Clear Skies','Cielos despejados','J','m'],['Building a Life','Construir una vida','','t'],['Swamped','Empantanados','J','m'],['Don Gone','Donnie se ha largado','J','m'],['Recalibration','Recalibración','J','m'],['Tourist Trap','Trampa para turistas','JL','m'],['Home Sweet Home','Hogar, dulce hogar','L','m'],['Discharge Time','Hora del alta','JL','m']],
+ [["What's in the Bag?",'¿Qué hay en la bolsa?','L','m'],['Ambulance Chaser','Persiguiendo ambulancias','L','m'],['Take Care of Jason','Cuida de Jason','L','t'],['Overnight Charges','Cargos de una noche','L','t'],['Just Moved In','Recién mudados','L','m'],["Girls' Trip",'Viaje de chicas','L','m'],['Moses','Moses','L','m'],['New Look','Nuevo look','L','t'],['How Do I Look?','¿Qué tal estoy?','L','t'],['Painkiller Supplier','Proveedor de analgésicos','L','t'],['Daily Driver','El coche de diario','L','m'],['Behind on Payments','Pagos atrasados','L','t'],['Slam Dunk','Pan comido','L','m'],['Breakfast Run','A por el desayuno','L','m'],['Coffee Break','Pausa para el café','JL','m'],['Prepare for Vice City','Prepárate para Vice City','','t'],['Afternoon Delight','Placer de media tarde','JL','m'],['Checking Out','Hora de irse','JL','m']],
+ [['Welcome to Vice City','Bienvenidos a Vice City','JL','m'],["Dealer's Choice",'A elección del que reparte','J','m'],['Meet the Heders','Conoce a los Heder','JL','m'],['Dubious Provenance','Procedencia dudosa','JL','m'],['Mami Knows Best','Mamá sabe más','L','m'],['South Leonida Real Estate','Inmobiliaria South Leonida','L','m'],['Tyrone','Tyrone','J','m'],['Here, Kitty Kitty','Mis, mis, ven aquí','J','m'],['Send Money to Lorena','Envía dinero a Lorena','L','t'],['Encrypted Hard Drive','Disco duro cifrado','','t'],['Car Service','Servicio de coches','L','m'],['Send More Money to Lorena','Envía más dinero a Lorena','L','t'],['Top Billing','Nombre en grande','JL','m'],['Boobie Time','La hora de Boobie','J','m'],['First Impressions','Primeras impresiones','JL','m'],['Caught Slipping','Pillados desprevenidos','JL','m'],['Crosstown Traffic','Tráfico de punta a punta','JL','m'],['Credit Check','Comprobación de crédito','JL','m'],["Clonin' Keys, Makin' GS",'Clonando llaves, haciendo pasta','JL','m'],["Raul's Next Job",'El siguiente trabajo de Raul','','t'],['Sinfrontera National Bank','Banco Nacional Sinfrontera','JL','m','c'],['Security Expert','El experto en seguridad','JL','m','c'],['Heist Planning','Planificar el golpe','JL','t','c'],['Ride or Die','Juntos hasta el final','J','m'],['Company Property','Propiedad de la empresa','JL','m','c'],['The Missing Link','El eslabón perdido','L','m','c'],['Safe Word','Palabra de seguridad','JL','m','c'],['Cooties','Piojos','L','m'],['Bricked Up','Tapiados','JL','m'],['Hidden Charges','Cargas ocultas','JL','m','c'],['The Cartel Heist','El golpe al cártel','JL','m','c']],
+ [['Ocean Beach','Ocean Beach','JL','m'],['Another Life','Otra vida','L','m'],['Pool Day','Día de piscina','','t'],['Company Cars','Coches de empresa','JL','m'],['Lawyer Up','Busca un abogado','JL','m'],["It's a Date!",'¡Es una cita!','','t'],['Party Hard','De fiesta a tope','JL','m'],['Heavy Lifting','Trabajo pesado','JL','m'],["Pay Abe's Fee",'Paga los honorarios de Abe','','t'],['Photo/Shoot','Sesión de fotos (y de tiros)','JL','m'],['Making Gainz','Ganando músculo','L','m','v'],['Blood Sweat and Gear','Sangre, sudor y equipo','L','t','v'],['Watch It','Ten cuidado','J','m'],['Call Nate','Llama a Nate','L','t','v'],['Cash Injections','Inyecciones de dinero','L','m','v'],['Amateur Hour','Cosa de aficionados','L','m','v'],['Dirty Work','Trabajo sucio','JL','m','v'],['Nate Will Be in Touch','Nate se pondrá en contacto','','t','v'],['Too Much Baggage','Demasiado equipaje','J','m','v'],['Adventures in Babysitting','Aventuras de canguro','J','m'],["Rafa's Kidnapping",'El secuestro de Rafa','J','t'],['Fresh Evidence','Nuevas pruebas','J','m'],['Power Play','Juego de poder','L','m','v'],["Child's Play",'Juego de niños','JL','m'],['Headliners','Cabezas de cartel','JL','m'],['Close Surveillance','Vigilancia estrecha','J','m','v'],['Delivery Method','Método de entrega','J','m','v'],['Team Building','Formar equipo','L','m','v'],['Fully Catered','Catering completo','JL','m','v'],['Heist Plans in Place','Planes del golpe listos','','t','v'],['VCIA Takedown','Golpe en el VCIA','JL','m','v'],['Tie Up Loose Ends','Atar cabos sueltos','','t'],['Call Valentina Back','Devuelve la llamada a Valentina','','t'],['Sunset','Atardecer','JL','m'],['Starting From Zero','Empezar de cero','','m']],
+ [['Bird in the Hand','Más vale pájaro en mano','JL','m'],['Taking Liberties','Tomarse libertades','','m'],['Doggie Bag','Para llevar','','m'],['VC Baby','VC, nena','','m'],['Operation Savage Glory','Operación Gloria Salvaje','','m'],['Honest Abe','El honrado Abe','','o'],['Unfinished Business','Asuntos pendientes','','o'],["Pay Abe's Fee",'Paga los honorarios de Abe','','o'],['Protective Custody','Custodia de protección','JL','m'],['The End of the Road','El final del camino','','m']]
 ];
+const slug=s=>s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+const ALL=[];ST.forEach((l,c)=>l.forEach(([en,es,who,t,h],i)=>ALL.push({c,i,en,es,who,t,h:h||'',k:'q'+c+':'+slug(en)})));
+const KEY=(en,c)=>(ALL.find(e=>e.en===en&&(c==null||e.c===c))||{}).k;
+const HTOT={};ALL.forEach(e=>{if(e.h)HTOT[e.h]=(HTOT[e.h]||0)+1});
+// Lista antigua (91 misiones) para migrar el progreso guardado
+const OLDN=[['Prologue','Gone Fishing','Gear Up','Just a Scratch','Lab Fees','Unwanted Attention','Pipework','Hey Arnold!','Island Dreams','Feng Shui','Coming Home','Buck Me','Clean Up After Donnie','Down to Earth','Clear Skies','Day Release','Swamped','Don Gone','Recalibration','Tourist Trap','Home Sweet Home','Discharge Time'],["What's in the Bag?",'Ambulance Chaser','Just Moved In',"Girls' Trip",'Moses','Daily Driver','Slam Dunk','Breakfast Run','Coffee Break','Afternoon Delight','Checking Out'],['Welcome to Vice City',"Dealer's Choice",'Meet the Heders','Dubious Provenance','Mami Knows Best','South Leonida Real Estate','Tyrone','Here, Kitty Kitty','Car Service','Top Billing','Boobie Time','First Impressions','Caught Slipping','Crosstown Traffic','Credit Check',"Clonin' Keys, Makin' GS",'Sinfrontera National Bank','Security Expert','Ride or Die','Company Property','The Missing Link','Safe Word','Cooties','Bricked Up','Hidden Charges','The Cartel Heist'],['Ocean Beach','Another Life','Company Cars','Lawyer Up','Party Hard','Heavy Lifting','Photo/Shoot','Making Gainz','Watch It','Cash Injections','Amateur Hour','Dirty Work','Too Much Baggage','Adventures in Babysitting','Fresh Evidence','Power Play',"Child's Play",'Headliners','Close Surveillance','Delivery Method','Team Building','Fully Catered','VCIA Takedown','Sunset','Starting From Zero'],['Bird in the Hand','Taking Liberties','VC Baby','Doggie Bag','Operation Savage Glory','Protective Custody','The End of the Road']];
+function migrate(o){if(!o||!o.done)return o;for(const k of Object.keys(o.done)){const m=/^m(\d)_(\d+)$/.exec(k);if(!m)continue;const n=(OLDN[+m[1]]||[])[+m[2]];const nk=n&&KEY(n,+m[1]);if(nk&&o.done[k])o.done[nk]=true;delete o.done[k]}return o}
+// Trofeo de historia (índice en TRO) -> misión que lo desbloquea
+const STORY_TRO={1:KEY('Gone Fishing'),2:KEY('Discharge Time'),3:KEY('Checking Out'),4:KEY('The Cartel Heist'),5:KEY('Starting From Zero'),6:KEY('The End of the Road'),7:KEY('Breakfast Run'),8:KEY('The Cartel Heist'),9:KEY("Child's Play"),10:KEY('Headliners'),11:KEY('VCIA Takedown'),12:KEY('Operation Savage Glory')};
+function syncTro(){let n=0;for(const [ti,k] of Object.entries(STORY_TRO))if(S.done[k]&&!S.done['t'+ti]){S.done['t'+ti]=true;n++}return n}
 // giver, capítulo, cuenta trofeo (y/n/?), misiones [nombre, nota]
 const SF=[
  ['Dr. Merle (No Flushers)','Cualquiera','y',[['The Final Flush','']]],
@@ -312,7 +337,7 @@ const TABS=[['checklist','Checklist 100%'],['historia','Historia'],['secundarias
 /* ---------- ESTADO ---------- */
 let S={v:1,ts:0,req:{},done:{},notes:'',spoil:true};
 const LS='gta6-100';
-try{const l=JSON.parse(localStorage.getItem(LS));if(l&&l.v)S=Object.assign(S,l)}catch(e){}
+try{const l=JSON.parse(localStorage.getItem(LS));if(l&&l.v)S=Object.assign(S,migrate(l))}catch(e){}
 let db=null,docRef=null,timer=null;
 const $=s=>document.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -323,9 +348,9 @@ function save(){S.ts=Date.now();try{localStorage.setItem(LS,JSON.stringify(S))}c
 
 /* ---------- CÁLCULOS ---------- */
 const chalDone=()=>DES.reduce((a,[c,l])=>a+l.filter((x,i)=>S.done['d'+c+i]).length,0);
-const misDone=()=>CH.reduce((a,[c,l],ci)=>a+l.filter((x,i)=>S.done['m'+ci+'_'+i]).length,0);
-const misTot=CH.reduce((a,c)=>a+c[1].length,0);
-function cur(id){if(id==='chal')return chalDone();if(id==='story')return S.done['m4_6']?1:(S.req.story||0);return S.req[id]||0}
+const misDone=()=>ALL.filter(e=>e.t==='m'&&S.done[e.k]).length;
+const misTot=ALL.filter(e=>e.t==='m').length;
+function cur(id){if(id==='chal')return chalDone();if(id==='story')return S.done[KEY('The End of the Road')]?1:(S.req.story||0);return S.req[id]||0}
 function overall(){let s=0,d=0;for(const r of REQ){const f=Math.min(cur(r[1])/r[3],1);s+=f;if(f>=1)d++}return{p:s/REQ.length,d}}
 
 /* ---------- VISTAS ---------- */
@@ -360,12 +385,18 @@ function vChecklist(){let h=head('Checklist 100%','Los 35 requisitos de <b>A Lon
   if(cards)h+=grp(g,all.filter(x=>cur(x[1])>=x[3]).length+'/'+all.length,GC[g])+`<div class="cards">${cards}</div>`}
  return h}
 
-function curChapter(){for(let ci=0;ci<CH.length;ci++)if(CH[ci][1].some((x,i)=>!S.done['m'+ci+'_'+i]))return ci;return 9}
-function vHistoria(){const cc=curChapter();let h=head('Historia',`${misTot} misiones principales en 5 capítulos. Algunas webs cuentan 93 porque separan dos del Cap. 2; si te salen de más, apúntalas en Notas.`)+`<div class="tools" style="position:static;padding:0"><button class="chip hot" id="where">Actualizar por dónde voy</button></div>`+tools('Buscar misión…',`<button class="chip" id="spoil" aria-pressed="${S.spoil}">Sin spoilers</button>`);
- const who={J:'Jason',L:'Lucia',JL:'Jason y Lucia'};
- CH.forEach(([c,l],ci)=>{const d=l.filter((x,i)=>S.done['m'+ci+'_'+i]).length,hide=S.spoil&&ci>cc;
-  const rows=l.map(([n,w],i)=>ckRow('m'+ci+'_'+i,n,'',`<span class="tag">${ci+1}.${i+1}</span>${w?`<span class="tag">${who[w]}</span>`:''}`,hide?' sp':'')).join('');
-  if(rows)h+=grp(hide?'Capítulo '+(ci+1):esc(c),d+'/'+l.length,['var(--sea)','var(--pink)','var(--sun)','var(--gold)','var(--pink)'][ci])+`<ul class="list">${rows}</ul>`});
+function curChapter(){for(let c=0;c<ST.length;c++)if(ALL.some(e=>e.c===c&&e.t!=='o'&&!S.done[e.k]))return c;return 9}
+const WHO={J:'Jason',L:'Lucia',JL:'Jason y Lucia'};
+function stTags(e){const hd=e.h?ALL.filter(x=>x.h===e.h):[];const pos=e.h?hd.indexOf(e)+1:0;
+ return `<span class="tag">${e.c+1}.${e.i+1}</span>${e.who?`<span class="tag">${WHO[e.who]}</span>`:''}${e.t==='t'?'<span class="tag">Tarea</span>':''}${e.t==='o'?'<span class="tag">Opcional</span>':''}${e.h?`<span class="tag ${e.h==='c'?'p':'pl'}">${HEISTS[e.h][0]} · ${pos===hd.length?'golpe final':'paso '+pos+'/'+(hd.length-1)}</span>`:''}`}
+function vHistoria(){const cc=curChapter(),tt=ALL.filter(e=>e.t==='t'),td=tt.filter(e=>S.done[e.k]).length;
+ let h=head('Historia',`${misTot} misiones principales y ${tt.length} tareas de historia (pagos, llamadas, preparativos de los golpes) en 5 capítulos. Nombres traducidos por mí; debajo, el nombre original en inglés.`)
+ +`<div class="tools" style="position:static;padding:0"><button class="chip hot" id="where">Actualizar por dónde voy</button></div>`
+ +`<div class="mini"><div class="${misDone()>=misTot?'ok':''}"><b>${misDone()}/${misTot}</b><small>misiones principales</small></div><div class="${td>=tt.length?'ok':''}"><b>${td}/${tt.length}</b><small>tareas de historia</small></div>${Object.keys(HEISTS).filter(k=>!(S.spoil&&k==='v'&&cc<3)).map(k=>{const l=ALL.filter(e=>e.h===k),d=l.filter(e=>S.done[e.k]).length;return `<div class="${d>=l.length?'ok':''}"><b>${d}/${l.length}</b><small>${HEISTS[k][0]}</small></div>`}).join('')}</div>`
+ +tools('Buscar misión…',`<button class="chip" id="spoil" aria-pressed="${S.spoil}">Sin spoilers</button>`);
+ ST.forEach((l,c)=>{const es=ALL.filter(e=>e.c===c),main=es.filter(e=>e.t==='m'),d=main.filter(e=>S.done[e.k]).length,hide=S.spoil&&c>cc;
+  const rows=es.map(e=>ckRow(e.k,e.es,e.en,stTags(e),hide?' sp':'')).join('');
+  if(rows)h+=grp(hide?'Capítulo '+(c+1):`Capítulo ${c+1} · ${CHT[c][0]}`,d+'/'+main.length,['var(--sea)','var(--pink)','var(--sun)','var(--gold)','var(--pink)'][c])+`<ul class="list">${rows}</ul>`});
  return h}
 
 function vSec(){const strands=SF.filter(([g,c,y,l],si)=>y==='y'&&l.every((x,i)=>S.done['s'+si+'_'+i])).length;
@@ -402,7 +433,7 @@ function vNotas(){return head('Notas','Apunta lo que quieras: misiones que te fa
 function encode(){return btoa(unescape(encodeURIComponent(JSON.stringify(S))))}
 function load(txt){txt=String(txt).trim();let o;try{o=JSON.parse(txt)}catch(e){try{o=JSON.parse(decodeURIComponent(escape(atob(txt))))}catch(x){}}
  if(!o||!o.v||typeof o.done!=='object'||typeof o.req!=='object')return false;
- S={v:1,ts:0,req:{},done:{},notes:'',spoil:true,...o};save();render();burst($('#pct'),40);return true}
+ S=migrate({v:1,ts:0,req:{},done:{},notes:'',spoil:true,...o});save();render();burst($('#pct'),40);return true}
 
 const V={checklist:vChecklist,historia:vHistoria,secundarias:vSec,desafios:vDes,trofeos:vTro,armas:vArm,notas:vNotas};
 let entering=false;
@@ -423,31 +454,39 @@ let wasAll=overall().d===35;
 function checkAll(){const all=overall().d===35;if(all&&!wasAll){for(let k=0;k<4;k++)setTimeout(()=>burst($('#pct'),60),k*250);flash('¡A Long Road desbloqueado!')}wasAll=all}
 
 /* ---------- ¿POR DÓNDE VAS? ---------- */
-// trofeo de historia -> misión que lo da [capítulo, índice]
-const STORY_TRO={1:[0,1],2:[0,21],3:[1,10],4:[2,25],5:[3,24],6:[4,6],7:[1,7],8:[2,25],9:[3,16],10:[3,17],11:[3,22],12:[4,4]};
-let ob={step:'ch',ch:0,res:null};
-function applyPoint(ci,mi){const isDone=(c,i)=>c<ci||(c===ci&&i<mi);let m=0,t=0;
- CH.forEach(([n,l],c)=>l.forEach((x,i)=>{if(isDone(c,i)&&!S.done['m'+c+'_'+i]){S.done['m'+c+'_'+i]=true;m++}}));
- for(const [ti,[c,i]] of Object.entries(STORY_TRO))if(isDone(c,i)&&!S.done['t'+ti]){S.done['t'+ti]=true;t++}
- S.setup=1;save();return{m,t,ci,mi}}
+let ob={step:'ch',ch:0,sel:new Set(),res:null};
+function applyPoint(ch,sel){const before=new Set(Object.keys(S.done).filter(k=>S.done[k]));let m=0,t=0;
+ for(const e of ALL){if(e.t==='o')continue;let v=null;
+  if(ch>=5||e.c<ch)v=true;else if(e.c===ch)v=sel.has(e.k);
+  if(v===true)S.done[e.k]=true;else if(v===false)delete S.done[e.k]}
+ for(const e of ALL)if(e.c===ch&&e.t==='o'){if(sel.has(e.k))S.done[e.k]=true;else delete S.done[e.k]}
+ syncTro();for(const k of Object.keys(S.done))if(!before.has(k)){if(k[0]==='q')m++;else if(k[0]==='t')t++}
+ S.setup=1;save();return{m,t,ch}}
+function obRow(e){const on=ob.sel.has(e.k);return `<button data-ok="${e.k}" class="${on?'on':''}" aria-pressed="${on}"><i class="obck"></i><span class="obtx"><b>${esc(e.es)}</b><small>${esc(e.en)}</small><span>${stTags(e)}</span></span></button>`}
 function obRender(){const o=$('#ob');let h='';
- if(ob.step==='ch'){h=`<h2 id="obt">¿Por dónde vas?</h2><p class="sub">Dime el capítulo y tu próxima misión. Marco lo que ya has hecho y la app te esconde lo que viene después.</p>
-  <div class="obgrid"><button data-oc="-1" style="--i:0"><b>Empezando</b><small>Aún no he jugado ninguna misión</small></button>${CH.map((c,i)=>`<button data-oc="${i}" style="--i:${i+1}"><b>Capítulo ${i+1}</b><small>${c[1].length} misiones</small></button>`).join('')}<button data-oc="5" style="--i:6"><b>Terminada</b><small>Ya vi los créditos</small></button></div>
+ if(ob.step==='ch'){h=`<h2 id="obt">¿Por dónde vas?</h2><p class="sub">Dime el capítulo y marca lo que ya has hecho. Así la app sabe tu punto exacto y te esconde lo que viene después.</p>
+  <div class="obgrid"><button data-oc="-1" style="--i:0"><b>Empezando</b><small>Aún no he jugado ninguna misión</small></button>${ST.map((l,i)=>`<button data-oc="${i}" style="--i:${i+1}"><b>Capítulo ${i+1}</b><small>${l.length} misiones y tareas</small></button>`).join('')}<button data-oc="5" style="--i:6"><b>Terminada</b><small>Ya vi los créditos</small></button></div>
   <div class="obbar"><button class="chip" data-ob="skip">Ahora no</button></div>`}
- else if(ob.step==='mis'){const l=CH[ob.ch][1];h=`<h2 id="obt">Capítulo ${ob.ch+1}</h2><p class="sub">¿Cuál es tu <b>próxima</b> misión, la que aún no has hecho? Solo te enseño las de este capítulo.</p>
-  <div class="obgrid ms">${l.map(([n],i)=>`<button data-om="${i}" style="--i:${Math.min(i,14)}"><span>${ob.ch+1}.${i+1}</span>${esc(n)}</button>`).join('')}</div>
-  <div class="obbar"><button class="chip" data-ob="back">Volver</button></div>`}
- else{const r=ob.res,fin=r.ci>=5,start=r.ci===0&&r.mi===0;
+ else if(ob.step==='mis'){const es=ALL.filter(e=>e.c===ob.ch),n=es.filter(e=>ob.sel.has(e.k)).length;
+  h=`<h2 id="obt">Capítulo ${ob.ch+1}</h2><p class="sub">Toca la <b>última</b> que hayas completado: se marcan también las anteriores. Luego toca las que quieras corregir una a una (por ejemplo, preparatorias de un golpe que hiciste en otro orden). Las opcionales no se marcan solas.</p>
+  <div class="oblist">${es.map(obRow).join('')}</div>
+  <div class="obbar obsticky"><button class="chip" data-ob="back">Volver</button><span class="obn">${n} de ${es.length} hechas</span><button class="chip hot" data-ob="ok">Guardar mi punto</button></div>`}
+ else{const r=ob.res,fin=r.ch>=5,start=r.ch<0;
   h=`<h2 id="obt">${fin?'Historia completada':start?'Que empiece el viaje':'Listo'}</h2>
-  <p class="sub">${start?'No había nada que marcar todavía. ':`He marcado <b>${r.m}</b> misiones y <b>${r.t}</b> trofeos de historia que ya tenías asegurados. `}Robos, coleccionables y actividades dependen de lo que hayas hecho tú: actualízalos en el checklist con las cifras de Progreso › Estadísticas.</p>
+  <p class="sub">${start?'No había nada que marcar todavía. ':`He marcado <b>${r.m}</b> misiones y tareas, y <b>${r.t}</b> trofeos de historia que ya tenías asegurados. `}Robos, coleccionables y actividades dependen de lo que hayas hecho tú: actualízalos en el checklist con las cifras de Progreso › Estadísticas.</p>
   <div class="obbar"><button class="chip hot" data-ob="go">Ver mi checklist</button><button class="chip" data-ob="back0">Corregir</button></div>`}
- o.innerHTML=`<div class="obin">${h}</div>`}
-function openOb(){ob={step:'ch',ch:0,res:null};obRender();$('#ob').hidden=false}
+ const keep=o.querySelector('.oblist')?o.scrollTop:0;o.innerHTML=`<div class="obin">${h}</div>`;if(ob.step==='mis')o.scrollTop=keep}
+function openOb(){ob={step:'ch',ch:0,sel:new Set(),res:null};obRender();$('#ob').hidden=false;$('#ob').scrollTop=0}
 function closeOb(){$('#ob').hidden=true}
 $('#ob').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
- if(b.dataset.oc!=null){const c=+b.dataset.oc;if(c===-1||c===5){ob.res=applyPoint(c===-1?0:5,0);ob.step='ok';obRender();render();if(c===5)burst(b,40)}else{ob.ch=c;ob.step='mis';obRender()}}
- else if(b.dataset.om!=null){ob.res=applyPoint(ob.ch,+b.dataset.om);ob.step='ok';obRender();render();burst(b,30)}
- else if(b.dataset.ob==='back'||b.dataset.ob==='back0'){ob.step='ch';obRender()}
+ if(b.dataset.oc!=null){const c=+b.dataset.oc;
+  if(c===-1){for(const x of ALL)delete S.done[x.k];ob.res=applyPoint(-1,new Set());ob.res.ch=-1;ob.step='ok';obRender();render()}
+  else if(c===5){ob.res=applyPoint(5,new Set());ob.step='ok';obRender();render();burst(b,40)}
+  else{ob.ch=c;ob.sel=new Set(ALL.filter(x=>x.c===c&&S.done[x.k]).map(x=>x.k));ob.step='mis';obRender();$('#ob').scrollTop=0}}
+ else if(b.dataset.ok){const k=b.dataset.ok,es=ALL.filter(x=>x.c===ob.ch),i=es.findIndex(x=>x.k===k);
+  if(ob.sel.has(k))ob.sel.delete(k);else{ob.sel.add(k);for(let j=0;j<i;j++)if(es[j].t!=='o')ob.sel.add(es[j].k)}obRender()}
+ else if(b.dataset.ob==='ok'){ob.res=applyPoint(ob.ch,ob.sel);ob.step='ok';obRender();render();$('#ob').scrollTop=0;burst(b,30)}
+ else if(b.dataset.ob==='back'||b.dataset.ob==='back0'){ob.step='ch';obRender();$('#ob').scrollTop=0}
  else if(b.dataset.ob==='skip'){S.setup=1;save();closeOb()}
  else if(b.dataset.ob==='go'){closeOb();location.hash='#checklist';checkAll()}});
 
@@ -456,7 +495,7 @@ function route(){const h=location.hash.slice(1);const nt=V[h]?h:'checklist';if(n
 addEventListener('hashchange',route);
 const V2=$('#view');
 V2.addEventListener('change',e=>{const t=e.target;
- if(t.dataset.k){const k=t.dataset.k;S.done[k]=t.checked;if(!t.checked)delete S.done[k];save();render();if(t.checked)celebrate(`[data-k="${k}"]`,14);checkAll()}
+ if(t.dataset.k){const k=t.dataset.k;S.done[k]=t.checked;if(!t.checked)delete S.done[k];if(t.checked&&k[0]==='q'&&syncTro())flash('Trofeo de historia marcado');save();render();if(t.checked)celebrate(`[data-k="${k}"]`,14);checkAll()}
  else if(t.hasAttribute('data-story')){S.req.story=t.checked?1:0;save();render();if(t.checked)celebrate('[data-story]',30);checkAll()}
  else if(t.dataset.ri){const id=t.dataset.ri,r=REQ.find(x=>x[1]===id),was=cur(id)>=r[3];const v=Math.max(0,Math.min(parseInt(String(t.value).replace(/\D/g,''))||0,r[4]));S.req[id]=v;save();render();if(!was&&v>=r[3])celebrate(`[data-ri="${id}"]`,30);checkAll()}});
 V2.addEventListener('click',e=>{const b=e.target.closest('button,.sp');if(!b)return;
@@ -484,7 +523,7 @@ if('serviceWorker' in navigator&&location.protocol==='https:'&&!/claude/.test(lo
  const [d,u]=await Promise.all([claude.use('db'),claude.use('user')]);if(!d||!u)return;
  const id=await u.id();if(!id)return;db=d;docRef=db.collection('data/users/'+id).doc('progreso');
  let r=await docRef.get();const v=r&&(typeof r.data==='function'?r.data():(r.data!==undefined?r.data:r));
- if(v&&v.v&&(v.ts||0)>(S.ts||0)){S=Object.assign({v:1,ts:0,req:{},done:{},notes:'',spoil:true},v);try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}render();if(S.setup&&ob.step==='ch')closeOb()}
+ if(v&&v.v&&(v.ts||0)>(S.ts||0)){S=migrate(Object.assign({v:1,ts:0,req:{},done:{},notes:'',spoil:true},v));try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}render();if(S.setup&&ob.step==='ch')closeOb()}
  else if(S.ts)save();
 }catch(e){}})();
 }

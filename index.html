@@ -395,7 +395,7 @@ function vArm(){const tot=ARM.reduce((a,c)=>a+c[1].length,0),d=ARM.reduce((a,[c,
 
 function vNotas(){return head('Notas','Apunta lo que quieras: misiones que te falten en la lista, sitios pendientes, ideas.')+`<textarea id="notes" rows="14" placeholder="Ej.: flamenco detrás del faro de Key Lento…">${esc(S.notes)}</textarea>
  <section class="panel"><h3>Copia de seguridad</h3><p class="sub" style="margin:0">Sirve para pasar tu progreso entre la versión de Claude y la app de la tablet, o para guardarlo por si acaso.</p>
- <div class="tools"><button class="chip hot" id="exp">Copiar código</button><button class="chip" id="dl">Descargar archivo</button><label class="chip" style="display:flex;align-items:center">Cargar archivo<input type="file" id="file" accept=".json,application/json" hidden></label></div>
+ <div class="tools"><button class="chip hot" id="exp">Copiar código</button>${typeof claude!=='undefined'?'':'<button class="chip" id="dl">Descargar archivo</button>'}<label class="chip" style="display:flex;align-items:center">Cargar archivo<input type="file" id="file" accept=".json,application/json" hidden></label></div>
  <textarea id="code" rows="3" placeholder="Pega aquí un código de progreso y pulsa Importar" style="margin-top:10px"></textarea>
  <div class="tools"><button class="chip" id="imp">Importar</button><span id="impmsg" class="sub" style="margin:0"></span></div></section>
  <div class="tools" style="position:static;margin-top:14px"><button class="chip" id="reset">Borrar todo el progreso</button></div><div id="confirm"></div>`}

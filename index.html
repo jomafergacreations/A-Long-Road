@@ -427,6 +427,20 @@ details.mw ol{margin:6px 0 4px;padding-left:22px;line-height:1.5}details.mw li{m
 .qzfog.clear b,.qzfog.clear p{transition:filter 1.2s ease,opacity 1.2s ease}
 .qzrev{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;border:1.5px solid #ffffff55;background:#170b33cc;color:#fff;font:inherit;font-weight:800;border-radius:99px;padding:10px 18px;cursor:pointer;min-height:46px}
 .qzhint{color:#cbbbe3!important;font-size:14px!important}
+.setb{flex:none;width:44px;height:44px;border-radius:14px;border:0;background:#ffffff14;color:#fff;font-size:21px;cursor:pointer;display:grid;place-content:center;margin-right:8px;transition:transform .3s}
+.setb[aria-expanded=true]{transform:rotate(60deg);background:#ffffff26}
+.setp{position:fixed;z-index:70;top:calc(70px + env(safe-area-inset-top));right:calc(12px + env(safe-area-inset-right));width:min(340px,calc(100vw - 24px));animation:up .25s cubic-bezier(.2,.8,.2,1) both}
+.setp[hidden]{display:none}
+.setin{background:var(--card);color:var(--ink);border-radius:22px;padding:14px 16px 16px;box-shadow:0 24px 70px -18px #000a;border:1px solid var(--line)}
+.seth{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}.seth b{font:400 26px Anton,Impact,sans-serif}
+.setx{width:40px;height:40px;border:0;border-radius:12px;background:color-mix(in srgb,var(--ink) 8%,transparent);color:var(--ink);font-size:22px;cursor:pointer}
+.sw{display:flex;align-items:center;gap:12px;padding:12px 4px;border-top:1px solid var(--line);cursor:pointer}.sw span{flex:1}.sw b{display:block;font-size:15.5px}.sw small{color:var(--mut);font-size:13px}
+.sw input{position:absolute;opacity:0;pointer-events:none}.sw i{flex:none;width:52px;height:30px;border-radius:99px;background:color-mix(in srgb,var(--ink) 18%,transparent);position:relative;transition:background .2s}
+.sw i::after{content:"";position:absolute;left:3px;top:3px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 2px 6px #0004;transition:transform .2s}
+.sw input:checked+i{background:linear-gradient(90deg,var(--pink),var(--gold))}.sw input:checked+i::after{transform:translateX(22px)}
+.sw input:focus-visible+i{outline:3px solid var(--pink);outline-offset:2px}
+.vol{display:flex;align-items:center;gap:12px;padding:0 4px 12px;font-size:14px;font-weight:600;color:var(--mut)}.vol input{flex:1;accent-color:var(--pink);height:30px}.vol.off{opacity:.4;pointer-events:none}
+.setl{display:grid;gap:6px;border-top:1px solid var(--line);padding-top:12px}.setl button{text-align:left;font:inherit;font-weight:700;font-size:14.5px;border:0;background:color-mix(in srgb,var(--ink) 5%,transparent);color:var(--ink);border-radius:12px;padding:11px 12px;cursor:pointer;min-height:46px}.setl .danger{color:#e5484d}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -438,17 +452,18 @@ details.mw ol{margin:6px 0 4px;padding-left:22px;line-height:1.5}details.mw li{m
    <span>A Long Road</span>
   </a>
   <nav class="tabs" id="tabs" aria-label="Secciones"></nav>
-  <a class="ring" id="ring" href="#inicio" title="Progreso total"><b id="ringv">0%</b></a>
+  <button class="setb" id="setb" aria-label="Ajustes" aria-haspopup="dialog" aria-expanded="false" title="Ajustes">⚙</button><a class="ring" id="ring" href="#inicio" title="Progreso total"><b id="ringv">0%</b></a>
  </div>
 </header>
 <div class="content">
  <main id="view"></main>
- <footer><button class="chip danger" data-reset="1" style="margin:0 0 10px">↺ Restablecer app</button><br>Versión 15 · 24/11/2026. Datos recopilados de guías publicadas tras el lanzamiento (19/11/2026): PowerPyx, Timesaver, Dexerto, GamerTweak y TechNerdiness. Algunas listas aún se están verificando; donde hay dudas lo indico. El % pesa igual los 35 requisitos; el juego puede ponderarlos distinto.</footer>
+ <footer><button class="chip danger" data-reset="1" style="margin:0 0 10px">↺ Restablecer app</button><br>Versión 16 · 24/11/2026. Datos recopilados de guías publicadas tras el lanzamiento (19/11/2026): PowerPyx, Timesaver, Dexerto, GamerTweak y TechNerdiness. Algunas listas aún se están verificando; donde hay dudas lo indico. El % pesa igual los 35 requisitos; el juego puede ponderarlos distinto.</footer>
 </div>
 <div class="save" id="save">Guardado</div>
 <div class="fx" id="fx" aria-hidden="true"></div>
 <div class="news" id="news" hidden role="status"></div>
 <div class="ob" id="ob" hidden role="dialog" aria-modal="true" aria-labelledby="obt"></div>
+<div class="setp" id="setp" hidden role="dialog" aria-label="Ajustes"></div>
 <div class="cf" id="cf" hidden role="dialog" aria-modal="true" aria-labelledby="cft"></div>
 <div class="wv" id="wv" hidden role="dialog" aria-modal="true" aria-label="Vídeo de bienvenida"></div>
 
@@ -704,7 +719,7 @@ const ARM=[
 // Cada elemento: [nombre, zona, dónde (con mis palabras), nota, fecha en que se añadió]
 // La fecha sirve para la etiqueta «Nuevo» y el aviso de «Nuevo descubrimiento».
 const NEWS=[
- {d:'2026-11-24e',go:'inicio',h:'Novedades en la app',t:'Vídeo de bienvenida, cuestionario y sonidos',l:['Vídeo de bienvenida con narración (lo vuelves a ver desde Inicio)','Cuestionario de sí o no que encuentra tu misión exacta','Tu recorrido: cuánto te queda por capítulo','Sonidos en botones, desplegables y logros (se pueden quitar)','Zoom animado al tocar las burbujas del mapa','Capítulos plegables en Historia, con marcado del capítulo entero']},
+ {d:'2026-11-24f',go:'inicio',h:'Novedades en la app',t:'Música de fondo, Ajustes y cuestionario sin spoilers',l:['Menú ⚙ Ajustes arriba: música de fondo con volumen y sonidos de la interfaz','Cuestionario capítulo a capítulo bajo la niebla, sin spoilers','Vídeo de bienvenida (lo vuelves a ver desde Ajustes)','Cuestionario de sí o no que encuentra tu misión exacta','Tu recorrido: cuánto te queda por capítulo','Música de fondo y sonidos, que se quitan desde ⚙ Ajustes','Zoom animado al tocar las burbujas del mapa','Capítulos plegables en Historia, con marcado del capítulo entero']},
  {d:'2026-11-24',t:'Primeras guías detalladas',l:['Robos: las 39 operaciones de bandas, los 22 bancos y las 7 tiendas de préstamos','Coleccionables: 10 zonas de meditación, 18 lotes de cartas, 26 revistas, 16 puntos WAiNK y 8 flamencos','Actividades: 40 carreras por sede, 13 desafíos de carreras y 7 rivales de billar','Historia: guía con decisiones, desbloqueos y avisos en muchas misiones']}
 ];
 const BASE='2026-11-24';
@@ -1277,6 +1292,7 @@ const SND=(()=>{let ac=null,mg=null;const on=()=>S.snd!==0;
   const s=c.createBufferSource();s.buffer=b;const bp=c.createBiquadFilter();bp.type='bandpass';bp.Q.value=1.4;bp.frequency.setValueAtTime(f1,c.currentTime+t0);bp.frequency.exponentialRampToValueAtTime(f2,c.currentTime+t0+d);
   const g=c.createGain();g.gain.setValueAtTime(0,c.currentTime+t0);g.gain.linearRampToValueAtTime(v,c.currentTime+t0+d*.3);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+t0+d);s.connect(bp);bp.connect(g);g.connect(mg);s.start(c.currentTime+t0)}
  const api={
+  ctx:()=>ctx(),bus(){ctx();return mg},
   unlock(){ctx()},
   tap(){if(!on())return;tone(1320,0,.05,{v:.12,f2:980});tone(660,0,.04,{type:'triangle',v:.06})},
   open(){if(!on())return;noise(0,.22,500,3200,.09);tone(520,.02,.12,{type:'triangle',v:.08,f2:880})},
@@ -1297,6 +1313,52 @@ document.addEventListener('change',e=>{const t=e.target;if(t.type==='checkbox'){
 addEventListener('hashchange',()=>SND.nav());
 {const _c=celebrate;celebrate=function(sel,n){if((n||0)>=20)SND.win();return _c(sel,n)}}
 
+/* ---------- MÚSICA DE FONDO (synthwave generada en directo, original) ---------- */
+const MUS=(()=>{let c=null,out=null,rev=null,on=false,timer=0,next=0,step=0,bar=0;
+ const BPM=88,SPB=60/BPM/4; // semicorchea
+ const N=m=>440*Math.pow(2,(m-69)/12);
+ // progresiones (acordes en MIDI): Am F C G  /  Dm Am F E
+ const PR=[[[57,60,64],[53,57,60],[48,52,55],[55,59,62]],[[50,53,57],[57,60,64],[53,57,60],[52,56,59]]];
+ function init(){c=SND.ctx();if(!c)return false;if(out)return true;out=c.createGain();out.gain.value=0;
+  rev=c.createConvolver();const len=c.sampleRate*2.4,b=c.createBuffer(2,len,c.sampleRate);for(let ch=0;ch<2;ch++){const d=b.getChannelData(ch);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,2.6)}rev.buffer=b;
+  const wet=c.createGain();wet.gain.value=.35;rev.connect(wet);wet.connect(out);out.connect(SND.bus());return true}
+ function env(g,t,a,d,v){g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+a);g.gain.exponentialRampToValueAtTime(.0001,t+d)}
+ function voice(type,f,t,d,v,lp,send=.4){const o=c.createOscillator(),g=c.createGain(),fl=c.createBiquadFilter();o.type=type;o.frequency.setValueAtTime(f,t);fl.type='lowpass';fl.frequency.value=lp;o.connect(fl);fl.connect(g);env(g,t,Math.min(.02,d/4),d,v);g.connect(out);if(send){const s=c.createGain();s.gain.value=send;g.connect(s);s.connect(rev)}o.start(t);o.stop(t+d+.05);return o}
+ function pad(ch,t,d){ch.forEach((m,i)=>{[-6,6].forEach(dt=>{const o=c.createOscillator(),g=c.createGain(),fl=c.createBiquadFilter();o.type='sawtooth';o.frequency.value=N(m);o.detune.value=dt;fl.type='lowpass';fl.frequency.setValueAtTime(700,t);fl.frequency.linearRampToValueAtTime(1400,t+d/2);fl.frequency.linearRampToValueAtTime(700,t+d);
+   o.connect(fl);fl.connect(g);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.022,t+.6);g.gain.setValueAtTime(.022,t+d-.4);g.gain.linearRampToValueAtTime(0,t+d);g.connect(out);const s=c.createGain();s.gain.value=.6;g.connect(s);s.connect(rev);o.start(t);o.stop(t+d+.1)})})}
+ function noise(t,d,f,v,q=1){const len=Math.ceil(c.sampleRate*d),b=c.createBuffer(1,len,c.sampleRate),x=b.getChannelData(0);for(let i=0;i<len;i++)x[i]=Math.random()*2-1;const s=c.createBufferSource();s.buffer=b;const fl=c.createBiquadFilter();fl.type='bandpass';fl.frequency.value=f;fl.Q.value=q;const g=c.createGain();env(g,t,.002,d,v);s.connect(fl);fl.connect(g);g.connect(out);const r=c.createGain();r.gain.value=.25;g.connect(r);r.connect(rev);s.start(t)}
+ function kick(t){const o=c.createOscillator(),g=c.createGain();o.frequency.setValueAtTime(120,t);o.frequency.exponentialRampToValueAtTime(42,t+.18);env(g,t,.003,.3,.32);o.connect(g);g.connect(out);o.start(t);o.stop(t+.35)}
+ function sched(){while(next<c.currentTime+.15){const t=next,s=step%16,prog=PR[Math.floor(bar/8)%2],ch=prog[bar%4];
+   if(s===0)pad(ch,t,SPB*16);
+   if(s%2===0)voice('sawtooth',N(ch[0]-24),t,SPB*1.8,.07,380,0);            // bajo
+   const arpN=[0,1,2,1,2,0,1,2][Math.floor(s/2)%8];if(bar%8>1)voice('triangle',N(ch[arpN]+12+(s%4===3?12:0)),t,SPB*1.6,.035,2600,.5); // arpegio
+   if(bar%8>3){if(s===0||s===8)kick(t);if(s===4||s===12)noise(t,.22,1800,.07,.8);}
+   if(bar%8>1&&s%2===0)noise(t,.05,8000,.018,.6);                           // charles
+   next+=SPB;step++;if(step%16===0)bar++}}
+ const api={
+  start(){if(S.mus===0)return;if(!init())return;if(on)return;on=true;if(c.state==='suspended')c.resume();next=c.currentTime+.1;step=0;out.gain.cancelScheduledValues(c.currentTime);out.gain.setValueAtTime(out.gain.value,c.currentTime);out.gain.linearRampToValueAtTime(api.vol(),c.currentTime+2.5);timer=setInterval(sched,30)},
+  stop(f=1){if(!on||!c)return;on=false;out.gain.cancelScheduledValues(c.currentTime);out.gain.setValueAtTime(out.gain.value,c.currentTime);out.gain.linearRampToValueAtTime(0,c.currentTime+f);setTimeout(()=>{if(!on)clearInterval(timer)},f*1000+60)},
+  vol(){return .9*Math.pow(S.mv==null?.5:S.mv,1.5)},
+  setVol(){if(on&&c){out.gain.cancelScheduledValues(c.currentTime);out.gain.setTargetAtTime(api.vol(),c.currentTime,.1)}},
+  get on(){return on}};
+ document.addEventListener('visibilitychange',()=>{if(document.hidden)api.stop(.3);else if(S.mus!==0&&c)api.start()});
+ document.addEventListener('pointerdown',()=>{if(S.mus!==0)api.start()},{capture:true});
+ return api})();
+
+/* ---------- AJUSTES ---------- */
+function setRender(){const p=$('#setp');p.innerHTML=`<div class="setin"><div class="seth"><b>Ajustes</b><button class="setx" data-sp="close" aria-label="Cerrar">×</button></div>
+ <label class="sw"><span><b>Música de fondo</b><small>Synthwave tranquila mientras usas la app</small></span><input type="checkbox" id="smus" ${S.mus!==0?'checked':''}><i></i></label>
+ <label class="vol${S.mus===0?' off':''}"><span>Volumen</span><input type="range" id="smv" min="0" max="1" step="0.05" value="${S.mv==null?.5:S.mv}"></label>
+ <label class="sw"><span><b>Sonidos de la interfaz</b><small>Toques, desplegables y logros</small></span><input type="checkbox" id="ssnd" ${S.snd!==0?'checked':''}><i></i></label>
+ <div class="setl"><button data-sp="intro">▶ Vídeo de bienvenida</button><button data-sp="quiz">Cuestionario: ¿por dónde voy?</button><button data-sp="reset" class="danger">↺ Restablecer app</button></div></div>`}
+function setOpen(v){const p=$('#setp');if(v){setRender();p.hidden=false;SND.open()}else{p.hidden=true}$('#setb').setAttribute('aria-expanded',!!v)}
+$('#setb').addEventListener('click',e=>{e.stopPropagation();setOpen($('#setp').hidden)});
+$('#setp').addEventListener('click',e=>{const b=e.target.closest('[data-sp]');if(!b)return;const a=b.dataset.sp;setOpen(false);if(a==='intro')wvOpen(false);else if(a==='quiz')openOb();else if(a==='reset')resetAsk()});
+$('#setp').addEventListener('change',e=>{const t=e.target;if(t.id==='smus'){S.mus=t.checked?1:0;save();t.checked?MUS.start():MUS.stop();setRender()}else if(t.id==='ssnd'){S.snd=t.checked?1:0;save();if(t.checked)SND.check()}});
+$('#setp').addEventListener('input',e=>{if(e.target.id==='smv'){S.mv=+e.target.value;MUS.setVol();clearTimeout(setOpen.t);setOpen.t=setTimeout(save,400)}});
+document.addEventListener('click',e=>{const p=$('#setp');if(!p.hidden&&!e.target.closest('#setp,#setb'))setOpen(false)});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#setp').hidden)setOpen(false)});
+
 /* ---------- VÍDEO DE BIENVENIDA (animación con narración) ---------- */
 const WV=[
  {d:6500,t:'Bienvenido',s:'Tu compañero para completar GTA VI al 100%, sin destriparte la historia.',v:'Bienvenido a A Long Road. Tu compañero para completar GTA seis al cien por cien, sin destriparte la historia.',
@@ -1314,28 +1376,22 @@ const WV=[
  {d:6000,t:'Se actualiza cada semana',s:'Cuando las guías descubran algo nuevo, te saldrá un aviso de «Nuevo descubrimiento».',v:'Cada semana se actualiza con lo que descubran las guías. Vamos a ver por dónde vas.',
   h:`<div class="wvnews"><b>Nuevo descubrimiento</b><span>Nuevas guías paso a paso</span></div>`}];
 let wv=null;
-const NARR=0; /* pon 1 cuando existan voz/1.mp3 … voz/7.mp3 */
-let wvAud=null;function wvVoice(i,txt){if(S.snd===0||S.voz===0)return;if(NARR){try{if(wvAud)wvAud.pause();wvAud=new Audio('voz/'+(i+1)+'.mp3');wvAud.play().catch(()=>wvSpeak(txt));return}catch(e){}}wvSpeak(txt)}
-function wvSpeak(txt){if(!('speechSynthesis' in window)||S.snd===0||S.voz===0)return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(txt);u.lang='es-ES';u.rate=1.02;u.pitch=1;
- const vs=speechSynthesis.getVoices(),es=vs.filter(v=>/^es(-|_)ES/i.test(v.lang)),any=vs.filter(v=>/^es/i.test(v.lang)),good=x=>/premium|enhanced|mejorad|natural|neural|siri|online/i.test(x.name);const v=es.find(good)||any.find(good)||es.find(v=>/m[oó]nica|jorge|google/i.test(v.name))||es[0]||any[0];if(v)u.voice=v;u.rate=.98;speechSynthesis.speak(u)}catch(e){}}
 function wvOpen(auto){const o=$('#wv');wv={i:-1,t:0,auto,play:false,raf:0,last:0,pad:null,arp:0};
- o.innerHTML=`<div class="wvin"><div class="wvstage" id="wvs"><div class="wvstart"><div class="wvlogo sm"></div><h2>Vídeo de bienvenida</h2><p>45 segundos para ver todo lo que puede hacer la app.</p><button class="chip hot wvplay" data-wv="play">▶ Reproducir</button></div></div>
-  <div class="wvcap" id="wvcap"></div><div class="wvbar"><button class="wvb" data-wv="pp" aria-label="Pausa">❚❚</button><div class="wvprog">${WV.map(()=>'<i><b></b></i>').join('')}</div><button class="wvb" data-wv="voz" aria-label="Narración">${S.voz===0?'🔇':'🔊'}</button><button class="chip" data-wv="skip">Saltar</button></div></div>`;
+ o.innerHTML=`<div class="wvin"><div class="wvstage" id="wvs"><div class="wvstart"><div class="wvlogo sm"></div><h2>Vídeo de bienvenida</h2><p>45 segundos para ver todo lo que puede hacer la app. Con música: sube el volumen.</p><button class="chip hot wvplay" data-wv="play">▶ Reproducir</button></div></div>
+  <div class="wvcap" id="wvcap"></div><div class="wvbar"><button class="wvb" data-wv="pp" aria-label="Pausa">❚❚</button><div class="wvprog">${WV.map(()=>'<i><b></b></i>').join('')}</div><button class="chip" data-wv="skip">Saltar</button></div></div>`;
  o.hidden=false}
 function wvScene(i){wv.i=i;wv.t=0;const sc=WV[i],st=$('#wvs');if(i===0&&S.name){sc._t=sc._t||sc.t;sc.t=`Bienvenido, ${S.name}`;sc._v=sc._v||sc.v;sc.v=`Hola, ${S.name}. `+sc._v}st.innerHTML=`<div class="wvsc"><div class="wvvis">${sc.h}</div><h3>${sc.t}</h3><p>${sc.s}</p></div>`;$('#wvcap').textContent=sc.s;
- for(const [j,b] of [...document.querySelectorAll('.wvprog b')].entries())b.style.width=j<i?'100%':'0%';SND.open();wvVoice(i,sc.v)}
+ for(const [j,b] of [...document.querySelectorAll('.wvprog b')].entries())b.style.width=j<i?'100%':'0%';SND.open()}
 function wvTick(ts){if(!wv||!wv.play)return;const dt=wv.last?ts-wv.last:0;wv.last=ts;wv.t+=dt;const sc=WV[wv.i];
  const b=document.querySelectorAll('.wvprog b')[wv.i];if(b)b.style.width=Math.min(100,wv.t/sc.d*100)+'%';
- const step=Math.floor(wv.t/400);if(step!==wv.arp){wv.arp=step;if(step%2===0)SND.arp(step/2)}
  if(wv.t>=sc.d){if(wv.i<WV.length-1)wvScene(wv.i+1);else{wvEnd(true);return}}wv.raf=requestAnimationFrame(wvTick)}
-function wvPlay(){wv.play=true;wv.last=0;$('#wv').classList.remove('paused');const pp=document.querySelector('[data-wv="pp"]');if(pp)pp.textContent='❚❚';if(!wv.pad)wv.pad=SND.pad();wv.raf=requestAnimationFrame(wvTick)}
-function wvPause(){wv.play=false;cancelAnimationFrame(wv.raf);$('#wv').classList.add('paused');const pp=document.querySelector('[data-wv="pp"]');if(pp)pp.textContent='▶';try{speechSynthesis.cancel()}catch(e){}if(wvAud)wvAud.pause()}
-function wvEnd(toQuiz){if(!wv)return;wv.play=false;cancelAnimationFrame(wv.raf);if(wv.pad)wv.pad.stop();try{speechSynthesis.cancel()}catch(e){}if(wvAud)wvAud.pause();const auto=wv.auto;wv=null;$('#wv').hidden=true;S.intro=1;save();
+function wvPlay(){wv.play=true;wv.last=0;$('#wv').classList.remove('paused');const pp=document.querySelector('[data-wv="pp"]');if(pp)pp.textContent='❚❚';MUS.start();wv.raf=requestAnimationFrame(wvTick)}
+function wvPause(){wv.play=false;cancelAnimationFrame(wv.raf);$('#wv').classList.add('paused');const pp=document.querySelector('[data-wv="pp"]');if(pp)pp.textContent='▶';}
+function wvEnd(toQuiz){if(!wv)return;wv.play=false;cancelAnimationFrame(wv.raf);const auto=wv.auto;wv=null;$('#wv').hidden=true;S.intro=1;save();
  if(auto||toQuiz){if(!S.setup||toQuiz)openOb()}}
 $('#wv').addEventListener('click',e=>{const b=e.target.closest('[data-wv]');if(!b||!wv)return;const a=b.dataset.wv;
  if(a==='play'){SND.unlock();wvScene(0);wvPlay()}
  else if(a==='pp'){if(wv.i<0)return;wv.play?wvPause():wvPlay()}
- else if(a==='voz'){S.voz=S.voz===0?1:0;save();b.textContent=S.voz===0?'🔇':'🔊';if(S.voz===0)try{speechSynthesis.cancel()}catch(e){}}
  else if(a==='skip'){wvEnd(wv.auto&&!S.setup)}});
 
 /* ---------- CUESTIONARIO PARA UBICARTE ---------- */
@@ -1364,7 +1420,7 @@ document.addEventListener('click',e=>{if(e.target.closest('[data-reset]'))resetA
 function roadStrip(){const tot=ALL.filter(e=>e.t==='m').length;const per=ST.map((l,c)=>{const ms=ALL.filter(e=>e.c===c&&e.t==='m');return{c,n:ms.length,d:ms.filter(e=>S.done[e.k]).length}});const r=remaining(),done=tot-r.tot,pc=done/tot*100;
  return `<section class="hcard road"><h3>Tu recorrido</h3><div class="roadline">${per.map(p=>`<div class="seg" style="flex:${p.n}"><i style="width:${p.n?p.d/p.n*100:0}%"></i><span>Cap. ${p.c+1}</span></div>`).join('')}<b class="car" style="left:${pc}%" aria-hidden="true">🏁</b></div>
  <p>${r.tot?`Te quedan <b>${r.tot}</b> misiones principales: <b>${r.ch}</b> en este capítulo${r.chs>1?` y ${r.chs-1} capítulo${r.chs>2?'s':''} más`:''}.`:'Has terminado todas las misiones principales.'}</p>
- <div class="acts"><button class="chip" data-intro="1">▶ Vídeo de bienvenida</button><button class="chip" id="where">Cuestionario: ¿por dónde voy?</button><button class="chip" data-snd="1">${S.snd===0?'🔇 Sonidos desactivados':'🔊 Sonidos activados'}</button><button class="chip danger" data-reset="1">↺ Restablecer app</button></div></section>`}
+ <div class="acts"><button class="chip" data-intro="1">▶ Vídeo de bienvenida</button><button class="chip" id="where">Cuestionario: ¿por dónde voy?</button><button class="chip" data-set="1">⚙ Ajustes</button></div></section>`}
 
 /* ---------- INICIO ---------- */
 const PNR={'Tourist Trap':1,'Checking Out':1};
@@ -1491,6 +1547,7 @@ V2.addEventListener('click',e=>{const mb=e.target.closest('[data-mp],[data-ma],[
  else if(b.dataset.hc!=null){const c=+b.dataset.hc,sec=b.closest('.hch'),now=!sec.classList.contains('cl');S.hc=S.hc||{};S.hc[c]=now?1:0;save();sec.classList.toggle('cl',now);b.setAttribute('aria-expanded',!now);now?SND.close():SND.open();if(!now){const r=sec.querySelector('.hchk');if(r)r.remove()}else render()}
  else if(b.dataset.hk!=null){chConfirm(+b.dataset.hk)}
  else if(b.dataset.intro){wvOpen(false)}
+ else if(b.dataset.set){e.stopPropagation();setOpen(true)}
  else if(b.dataset.snd){S.snd=S.snd===0?1:0;save();render();if(S.snd)SND.check()}
  else if(b.id==='gonext'){let r=document.querySelector('.row.next');if(r){const sec=r.closest('.hch');if(sec&&sec.classList.contains('cl')){const c=+sec.querySelector('[data-hc]').dataset.hc;S.hc=S.hc||{};S.hc[c]=0;save();render();r=document.querySelector('.row.next')}const d=r.closest('details');if(d)d.open=true;r.scrollIntoView({behavior:RM?'auto':'smooth',block:'center'})}}
  else if(b.dataset.done){const k=b.dataset.done;S.done[k]=true;const nt=syncTro();save();render();burst($('#ring'),30);if(nt)flash('Trofeo de historia marcado');checkAll()}

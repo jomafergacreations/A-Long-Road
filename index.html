@@ -471,6 +471,12 @@ details.mw ol{margin:6px 0 4px;padding-left:22px;line-height:1.5}details.mw li{m
 .still,.still *{animation:none!important}
 .still .mist{animation:mist 6s ease-in-out infinite alternate!important}
 .still .mk button.cl.pop{animation:clpop .45s ease-out forwards!important}
+.obhint{display:block;color:#ffd27a;font-size:13px;font-weight:700;margin-bottom:2px}
+.obf{position:relative;display:block;overflow:hidden;border-radius:10px;padding:1px 4px;margin-left:-4px}
+.obf:not(.clear)>b,.obf:not(.clear)>small,.obf:not(.clear)>em{filter:blur(8px);opacity:.75;user-select:none}
+.obf>b,.obf>small,.obf>em{transition:filter 1s ease,opacity 1s ease}
+.obhh b.obf{display:inline-block}
+.obhh b.obf:not(.clear){filter:blur(8px)}.obhh b.obf{transition:filter 1s ease}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -487,7 +493,7 @@ details.mw ol{margin:6px 0 4px;padding-left:22px;line-height:1.5}details.mw li{m
 </header>
 <div class="content">
  <main id="view"></main>
- <footer><button class="chip danger" data-reset="1" style="margin:0 0 10px">↺ Restablecer app</button><br>Versión 22 · 24/11/2026. Datos recopilados de guías publicadas tras el lanzamiento (19/11/2026): PowerPyx, Timesaver, Dexerto, GamerTweak y TechNerdiness. Algunas listas aún se están verificando; donde hay dudas lo indico. El % pesa igual los 35 requisitos; el juego puede ponderarlos distinto.</footer>
+ <footer><button class="chip danger" data-reset="1" style="margin:0 0 10px">↺ Restablecer app</button><br>Versión 23 · 24/11/2026. Datos recopilados de guías publicadas tras el lanzamiento (19/11/2026): PowerPyx, Timesaver, Dexerto, GamerTweak y TechNerdiness. Algunas listas aún se están verificando; donde hay dudas lo indico. El % pesa igual los 35 requisitos; el juego puede ponderarlos distinto.</footer>
 </div>
 <div class="save" id="save">Guardado</div>
 <div class="fx" id="fx" aria-hidden="true"></div>
@@ -1276,7 +1282,11 @@ function applyPoint(ch,sel){const before=new Set(Object.keys(S.done).filter(k=>S
  for(const e of ALL)if(e.c===ch&&e.t==='o'){if(sel.has(e.k))S.done[e.k]=true;else delete S.done[e.k]}
  syncTro();for(const k of Object.keys(S.done))if(!before.has(k)){if(k[0]==='q')m++;else if(k[0]==='t')t++}
  S.setup=1;save();return{m,t,ch}}
-function obRow(e,inH){const on=ob.sel.has(e.k);return `<button data-ok="${e.k}" class="${on?'on':''}" aria-pressed="${on}"><i class="obck"></i><span class="obtx"><b>${esc(e.es)}</b>${S.orig?`<small>${esc(e.en)}</small>`:''}${dsc(e)?`<em>${esc(dsc(e))}</em>`:''}<span>${stTags(e,inH)}${mtag(e)}</span></span></button>`}
+function obRow(e,inH){const on=ob.sel.has(e.k),hint=QHINT[e.en]||(e.t==='t'?'Tarea de historia.':e.t==='o'?'Misión opcional.':'');return `<button data-ok="${e.k}" class="${on?'on':''}" aria-pressed="${on}"><i class="obck"></i><span class="obtx"><span class="obhint">${esc(hint)}</span><span class="qzfog obf${on?' clear':''}"><b>${esc(e.es)}</b>${S.orig?`<small>${esc(e.en)}</small>`:''}${dsc(e)?`<em>${esc(dsc(e))}</em>`:''}<span class="mist" aria-hidden="true"></span></span><span>${stTags(e,inH)}${mtag(e)}</span></span></button>`}
+function obMisUpdate(){const o=$('#ob'),es=ALL.filter(x=>x.c===ob.ch);
+ o.querySelectorAll('[data-ok]').forEach(b=>{const on=ob.sel.has(b.dataset.ok),f=b.querySelector('.obf');b.classList.toggle('on',on);b.setAttribute('aria-pressed',on);if(f){if(on&&!f.classList.contains('clear'))requestAnimationFrame(()=>f.classList.add('clear'));else if(!on)f.classList.remove('clear')}});
+ o.querySelectorAll('.obheist').forEach(hh=>{const ks=[...hh.querySelectorAll('[data-ok]')].map(b=>b.dataset.ok),d=ks.filter(k=>ob.sel.has(k)).length,r=hh.querySelector('.hring'),t=hh.querySelector('.obhh .obf');if(r){r.style.setProperty('--p',d/ks.length*100+'%');r.querySelector('b').textContent=d+'/'+ks.length}if(t){if(d&&!t.classList.contains('clear'))requestAnimationFrame(()=>t.classList.add('clear'));else if(!d)t.classList.remove('clear')}});
+ const n=o.querySelector('.obn');if(n)n.textContent=`${es.filter(e=>ob.sel.has(e.k)).length} de ${es.length} hechas`;SND.check()}
 function obRender(){const o=$('#ob');let h='';
  if(ob.step==='ch'){const cq=ob.cq||0,rev=ob.rev;
   const card=i=>{const st=i<cq?'done':i===cq?'ask':'fog',open=(i<cq||rev===i)&&ob.anim!==i,txt=i<cq||rev===i;
@@ -1288,9 +1298,9 @@ function obRender(){const o=$('#ob');let h='';
   <div class="obbar"><button class="chip" data-ob="skip">Ahora no</button><button class="chip" data-oc="-1">Aún no he jugado ninguna misión</button></div>`}
  else if(ob.step==='quiz'){h=qzRender()}
  else if(ob.step==='mis'){const es=ALL.filter(e=>e.c===ob.ch),n=es.filter(e=>ob.sel.has(e.k)).length;
-  h=`<h2 id="obt">Capítulo ${ob.ch+1}</h2><p class="sub">Toca la <b>última</b> que hayas completado: se marcan también las anteriores. Luego toca las que quieras corregir una a una (por ejemplo, preparatorias de un golpe que hiciste en otro orden). Las opcionales no se marcan solas.</p>${ob.guess?`<div class="obguess">Según tus respuestas, tu siguiente misión es <b>«${esc(ob.guess.es)}»</b>. Revisa la lista por si hiciste algo en otro orden y guarda.</div>`:''}
+  h=`<h2 id="obt">Capítulo ${ob.ch+1}</h2><p class="sub">Toca la <b>última</b> que hayas completado: se marcan también las anteriores. Luego toca las que quieras corregir una a una (por ejemplo, preparatorias de un golpe que hiciste en otro orden). Las opcionales no se marcan solas. Lo que no está marcado sigue bajo la niebla para no destriparte nada.</p>${ob.guess?`<div class="obguess">Según tus respuestas, tu siguiente misión es la <b>n.º ${ALL.filter(e=>e.c===ob.ch&&e.t==='m').indexOf(ob.guess)+1} del capítulo</b> (misión ${ALL.filter(e=>e.t==='m').indexOf(ob.guess)+1} de ${misTot} en total). Lo que no has marcado sigue bajo la niebla. Revisa por si hiciste algo en otro orden y guarda.</div>`:''}
   <div class="oblist">${(()=>{const seen=new Set();return es.map(e=>{if(!e.h)return obRow(e);if(seen.has(e.h))return '';seen.add(e.h);const l=es.filter(x=>x.h===e.h),d=l.filter(x=>ob.sel.has(x.k)).length;
-   return `<div class="obheist"><div class="obhh"><span class="hring" style="--p:${d/l.length*100}%"><b>${d}/${l.length}</b></span><span><b>${HEISTS[e.h][0]}</b><small>Toca el último paso que hayas hecho</small></span></div><div class="obhl">${l.map(x=>obRow(x,true)).join('')}</div></div>`}).join('')})()}</div>
+   return `<div class="obheist"><div class="obhh"><span class="hring" style="--p:${d/l.length*100}%"><b>${d}/${l.length}</b></span><span><b class="qzfog obf${d?' clear':''}">${HEISTS[e.h][0]}<span class="mist" aria-hidden="true"></span></b><small>Golpe del capítulo · toca el último paso que hayas hecho</small></span></div><div class="obhl">${l.map(x=>obRow(x,true)).join('')}</div></div>`}).join('')})()}</div>
   <div class="obbar obsticky"><button class="chip" data-ob="back">Volver</button><span class="obn">${n} de ${es.length} hechas</span><button class="chip hot" data-ob="ok">Guardar mi punto</button></div>`}
  else{const r=ob.res,fin=r.ch>=5,start=r.ch<0;
   h=`<h2 id="obt">${fin?'Historia completada':start?'Que empiece el viaje':'Listo'}${S.name?', '+esc(S.name):''}</h2>
@@ -1311,7 +1321,7 @@ $('#ob').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)r
  else if(b.dataset.qr!=null){ob.qz.rv.add(+b.dataset.qr);qpUpdate();SND.open()}
  else if(b.dataset.qz!=null){const q=ob.qz,v=b.dataset.qz;if(v==='list'){ob.ch=q.ch;ob.sel=new Set(ALL.filter(x=>x.c===q.ch&&S.done[x.k]).map(x=>x.k));ob.guess=null;ob.step='mis'}else if(v==='ok'&&q.pick!=null){q.lo=q.pick+1;qzDone()}obRender();$('#ob').scrollTop=0}
  else if(b.dataset.ok){const k=b.dataset.ok,es=ALL.filter(x=>x.c===ob.ch),i=es.findIndex(x=>x.k===k);
-  if(ob.sel.has(k))ob.sel.delete(k);else{ob.sel.add(k);for(let j=0;j<i;j++)if(es[j].t!=='o')ob.sel.add(es[j].k)}obRender()}
+  if(ob.sel.has(k))ob.sel.delete(k);else{ob.sel.add(k);for(let j=0;j<i;j++)if(es[j].t!=='o')ob.sel.add(es[j].k)}obMisUpdate()}
  else if(b.dataset.ob==='ok'){ob.res=applyPoint(ob.ch,ob.sel);ob.step='ok';obRender();render();$('#ob').scrollTop=0;burst(b,30)}
  else if(b.dataset.ob==='back'||b.dataset.ob==='back0'){ob.step='ch';obRender();$('#ob').scrollTop=0}
  else if(b.dataset.ob==='skip'){S.setup=1;save();closeOb();setTimeout(showNews,600)}
